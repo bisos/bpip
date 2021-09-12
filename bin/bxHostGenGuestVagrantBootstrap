@@ -1,8 +1,11 @@
-#! /usr/bin/env python
+#!/bisos/venv/py3/bisos3/bin/python
 # -*- coding: utf-8 -*-
 """\
 * TODO *[Summary]* :: An =ICM=: To be executed on a host capable of guest generation 
 """
+
+import sys
+sys.exit("Obsoleted -- bisos.bootstrap is no longer needed.")
 
 ####+BEGIN: bx:icm:python:top-of-file :partof "bystar" :copyleft "halaal+minimal"
 """
@@ -177,7 +180,7 @@ class icmOverview(icm.Cmnd):
             argChoices.pop(0)
             actions = argChoices
         for each in actions:
-            print each
+            print(each)
             if interactive:
                 #print( str( __doc__ ) )  # This is the Summary: from the top doc-string
                 #version(interactive=True)
@@ -1231,7 +1234,7 @@ class vagrantFileStdout(icm.Cmnd):
         resStr = vagrantHeadStr + provionerStr + vagrantTailStr
 
         if interactive:
-            print resStr
+            print(resStr)
         
         return cmndOutcome.set(
             opError=icm.OpError.Success,
@@ -1320,7 +1323,7 @@ class sysBootstrapFileStdout(icm.Cmnd):
         )
 
         if interactive:
-            print resStr
+            print(resStr)
         
         return cmndOutcome.set(
             opError=icm.OpError.Success,
