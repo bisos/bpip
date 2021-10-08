@@ -1,4 +1,4 @@
-#!/bisos/venv/py3/bisos3/bin/python
+#!/bin/env python
 # -*- coding: utf-8 -*-
 """\
 Summary:: An =ICM=: a small example in traditional python style -- Not COMEEGA.
@@ -112,9 +112,7 @@ class argsProc(icm.Cmnd):
             opResults=None,
         )
 
-import icmMainProxy
-
-icmMainProxy.g_icmMain(
+icm.g_icmMain(
     noCmndEntry=examples,
     extraParamsHook=g_paramsExtraSpecify,
 )
