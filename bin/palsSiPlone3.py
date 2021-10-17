@@ -1,31 +1,31 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 """\
-* *[Summary]* :: A /library/ Beginning point for development of new ICM oriented libraries.
+* *[Summary]* :: An =ICM-Lib= for providing plone3 service instances.
 """
 
 import typing
 
-icmInfo: typing.Dict[str, typing.Any] = { 'moduleDescription': ["""
+icmInfo: typing.Dict[str, typing.Any] = { 'moduleDescription': """
 *       [[elisp:(org-show-subtree)][|=]]  [[elisp:(org-cycle)][| *Description:* | ]]
 **  [[elisp:(org-cycle)][| ]]  [Xref]          :: *[Related/Xrefs:]*  <<Xref-Here->>  -- External Documents  [[elisp:(org-cycle)][| ]]
 
 **  [[elisp:(org-cycle)][| ]]   Model and Terminology                                      :Overview:
-*** concept             -- Desctiption of concept
+*** concept             -- Description of concept
 **      [End-Of-Description]
-"""], }
+""", }
 
 icmInfo['moduleUsage'] = """
 *       [[elisp:(org-show-subtree)][|=]]  [[elisp:(org-cycle)][| *Usage:* | ]]
-
 **      How-Tos:
-**      [End-Of-Usage]
+**      Import it, include it in g_importedCmndsModules and include its params in g_paramsExtraSpecify.
 """
 
 icmInfo['moduleStatus'] = """
 *       [[elisp:(org-show-subtree)][|=]]  [[elisp:(org-cycle)][| *Status:* | ]]
 **  [[elisp:(org-cycle)][| ]]  [Info]          :: *[Current-Info:]* Status/Maintenance -- General TODO List [[elisp:(org-cycle)][| ]]
-** TODO [[elisp:(org-cycle)][| ]]  Current     :: For now it is an ICM. Turn it into ICM-Lib. [[elisp:(org-cycle)][| ]]
+** TODO [[elisp:(org-cycle)][| ]]  Current         :: Just getting started [[elisp:(org-cycle)][| ]]
+** TODO siInvoke and method parameter and siInvoke should be moved to palsBpo module
 **      [End-Of-Status]
 """
 
@@ -33,11 +33,11 @@ icmInfo['moduleStatus'] = """
 *  [[elisp:(org-cycle)][| *ICM-INFO:* |]] :: Author, Copyleft and Version Information
 """
 ####+BEGIN: bx:icm:py:name :style "fileName"
-icmInfo['moduleName'] = "aaRepoLiveParams"
+icmInfo['moduleName'] = "siPlone3"
 ####+END:
 
 ####+BEGIN: bx:icm:py:version-timestamp :style "date"
-icmInfo['version'] = "202110074450"
+icmInfo['version'] = "202109230835"
 ####+END:
 
 ####+BEGIN: bx:icm:py:status :status "Production"
@@ -62,7 +62,7 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 
 ####+BEGIN: bx:icm:python:top-of-file :partof "bystar" :copyleft "halaal+minimal"
 """
-*  This file:/bisos/git/auth/bxRepos/bisos-pip/pals/py3/bin/aaRepoLiveParams.py :: [[elisp:(org-cycle)][| ]]
+*  This file:/bisos/git/auth/bxRepos/bisos-pip/pals/py3/bisos/pals/siPlone3.py :: [[elisp:(org-cycle)][| ]]
  is part of The Libre-Halaal ByStar Digital Ecosystem. http://www.by-star.net
  *CopyLeft*  This Software is a Libre-Halaal Poly-Existential. See http://www.freeprotocols.org
  A Python Interactively Command Module (PyICM).
@@ -70,6 +70,7 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
  *WARNING*: All edits wityhin Dynamic Blocks may be lost.
 """
 ####+END:
+
 
 ####+BEGIN: bx:icm:python:topControls :partof "bystar" :copyleft "halaal+minimal"
 """
@@ -89,9 +90,11 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 """
 ####+END:
 
-
-# import os
 import collections
+# import os
+# import shutil
+# import invoke
+# import tempfile
 
 ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/bisos/apps/defaults/update/sw/icm/py/importUcfIcmBleepG.py"
 from unisos import ucf
@@ -107,97 +110,17 @@ from blee.icmPlayer import bleep
 ####+END:
 
 from bisos.icm import clsMethod
-from bisos.icm import fp
+# from bisos.icm import fp
+
+from bisos.bpo import bpo
+# from bisos.pals import palsBpo
+from bisos.pals import palsSis
+from bisos.pals import siPlone3  # type: ignore
 
 g_importedCmndsModules = [       # Enumerate modules from which CMNDs become invokable
     'blee.icmPlayer.bleep',
-    'bisos.icm.clsMethod',
-    'bisos.icm.fp',
+    'bisos.pals.siPlone3',
 ]
-
-
-####+BEGIN: bx:dblock:python:section :title "Class Definitions"
-"""
-*  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *Class Definitions*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
-"""
-####+END:
-
-
-####+BEGIN: bx:dblock:python:class :className "ExampleFilePars" :superClass "fp.FP_Base" :comment "Expected to be subclassed" :classType "basic"
-"""
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /ExampleFilePars/ fp.FP_Base =Expected to be subclassed=  [[elisp:(org-cycle)][| ]]
-"""
-class ExampleFilePars(fp.FP_Base):
-####+END:
-    """ Representation of a FILE_TreeObject when _objectType_ is FILE_ParamBase (a node).
-    """
-
-####+BEGIN: bx:icm:py3:method :methodName "__init__" :deco "default"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /__init__/ deco=default  [[elisp:(org-cycle)][| ]]
-"""
-    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
-    def __init__(
-####+END:
-            self,
-            fileSysPath,
-    ):
-        """Representation of a FILE_TreeObject when _objectType_ is FILE_ParamBase (a node)."""
-        super().__init__(fileSysPath,)
-
-####+BEGIN: bx:icm:py3:method :methodName "fps_asIcmParamsAdd" :deco "staticmethod"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /fps_asIcmParamsAdd/ deco=staticmethod  [[elisp:(org-cycle)][| ]]
-"""
-    @staticmethod
-    def fps_asIcmParamsAdd(
-####+END:
-            icmParams,
-    ):
-        """staticmethod: takes in icmParms and augments it with fileParams. returns icmParams."""
-        icmParams.parDictAdd(
-            parName='exPar1',
-            parDescription="Par1 Example",
-            parDataType=None,
-            parDefault=None,
-            parChoices=list(),
-            parScope=icm.ICM_ParamScope.TargetParam,  # type: ignore
-            argparseShortOpt=None,
-            argparseLongOpt='--exPar1',
-        )
-        icmParams.parDictAdd(
-            parName='exPar2',
-            parDescription="Par2 Example",
-            parDataType=None,
-            parDefault=None,
-            parChoices=list(),
-            parScope=icm.ICM_ParamScope.TargetParam,  # type: ignore
-            argparseShortOpt=None,
-            argparseLongOpt='--exPar2',
-        )
-
-        return icmParams
-
-
-####+BEGIN: bx:icm:py3:method :methodName "fps_namesWithRelPath" :deco "classmethod"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /fps_namesWithRelPath/ deco=classmethod  [[elisp:(org-cycle)][| ]]
-"""
-    @classmethod
-    def fps_namesWithRelPath(
-####+END:
-            cls,
-    ):
-        """classmethod: returns a dict with fp names as key and relBasePath as value.
-        The names refer to icmParams.parDictAdd(parName) of fps_asIcmParamsAdd
-        """
-        relBasePath = "."
-        return (
-            {
-                'exPar1': relBasePath,
-                'exPar2': relBasePath,
-            }
-        )
 
 
 ####+BEGIN: bx:icm:python:section :title "= =Framework::= Options, Arguments and Examples Specifications ="
@@ -207,9 +130,9 @@ class ExampleFilePars(fp.FP_Base):
 ####+END:
 
 
-####+BEGIN: bx:icm:python:func :funcName "g_paramsExtraSpecify" :comment "FrameWrk: ArgsSpec" :funcType "FrameWrk" :retType "Void" :deco "" :argsList "parser"
+####+BEGIN: bx:icm:python:func :funcName "g_paramsExtraSpecify" :comment "FWrk: ArgsSpec" :funcType "FrameWrk" :retType "Void" :deco "" :argsList "parser"
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-FrameWrk :: /g_paramsExtraSpecify/ =FrameWrk: ArgsSpec= retType=Void argsList=(parser)  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-FrameWrk :: /g_paramsExtraSpecify/ =FWrk: ArgsSpec= retType=Void argsList=(parser)  [[elisp:(org-cycle)][| ]]
 """
 def g_paramsExtraSpecify(
     parser,
@@ -221,11 +144,12 @@ def g_paramsExtraSpecify(
     G = icm.IcmGlobalContext()
     icmParams = icm.ICM_ParamDict()
 
+    bleep.commonParamsSpecify(icmParams)
+
     clsMethod.commonParamsSpecify(icmParams)  # --cls, --method
 
-    fp.commonParamsSpecify(icmParams)  # --fpBase
-
-    ExampleFilePars.fps_asIcmParamsAdd(icmParams,)
+    bpo.commonParamsSpecify(icmParams)
+    palsSis.commonParamsSpecify(icmParams)
 
     icm.argsparseBasedOnIcmParams(parser, icmParams)
 
@@ -235,32 +159,43 @@ def g_paramsExtraSpecify(
     return
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "examples" :cmndType "ICM-Cmnd-FWrk"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "examples" :cmndType "Cmnd-FWrk"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "bpoId si" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd-FWrk :: /examples/ =FrameWrk: ICM Examples= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cmnd-FWrk  :: /examples/ =FrameWrk: ICM Examples= parsMand= parsOpt=bpoId si argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
 class examples(icm.Cmnd):
     cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ ]
+    cmndParamsOptional = [ 'bpoId', 'si', ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
+        bpoId=None,         # or Cmnd-Input
+        si=None,         # or Cmnd-Input
     ):
         cmndOutcome = self.getOpOutcome()
         if interactive:
             if not self.cmndLineValidate(outcome=cmndOutcome):
                 return cmndOutcome
 
-        callParamsDict = {}
+        callParamsDict = {'bpoId': bpoId, 'si': si, }
         if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
             return cmndOutcome
+        bpoId = callParamsDict['bpoId']
+        si = callParamsDict['si']
 
 ####+END:
-        #def cpsInit(): return collections.OrderedDict()
-        #def menuItem(): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity='little')
-        #def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
+
+        def cpsInit(): return collections.OrderedDict()
+        def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
+        # def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
+
+        oneBpo = "pmi_ByD-100001"
+        oneSiRelPath = "plone3/main"
+
+        if bpoId: oneBpo = bpoId
+        if si: oneSiRelPath = si
 
         logControler = icm.LOG_Control()
         logControler.loggerSetLevel(20)
@@ -271,48 +206,83 @@ class examples(icm.Cmnd):
 
         bleep.examples_icmBasic()
 
-        fp.examples_fpBase("/tmp/fpExPath", 'ExampleFilePars')
+        icm.cmndExampleMenuChapter('*Examples Control*')
 
-        examples_fpBase_exPars("/tmp/fpExPath", 'ExampleFilePars')
+        cmndName = "examples" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
+        menuItem(verbosity='none')
+
+        icm.cmndExampleMenuChapter('*Full Actions*')
+
+        cmndName = "fullUpdate" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
+        menuItem(verbosity='none')
+
+        cmndName = "fullDelete" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
+        menuItem(verbosity='none')
+
+        cmndName = "serviceDelete" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
+        menuItem(verbosity='none')
+
+        icm.cmndExampleMenuChapter('*siBaseStart -- Initialize siBaseDir*')
+
+        cmndName = "siBaseAssemble" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
+        menuItem(verbosity='none')
+
+        cmndName = "siBaseUpdate" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
+        menuItem(verbosity='none')
+
+        icm.cmndExampleMenuChapter('*Plone Site Initializations*')
+
+        cmndName = "siInvoke" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath ; cps['method'] = 'ploneSiteAdd'
+        menuItem(verbosity='little')
+
+        cmndName = "siToBxBash" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
+        menuItem(verbosity='little')
+
+
+        cmndName = "palsBpoInfo" ; cmndArgs = "notyet" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
+        menuItem(verbosity='none')
+        menuItem(verbosity='full')
+
+        # ${G_myName} ${extraInfo} -p bxoId="${oneBystarAcct}" -p ss=${oneSr} -p dbase=banan -i imagesList | bueGimpManage.sh -h -v -n showRun -i scaleReplaceHeightTo 200
+        # $( examplesSeperatorChapter "Access, Verification And Test" )
+        # ${G_myName} ${extraInfo} -i  visitUrl
 
         return(cmndOutcome)
 
 
-####+BEGIN: bx:dblock:global:file-insert :file "/bisos/apps/defaults/software/plusOrg/dblock/inserts/G_examples.bottom.py"
-    # Intentionally Left Blank -- previously: lhip.G_devExamples(G_myName)
-
-####+END:
-
-####+BEGIN: bx:dblock:python:section :title "Class Definitions"
+####+BEGIN: bx:icm:python:section :title "ICM Commands"
 """
-*  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *Class Definitions*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
+*  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *ICM Commands*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
 """
 ####+END:
 
-####+BEGIN: bx:dblock:python:func :funcName "examples_fpBase_exPars" :comment "Show/Verify/Update For relevant PBDs" :funcType "examples" :retType "none" :deco "" :argsList "fpBase clsName"
+####+BEGIN: bx:icm:python:section :title "Supporting Classes And Functions"
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-examples :: /examples_fpBase_exPars/ =Show/Verify/Update For relevant PBDs= retType=none argsList=(fpBase clsName)  [[elisp:(org-cycle)][| ]]
+*  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *Supporting Classes And Functions*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
 """
-def examples_fpBase_exPars(
-    fpBase,
-    clsName,
-):
 ####+END:
-    """
-** Common examples.
 """
-    def cpsInit(): return collections.OrderedDict()
-    def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
-    # def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
+*       /Empty/  [[elisp:(org-cycle)][| ]]
+"""
 
-    cmndName = "fpParamsSet" ; cmndArgs = "" ;
-    cps=cpsInit() ; cps['fpBase'] = fpBase ; cps['cls'] = clsName
+####+BEGIN: bx:icm:python:section :title "Common/Generic Facilities -- Library Candidates"
+"""
+*  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *Common/Generic Facilities -- Library Candidates*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
+"""
+####+END:
+"""
+*       /Empty/  [[elisp:(org-cycle)][| ]]
+"""
 
-    cps['exPar1'] = "someValue1"
-    menuItem(verbosity='little')
-
-    cps['exPar2'] = "otherValue2"
-    menuItem(verbosity='little')
 
 ####+BEGIN: bx:icm:python:section :title "= =Framework::=   __main__ g_icmMain ="
 """
@@ -327,6 +297,15 @@ if __name__ == "__main__":
         extraParamsHook=g_paramsExtraSpecify,
         importedCmndsModules=g_importedCmndsModules,
     )
+
+####+BEGIN: bx:icm:python:section :title "Unused Facilities -- Temporary Junk Yard"
+"""
+*  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *Unused Facilities -- Temporary Junk Yard*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
+"""
+####+END:
+"""
+*       /Empty/  [[elisp:(org-cycle)][| ]]
+"""
 
 ####+BEGIN: bx:icm:python:section :title "End Of Editable Text"
 """

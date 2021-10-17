@@ -33,11 +33,11 @@ icmInfo['moduleStatus'] = """
 *  [[elisp:(org-cycle)][| *ICM-INFO:* |]] :: Author, Copyleft and Version Information
 """
 ####+BEGIN: bx:icm:py:name :style "fileName"
-icmInfo['moduleName'] = "aaRepoLiveParams"
+icmInfo['moduleName'] = "palsBpoManage"
 ####+END:
 
 ####+BEGIN: bx:icm:py:version-timestamp :style "date"
-icmInfo['version'] = "202110074450"
+icmInfo['version'] = "202110110009"
 ####+END:
 
 ####+BEGIN: bx:icm:py:status :status "Production"
@@ -62,7 +62,7 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 
 ####+BEGIN: bx:icm:python:top-of-file :partof "bystar" :copyleft "halaal+minimal"
 """
-*  This file:/bisos/git/auth/bxRepos/bisos-pip/pals/py3/bin/aaRepoLiveParams.py :: [[elisp:(org-cycle)][| ]]
+*  This file:/bisos/git/auth/bxRepos/bisos/bpip1/bin/palsBpoManage.py :: [[elisp:(org-cycle)][| ]]
  is part of The Libre-Halaal ByStar Digital Ecosystem. http://www.by-star.net
  *CopyLeft*  This Software is a Libre-Halaal Poly-Existential. See http://www.freeprotocols.org
  A Python Interactively Command Module (PyICM).
@@ -91,7 +91,13 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 
 
 # import os
+# import pwd
+# import grp
+
 import collections
+
+# import enum
+#
 
 ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/bisos/apps/defaults/update/sw/icm/py/importUcfIcmBleepG.py"
 from unisos import ucf
@@ -106,98 +112,37 @@ G = icm.IcmGlobalContext()
 from blee.icmPlayer import bleep
 ####+END:
 
+# from bisos.platform import bxPlatformConfig
+# from bisos.platform import bxPlatformThis
+
 from bisos.icm import clsMethod
 from bisos.icm import fp
 
+from bisos.bpo import bpo
+from bisos.pals import palsBpo
+#from bisos.pals import palsRepo
+from bisos.pals import repoLiveParams
+from bisos.pals import repoProfile
+from bisos.pals import palsSis
+from bisos.pals import palsBases
+
+PalsRepo_LiveParams_FPs = repoLiveParams.PalsRepo_LiveParams_FPs  # exec/eval-ed as __main__.ClassName
+PalsRepo_LiveParams = repoLiveParams.PalsRepo_LiveParams  # exec/eval-ed as __main__.ClassName
+
+PalsRepo_Profile_FPs = repoProfile.PalsRepo_Profile_FPs  # exec/eval-ed as __main__.ClassName
+PalsRepo_Profile = repoProfile.PalsRepo_Profile  # exec/eval-ed as __main__.ClassName
+
 g_importedCmndsModules = [       # Enumerate modules from which CMNDs become invokable
     'blee.icmPlayer.bleep',
-    'bisos.icm.clsMethod',
-    'bisos.icm.fp',
+    'bisos.bpo.bpo',
+    'bisos.bpo.bpoFpBases',
+    'bisos.pals.palsBpo',
+    'bisos.pals.palsRepo',
+    'bisos.pals.repoLiveParams',
+    'bisos.pals.repoProfile',
+    'bisos.pals.palsSis',
+    'bisos.pals.palsBases',
 ]
-
-
-####+BEGIN: bx:dblock:python:section :title "Class Definitions"
-"""
-*  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *Class Definitions*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
-"""
-####+END:
-
-
-####+BEGIN: bx:dblock:python:class :className "ExampleFilePars" :superClass "fp.FP_Base" :comment "Expected to be subclassed" :classType "basic"
-"""
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /ExampleFilePars/ fp.FP_Base =Expected to be subclassed=  [[elisp:(org-cycle)][| ]]
-"""
-class ExampleFilePars(fp.FP_Base):
-####+END:
-    """ Representation of a FILE_TreeObject when _objectType_ is FILE_ParamBase (a node).
-    """
-
-####+BEGIN: bx:icm:py3:method :methodName "__init__" :deco "default"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /__init__/ deco=default  [[elisp:(org-cycle)][| ]]
-"""
-    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
-    def __init__(
-####+END:
-            self,
-            fileSysPath,
-    ):
-        """Representation of a FILE_TreeObject when _objectType_ is FILE_ParamBase (a node)."""
-        super().__init__(fileSysPath,)
-
-####+BEGIN: bx:icm:py3:method :methodName "fps_asIcmParamsAdd" :deco "staticmethod"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /fps_asIcmParamsAdd/ deco=staticmethod  [[elisp:(org-cycle)][| ]]
-"""
-    @staticmethod
-    def fps_asIcmParamsAdd(
-####+END:
-            icmParams,
-    ):
-        """staticmethod: takes in icmParms and augments it with fileParams. returns icmParams."""
-        icmParams.parDictAdd(
-            parName='exPar1',
-            parDescription="Par1 Example",
-            parDataType=None,
-            parDefault=None,
-            parChoices=list(),
-            parScope=icm.ICM_ParamScope.TargetParam,  # type: ignore
-            argparseShortOpt=None,
-            argparseLongOpt='--exPar1',
-        )
-        icmParams.parDictAdd(
-            parName='exPar2',
-            parDescription="Par2 Example",
-            parDataType=None,
-            parDefault=None,
-            parChoices=list(),
-            parScope=icm.ICM_ParamScope.TargetParam,  # type: ignore
-            argparseShortOpt=None,
-            argparseLongOpt='--exPar2',
-        )
-
-        return icmParams
-
-
-####+BEGIN: bx:icm:py3:method :methodName "fps_namesWithRelPath" :deco "classmethod"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /fps_namesWithRelPath/ deco=classmethod  [[elisp:(org-cycle)][| ]]
-"""
-    @classmethod
-    def fps_namesWithRelPath(
-####+END:
-            cls,
-    ):
-        """classmethod: returns a dict with fp names as key and relBasePath as value.
-        The names refer to icmParams.parDictAdd(parName) of fps_asIcmParamsAdd
-        """
-        relBasePath = "."
-        return (
-            {
-                'exPar1': relBasePath,
-                'exPar2': relBasePath,
-            }
-        )
 
 
 ####+BEGIN: bx:icm:python:section :title "= =Framework::= Options, Arguments and Examples Specifications ="
@@ -221,11 +166,23 @@ def g_paramsExtraSpecify(
     G = icm.IcmGlobalContext()
     icmParams = icm.ICM_ParamDict()
 
+    bleep.commonParamsSpecify(icmParams)
+
     clsMethod.commonParamsSpecify(icmParams)  # --cls, --method
 
     fp.commonParamsSpecify(icmParams)  # --fpBase
 
-    ExampleFilePars.fps_asIcmParamsAdd(icmParams,)
+    bpo.commonParamsSpecify(icmParams)
+
+    #palsBpo.commonParamsSpecify(icmParams)
+    #palsRepo.commonParamsSpecify(icmParams)
+
+    palsSis.commonParamsSpecify(icmParams)
+
+    PalsRepo_LiveParams_FPs.fps_asIcmParamsAdd(icmParams,)
+    PalsRepo_Profile_FPs.fps_asIcmParamsAdd(icmParams,)
+
+    # commonParamsSpecify(icmParams)
 
     icm.argsparseBasedOnIcmParams(parser, icmParams)
 
@@ -258,9 +215,10 @@ class examples(icm.Cmnd):
             return cmndOutcome
 
 ####+END:
-        #def cpsInit(): return collections.OrderedDict()
-        #def menuItem(): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity='little')
-        #def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
+        def cpsInit(): return collections.OrderedDict()
+        def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
+        def extMenuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, icmName=icmExName, verbosity=verbosity) # 'little' or 'none'
+        # def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
 
         logControler = icm.LOG_Control()
         logControler.loggerSetLevel(20)
@@ -271,48 +229,190 @@ class examples(icm.Cmnd):
 
         bleep.examples_icmBasic()
 
-        fp.examples_fpBase("/tmp/fpExPath", 'ExampleFilePars')
+        oneBpo = "pmi_ByD-100001"
+        # oneSiRelPath = "plone3/main"
 
-        examples_fpBase_exPars("/tmp/fpExPath", 'ExampleFilePars')
+        bpo.examples_bpo_basicAccess(oneBpo)
+
+        # palsBpo.examples_palsBpo_basicAccess(oneBpo, oneSiRelPath, menuLevel='chapter')
+
+        icm.cmndExampleMenuChapter('*PALS-BASES Update*')
+
+        cmndName = "basesUpdate" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
+        menuItem(verbosity='little')
+
+        icmExName = "palsBaseLiveTargets.py" ; cmndName = "examples" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
+        extMenuItem(verbosity='none')
+
+        icm.cmndExampleMenuChapter('*PALS-REPOs Example-Cmnds*')
+
+        icmExName = "palsRepoProfile.py" ; cmndName = "examples" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
+        extMenuItem(verbosity='none')
+
+        icmExName = "palsRepoLiveParams.py" ; cmndName = "examples" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
+        extMenuItem(verbosity='none')
+
+        icm.cmndExampleMenuChapter('*Digest-SIs Example-Cmnds*')
+
+        cmndName = "enabledSisInfo" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
+        menuItem(verbosity='none')
+
+        icm.cmndExampleMenuChapter('*PALS-SIs Example-Cmnds*')
+
+        thisBpo = palsBpo.obtainBpo(oneBpo,)
+        thisBpo.sis.sisDigest()
+
+        icmExName = "palsSiPlone3.py" ; cmndName = "examples" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
+
+        for eachSiPath in thisBpo.sis.svcInst_primary_enabled:
+            cps['si'] = palsSis.siPathToSiId(oneBpo, eachSiPath,)
+            extMenuItem(verbosity='none')
+
+        icm.cmndExampleMenuChapter('*PALS-VirDom-SIs Example-Cmnds*')
+
+        icmExName = "palsSivdApache2.py" ; cmndName = "examples" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
+
+        for eachSiPath in thisBpo.sis.svcInst_virDom_enabled:
+            cps['si'] = palsSis.siPathToSiId(oneBpo, eachSiPath,)
+            extMenuItem(verbosity='none')
 
         return(cmndOutcome)
 
-
-####+BEGIN: bx:dblock:global:file-insert :file "/bisos/apps/defaults/software/plusOrg/dblock/inserts/G_examples.bottom.py"
-    # Intentionally Left Blank -- previously: lhip.G_devExamples(G_myName)
-
-####+END:
-
-####+BEGIN: bx:dblock:python:section :title "Class Definitions"
+####+BEGIN: bx:dblock:python:section :title "ICM Commands"
 """
-*  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *Class Definitions*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
+*  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *ICM Commands*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
 """
 ####+END:
 
-####+BEGIN: bx:dblock:python:func :funcName "examples_fpBase_exPars" :comment "Show/Verify/Update For relevant PBDs" :funcType "examples" :retType "none" :deco "" :argsList "fpBase clsName"
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "palsBpoInfo" :comment "" :parsMand "bpoId si" :parsOpt "" :argsMin "1" :argsMax "1" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-examples :: /examples_fpBase_exPars/ =Show/Verify/Update For relevant PBDs= retType=none argsList=(fpBase clsName)  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /palsBpoInfo/ parsMand=bpoId si parsOpt= argsMin=1 argsMax=1 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-def examples_fpBase_exPars(
-    fpBase,
-    clsName,
-):
+class palsBpoInfo(icm.Cmnd):
+    cmndParamsMandatory = [ 'bpoId', 'si', ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 1, 'Max': 1,}
+
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+        interactive=False,        # Can also be called non-interactively
+        bpoId=None,         # or Cmnd-Input
+        si=None,         # or Cmnd-Input
+        argsList=[],         # or Args-Input
+    ):
+        cmndOutcome = self.getOpOutcome()
+        if interactive:
+            if not self.cmndLineValidate(outcome=cmndOutcome):
+                return cmndOutcome
+            effectiveArgsList = G.icmRunArgsGet().cmndArgs  # type: ignore
+        else:
+            effectiveArgsList = argsList
+
+        callParamsDict = {'bpoId': bpoId, 'si': si, }
+        if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
+            return cmndOutcome
+        bpoId = callParamsDict['bpoId']
+        si = callParamsDict['si']
+
+        cmndArgsSpecDict = self.cmndArgsSpec()
+        if not self.cmndArgsValidate(effectiveArgsList, cmndArgsSpecDict, outcome=cmndOutcome):
+            return cmndOutcome
 ####+END:
+
+        # infoType = effectiveArgsList[0]
+
+        thisBpo = palsBpo.obtainBpo(bpoId,)
+
+        print("AAA")
+
+        print(thisBpo.__dict__)
+
+        #thisBpo.activate("apache2/plone3/main")
+
+        print(thisBpo.basesObj.varBase_obtain())
+        print(thisBpo.basesObj.tmpBase_obtain())
+        print(thisBpo.basesObj.logBase_obtain())
+
+        thisBpo.repo_rbxe.info()
+        thisBpo.repo_bxeTree.info()
+
+        thisBpo.repo_live.info()
+
+        # a2VirDomProvider = palsBpo.obtainSiObj(thisBpo, "apache2")
+
+        # print(palsBpo.svcProv_virDom_list())
+        # print(palsBpo.svcProv_prim_list())
+
+        thisBpo.sis.sisDigest()
+
+        siPath = palsSis.siIdToSiPath(bpoId, si)
+
+        thisSi = palsSis.EffectiveSis.givenSiPathFindSiObj(bpoId, siPath,)
+        print(thisSi)
+
+        print(thisBpo.effectiveSisList)
+
+        return cmndOutcome.set(
+            opError=icm.OpError.Success,  # type: ignore
+            opResults=None,
+        )
+
+
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "enabledSisInfo" :parsMand "bpoId" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+"""
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /enabledSisInfo/ parsMand=bpoId parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+"""
+class enabledSisInfo(icm.Cmnd):
+    cmndParamsMandatory = [ 'bpoId', ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+        interactive=False,        # Can also be called non-interactively
+        bpoId=None,         # or Cmnd-Input
+    ):
+        cmndOutcome = self.getOpOutcome()
+        if interactive:
+            if not self.cmndLineValidate(outcome=cmndOutcome):
+                return cmndOutcome
+
+        callParamsDict = {'bpoId': bpoId, }
+        if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
+            return cmndOutcome
+        bpoId = callParamsDict['bpoId']
+
+####+END:
+        thisBpo = palsBpo.obtainBpo(bpoId,)
+        thisBpo.sis.sisDigest()
+
+        print(f"svcProv_primary_enabled={thisBpo.sis.svcProv_primary_enabled}")
+        print(f"svcInst_primary_enabled={thisBpo.sis.svcInst_primary_enabled}")
+
+        print(f"svcProv_virDom_enabled={thisBpo.sis.svcProv_virDom_enabled}")
+        print(f"svcType_virDom_enabled={thisBpo.sis.svcType_virDom_enabled}")
+        print(f"svcInst_virDom_enabled={thisBpo.sis.svcInst_virDom_enabled}")
+
+        return cmndOutcome
+
+
+####+BEGIN: bx:icm:python:method :methodName "cmndDocStr" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList ""
     """
-** Common examples.
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-anyOrNone :: /cmndDocStr/ retType=bool argsList=nil deco=default  [[elisp:(org-cycle)][| ]]
 """
-    def cpsInit(): return collections.OrderedDict()
-    def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
-    # def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
-
-    cmndName = "fpParamsSet" ; cmndArgs = "" ;
-    cps=cpsInit() ; cps['fpBase'] = fpBase ; cps['cls'] = clsName
-
-    cps['exPar1'] = "someValue1"
-    menuItem(verbosity='little')
-
-    cps['exPar2'] = "otherValue2"
-    menuItem(verbosity='little')
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndDocStr(self):
+####+END:
+        return """
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Returns the full path of the Sr baseDir.
+"""
 
 ####+BEGIN: bx:icm:python:section :title "= =Framework::=   __main__ g_icmMain ="
 """
