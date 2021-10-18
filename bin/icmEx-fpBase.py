@@ -258,9 +258,9 @@ class examples(icm.Cmnd):
             return cmndOutcome
 
 ####+END:
-        #def cpsInit(): return collections.OrderedDict()
-        #def menuItem(): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity='little')
-        #def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
+        def cpsInit(): return collections.OrderedDict()
+        def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
+        # def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
 
         logControler = icm.LOG_Control()
         logControler.loggerSetLevel(20)
@@ -271,48 +271,37 @@ class examples(icm.Cmnd):
 
         bleep.examples_icmBasic()
 
-        fp.examples_fpBase("/tmp/fpExPath", 'ExampleFilePars')
+        fpBase = "/tmp/fpExPath"
+        clsName = 'ExampleFilePars'
 
-        examples_fpBase_exPars("/tmp/fpExPath", 'ExampleFilePars')
+        fp.examples_fpBase(fpBase, clsName)
+
+        cmndName = "fpParamsSet" ; cmndArgs = "" ;
+        cps=cpsInit() ; cps['fpBase'] = fpBase ; cps['cls'] = clsName
+
+        cps['exPar1'] = "someValue1"
+        menuItem(verbosity='little')
+
+        cps['exPar2'] = "otherValue2"
+        menuItem(verbosity='little')
+
+        cmndName = "fpParamSetWithNameValue"
+        cps=cpsInit() ; cps['fpBase'] = fpBase ; cps['cls'] = clsName
+
+        cmndArgs = "exPar1 someValueA" ;
+        menuItem(verbosity='little')
+
+        cmndArgs = "exPar2 otherValueB" ;
+        menuItem(verbosity='little')
 
         return(cmndOutcome)
 
-
-####+BEGIN: bx:dblock:global:file-insert :file "/bisos/apps/defaults/software/plusOrg/dblock/inserts/G_examples.bottom.py"
-    # Intentionally Left Blank -- previously: lhip.G_devExamples(G_myName)
-
-####+END:
 
 ####+BEGIN: bx:dblock:python:section :title "Class Definitions"
 """
 *  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *Class Definitions*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
 """
 ####+END:
-
-####+BEGIN: bx:dblock:python:func :funcName "examples_fpBase_exPars" :comment "Show/Verify/Update For relevant PBDs" :funcType "examples" :retType "none" :deco "" :argsList "fpBase clsName"
-"""
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-examples :: /examples_fpBase_exPars/ =Show/Verify/Update For relevant PBDs= retType=none argsList=(fpBase clsName)  [[elisp:(org-cycle)][| ]]
-"""
-def examples_fpBase_exPars(
-    fpBase,
-    clsName,
-):
-####+END:
-    """
-** Common examples.
-"""
-    def cpsInit(): return collections.OrderedDict()
-    def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
-    # def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
-
-    cmndName = "fpParamsSet" ; cmndArgs = "" ;
-    cps=cpsInit() ; cps['fpBase'] = fpBase ; cps['cls'] = clsName
-
-    cps['exPar1'] = "someValue1"
-    menuItem(verbosity='little')
-
-    cps['exPar2'] = "otherValue2"
-    menuItem(verbosity='little')
 
 ####+BEGIN: bx:icm:python:section :title "= =Framework::=   __main__ g_icmMain ="
 """
