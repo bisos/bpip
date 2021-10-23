@@ -371,7 +371,7 @@ echo "There are many different ways of running a bash command.";
 echo "Just running shRun.bash(cmnd) leaves it to -v 20 to enable stdout, stderr verbosity";
 echo "Just running shRun.bash(cmnd) leaves it to --callTrackings monitor+ for input verbosity";
 echo "Next we are adding a sleep to have a delay between cmnd echo and output";
-sleep 5;
+# sleep 5;
 echo "VAGRANT_VAGRANTFILE={vagrantFile} vagrant up"\
 """.format(vagrantFile="someFileName")
 
@@ -401,7 +401,8 @@ function funcName {
 funcName
 """
 
-        result = shRun.bash(cmnd)
+        result = shRun.bash(cmnd, hide=False, echo=True)
+        print(f"{result}")
 
         return cmndOutcome.set(
             opError=icm.OpError.Success,

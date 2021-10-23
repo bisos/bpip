@@ -33,11 +33,11 @@ icmInfo['moduleStatus'] = """
 *  [[elisp:(org-cycle)][| *ICM-INFO:* |]] :: Author, Copyleft and Version Information
 """
 ####+BEGIN: bx:icm:py:name :style "fileName"
-icmInfo['moduleName'] = "aaRepoLiveParams"
+icmInfo['moduleName'] = "icmEx-pyRunAs"
 ####+END:
 
 ####+BEGIN: bx:icm:py:version-timestamp :style "date"
-icmInfo['version'] = "202110074450"
+icmInfo['version'] = "202110231211"
 ####+END:
 
 ####+BEGIN: bx:icm:py:status :status "Production"
@@ -62,7 +62,7 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 
 ####+BEGIN: bx:icm:python:top-of-file :partof "bystar" :copyleft "halaal+minimal"
 """
-*  This file:/bisos/git/auth/bxRepos/bisos-pip/pals/py3/bin/aaRepoLiveParams.py :: [[elisp:(org-cycle)][| ]]
+*  This file:/bisos/git/auth/bxRepos/bisos/bpip1/bin/icmEx-pyRunAs.py :: [[elisp:(org-cycle)][| ]]
  is part of The Libre-Halaal ByStar Digital Ecosystem. http://www.by-star.net
  *CopyLeft*  This Software is a Libre-Halaal Poly-Existential. See http://www.freeprotocols.org
  A Python Interactively Command Module (PyICM).
@@ -106,31 +106,14 @@ G = icm.IcmGlobalContext()
 from blee.icmPlayer import bleep
 ####+END:
 
-from bisos.icm import clsMethod
-from bisos.icm import fp
-
-from bisos.bpo import bpo
-from bisos.bpo import bpoFpBases
-
-from bisos.pals import palsBpo
-from bisos.pals import palsRepo
-
-from bisos.pals import baseLiveTargets
-from bisos.pals import repoLiveParams
-
-PalsBase_LiveTargets_FPs = baseLiveTargets.PalsBase_LiveTargets_FPs  # exec/eval-ed as __main__.ClassName
-PalsBase_LiveTargets = baseLiveTargets.PalsBase_LiveTargets  # exec/eval-ed as __main__.ClassName
-
-PalsRepo_LiveParams_FPs = repoLiveParams.PalsRepo_LiveParams_FPs  # exec/eval-ed as __main__.ClassName
-PalsBase_LiveParams = baseLiveTargets.PalsBase_LiveParams  # exec/eval-ed as __main__.ClassName
-
+from bisos.basics import runCallable
+from bisos.basics import sudoDeco
+from bisos.basics import pyRunAs
 
 g_importedCmndsModules = [       # Enumerate modules from which CMNDs become invokable
     'blee.icmPlayer.bleep',
-    'bisos.bpo.bpo',
-    'bisos.bpo.bpoFpBases',
-    'bisos.pals.baseLiveTargets',
 ]
+
 
 ####+BEGIN: bx:icm:python:section :title "= =Framework::= Options, Arguments and Examples Specifications ="
 """
@@ -153,17 +136,6 @@ def g_paramsExtraSpecify(
     G = icm.IcmGlobalContext()
     icmParams = icm.ICM_ParamDict()
 
-    clsMethod.commonParamsSpecify(icmParams)  # --cls, --method
-
-    fp.commonParamsSpecify(icmParams)  # --fpBase
-
-    bpo.commonParamsSpecify(icmParams)
-
-    palsRepo.commonParamsSpecify(icmParams)
-
-    PalsRepo_LiveParams_FPs.fps_asIcmParamsAdd(icmParams,)
-    PalsBase_LiveTargets_FPs.fps_asIcmParamsAdd(icmParams,)
-
     icm.argsparseBasedOnIcmParams(parser, icmParams)
 
     # So that it can be processed later as well.
@@ -172,37 +144,32 @@ def g_paramsExtraSpecify(
     return
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "examples" :cmndType "ICM-Cmnd-FWrk"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "bpoId" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "examples" :cmndType "ICM-Cmnd-FWrk"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd-FWrk :: /examples/ =FrameWrk: ICM Examples= parsMand= parsOpt=bpoId argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd-FWrk :: /examples/ =FrameWrk: ICM Examples= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
 class examples(icm.Cmnd):
     cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ 'bpoId', ]
+    cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
-        bpoId=None,         # or Cmnd-Input
     ):
         cmndOutcome = self.getOpOutcome()
         if interactive:
             if not self.cmndLineValidate(outcome=cmndOutcome):
                 return cmndOutcome
 
-        callParamsDict = {'bpoId': bpoId, }
+        callParamsDict = {}
         if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
             return cmndOutcome
-        bpoId = callParamsDict['bpoId']
 
 ####+END:
         def cpsInit(): return collections.OrderedDict()
-        #def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
-        def extMenuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, icmName=icmExName, verbosity=verbosity) # 'little' or 'none'
-
-        oneBpo = "pmi_ByD-100001"
-        if bpoId: oneBpo = bpoId
+        def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
+        #def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
 
         logControler = icm.LOG_Control()
         logControler.loggerSetLevel(20)
@@ -213,14 +180,12 @@ class examples(icm.Cmnd):
 
         bleep.examples_icmBasic()
 
-        bpo.examples_bpo_basicAccess(oneBpo)
+        icm.cmndExampleMenuChapter('=Misc=  *Facilities*')
 
-        baseLiveTargets.examples_baseLiveTargets().cmnd(bpoId=oneBpo,)
+        cmndName = "runAsUser" ; cmndArgs = "" ;
+        cps=cpsInit() ;
+        menuItem(verbosity='little')
 
-        icm.cmndExampleMenuChapter('*Related ICMs*')
-
-        icmExName = "palsRepoLiveParams.py" ; cmndName = "examples" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ; extMenuItem(verbosity='none')
 
         return(cmndOutcome)
 
@@ -231,12 +196,79 @@ class examples(icm.Cmnd):
 ####+END:
 
 
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "runAsUser" :comment "" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+"""
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /runAsUser/ parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+"""
+class runAsUser(icm.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
 
-####+BEGIN: bx:dblock:python:section :title "Class Definitions"
-"""
-*  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *Class Definitions*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
-"""
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+        interactive=False,        # Can also be called non-interactively
+    ):
+        cmndOutcome = self.getOpOutcome()
+        if interactive:
+            if not self.cmndLineValidate(outcome=cmndOutcome):
+                return cmndOutcome
+
+        callParamsDict = {}
+        if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
+            return cmndOutcome
+
 ####+END:
+
+        res = funcOfAsUser("arg1")
+        print(res)
+
+        res = funcOfAsSudo("arg1")
+        print(res)
+
+        res = funcOfPyRunAsUser("arg1")
+        print(res)
+
+        return cmndOutcome
+
+
+####+BEGIN: bx:icm:py3:func :funcName "funcOfPyRunAsUser" :funcType "anyOrNone" :retType "bool" :deco "pyRunAs.user(\"root\")" :argsList "funcArg"
+"""
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-anyOrNone :: /funcOfPyRunAsUser/ deco=pyRunAs.user("root")  [[elisp:(org-cycle)][| ]]
+"""
+@pyRunAs.User("root")
+def funcOfPyRunAsUser(
+####+END:
+        argOne,
+):
+    import os
+    return "{id} {argOne} --- DDD".format(id=os.getuid(), argOne=argOne)
+
+
+####+BEGIN: bx:icm:py3:func :funcName "funcOfAsUser" :funcType "anyOrNone" :retType "bool" :deco "runCallable.as_user(\"root\")" :argsList "funcArg"
+"""
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-anyOrNone :: /funcOfAsUser/ deco=runCallable.as_user("root")  [[elisp:(org-cycle)][| ]]
+"""
+@runCallable.as_user("root")
+def funcOfAsUser(
+####+END:
+        argOne,
+):
+    import os
+    return "{id} {argOne} --- BBB".format(id=os.getuid(), argOne=argOne)
+
+####+BEGIN: bx:icm:py3:func :funcName "funcOfAsSudo" :funcType "anyOrNone" :retType "bool" :deco "sudoDeco.sudo" :argsList "funcArg"
+"""
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-anyOrNone :: /funcOfAsSudo/ deco=sudoDeco.sudo  [[elisp:(org-cycle)][| ]]
+"""
+@sudoDeco.sudo
+def funcOfAsSudo(
+####+END:
+        argOne,
+):
+    import os
+    return "{id} {argOne} --- CCC".format(id=os.getuid(), argOne=argOne)
+
 
 ####+BEGIN: bx:icm:python:section :title "= =Framework::=   __main__ g_icmMain ="
 """

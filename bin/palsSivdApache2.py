@@ -93,9 +93,9 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 
 import collections
 import os
-import shutil
-import invoke
-import tempfile
+# import shutil
+# import invoke
+# import tempfile
 
 ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/bisos/apps/defaults/update/sw/icm/py/importUcfIcmBleepG.py"
 from unisos import ucf
@@ -114,7 +114,7 @@ from bisos.icm import clsMethod
 # from bisos.icm import fp
 
 from bisos.bpo import bpo
-from bisos.pals import palsBpo
+# from bisos.pals import palsBpo
 from bisos.pals import palsSis
 from bisos.pals import sivdApache2  # type: ignore
 
@@ -159,31 +159,31 @@ def g_paramsExtraSpecify(
     return
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "examples" :cmndType "Cmnd-FWrk"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "bpoId si" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "examples" :cmndType "Cmnd-FWrk"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "bpoId sivd" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cmnd-FWrk  :: /examples/ =FrameWrk: ICM Examples= parsMand= parsOpt=bpoId si argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cmnd-FWrk  :: /examples/ =FrameWrk: ICM Examples= parsMand= parsOpt=bpoId sivd argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
 class examples(icm.Cmnd):
     cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ 'bpoId', 'si', ]
+    cmndParamsOptional = [ 'bpoId', 'sivd', ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
         bpoId=None,         # or Cmnd-Input
-        si=None,         # or Cmnd-Input
+        sivd=None,         # or Cmnd-Input
     ):
         cmndOutcome = self.getOpOutcome()
         if interactive:
             if not self.cmndLineValidate(outcome=cmndOutcome):
                 return cmndOutcome
 
-        callParamsDict = {'bpoId': bpoId, 'si': si, }
+        callParamsDict = {'bpoId': bpoId, 'sivd': sivd, }
         if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
             return cmndOutcome
         bpoId = callParamsDict['bpoId']
-        si = callParamsDict['si']
+        sivd = callParamsDict['sivd']
 
 ####+END:
 
@@ -194,10 +194,10 @@ class examples(icm.Cmnd):
         oneBpo = "pmi_ByD-100001"
 
         if bpoId: oneBpo = bpoId
-        if si: oneSiRelPath = si
+        # if si: oneSiRelPath = si
 
-        logControler = icm.LOG_Control()
-        logControler.loggerSetLevel(20)
+        # logControler = icm.LOG_Control()
+        # logControler.loggerSetLevel(20)
 
         icm.icmExampleMyName(G.icmMyName(), G.icmMyFullName())
 
@@ -205,13 +205,13 @@ class examples(icm.Cmnd):
 
         bleep.examples_icmBasic()
 
-        icm.cmndExampleMenuChapter('*Service Examples*')
+        icm.cmndExampleMenuChapter('*Service Creation Examples*')
 
         def oneSvcExample(svcName):
-            si = os.path.join("apache2", svcName)
+            sivd = os.path.join("apache2", svcName)
             def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
             cmndName = "svcExamples" ; cmndArgs = "create" ;
-            cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = si
+            cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['sivd'] = sivd
             menuItem(verbosity='none')
 
         def listOfSvcs():
@@ -221,118 +221,9 @@ class examples(icm.Cmnd):
 
         listOfSvcs()
 
-        return(cmndOutcome)
-
-
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "svcExamples" :cmndType "Cmnd-FWrk"  :comment "FrameWrk: ICM Examples" :parsMand "bpoId si" :parsOpt "" :argsMin "0" :argsMax "999" :asFunc "" :interactiveP ""
-"""
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cmnd-FWrk  :: /svcExamples/ =FrameWrk: ICM Examples= parsMand=bpoId si parsOpt= argsMin=0 argsMax=999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
-"""
-class svcExamples(icm.Cmnd):
-    cmndParamsMandatory = [ 'bpoId', 'si', ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 999,}
-
-    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-        interactive=False,        # Can also be called non-interactively
-        bpoId=None,         # or Cmnd-Input
-        si=None,         # or Cmnd-Input
-        argsList=[],         # or Args-Input
-    ):
-        cmndOutcome = self.getOpOutcome()
-        if interactive:
-            if not self.cmndLineValidate(outcome=cmndOutcome):
-                return cmndOutcome
-            effectiveArgsList = G.icmRunArgsGet().cmndArgs  # type: ignore
-        else:
-            effectiveArgsList = argsList
-
-        callParamsDict = {'bpoId': bpoId, 'si': si, }
-        if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
-            return cmndOutcome
-        bpoId = callParamsDict['bpoId']
-        si = callParamsDict['si']
-
-        cmndArgsSpecDict = self.cmndArgsSpec()
-        if not self.cmndArgsValidate(effectiveArgsList, cmndArgsSpecDict, outcome=cmndOutcome):
-            return cmndOutcome
-####+END:
-
-        def cpsInit(): return collections.OrderedDict()
-        def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
-        def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
-
-        oneBpo = bpoId
-        oneSiRelPath = si
-
-
-        logControler = icm.LOG_Control()
-        logControler.loggerSetLevel(20)
-
-        icm.icmExampleMyName(G.icmMyName(), G.icmMyFullName())
-
-        icm.G_commonBriefExamples()
-
-        bleep.examples_icmBasic()
-
-        icm.cmndExampleMenuChapter('*Full Actions*')
-
-        cmndName = "fullUpdate" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
-        menuItem(verbosity='none')
-
-        cmndName = "fullDelete" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
-        menuItem(verbosity='none')
-
-        cmndName = "serviceDelete" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
-        menuItem(verbosity='none')
-
-        icm.cmndExampleMenuChapter('*siBaseStart -- Initialize siBaseDir*')
-
-        cmndName = "siBaseStart" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
-        menuItem(verbosity='none')
-
-        cmndName = "siBaseUpdate" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
-        menuItem(verbosity='none')
-
-        icm.cmndExampleMenuChapter('*dbaseInitialContent for Bystar Account*')
-
-        cmndName = "palsBpoInfo" ; cmndArgs = "notyet" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['si'] = oneSiRelPath
-        menuItem(verbosity='none')
-        menuItem(verbosity='full')
-
-        # ${G_myName} ${extraInfo} -p bxoId="${oneBystarAcct}" -p ss=${oneSr} -p dbase=banan -i imagesList | bueGimpManage.sh -h -v -n showRun -i scaleReplaceHeightTo 200
-        # $( examplesSeperatorChapter "Access, Verification And Test" )
-        # ${G_myName} ${extraInfo} -i  visitUrl
+        sivdApache2.digestedSvcsExamples().cmnd(bpoId=oneBpo,)
 
         return(cmndOutcome)
-
-
-####+BEGIN: bx:icm:python:method :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList ""
-    """
-**  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  Method-anyOrNone :: /cmndArgsSpec/ retType=bool argsList=nil deco=default  [[elisp:(org-cycle)][| ]]
-"""
-    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmndArgsSpec(self):
-####+END:
-        """
-***** Cmnd Args Specification
-"""
-        cmndArgsSpecDict = icm.CmndArgsSpecDict()
-        cmndArgsSpecDict.argsDictAdd(
-            argPosition="0&999",
-            argName="actionPars",
-            argChoices='any',
-            argDescription="Rest of args for use by action"
-        )
-
-        return cmndArgsSpecDict
 
 
 

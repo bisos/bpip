@@ -33,11 +33,11 @@ icmInfo['moduleStatus'] = """
 *  [[elisp:(org-cycle)][| *ICM-INFO:* |]] :: Author, Copyleft and Version Information
 """
 ####+BEGIN: bx:icm:py:name :style "fileName"
-icmInfo['moduleName'] = "palsBpoManage"
+icmInfo['moduleName'] = "icmEx-shRun"
 ####+END:
 
 ####+BEGIN: bx:icm:py:version-timestamp :style "date"
-icmInfo['version'] = "202110110009"
+icmInfo['version'] = "202110234828"
 ####+END:
 
 ####+BEGIN: bx:icm:py:status :status "Production"
@@ -62,7 +62,7 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 
 ####+BEGIN: bx:icm:python:top-of-file :partof "bystar" :copyleft "halaal+minimal"
 """
-*  This file:/bisos/git/auth/bxRepos/bisos/bpip1/bin/palsBpoManage.py :: [[elisp:(org-cycle)][| ]]
+*  This file:/bisos/git/auth/bxRepos/bisos/bpip1/bin/icmEx-shRun.py :: [[elisp:(org-cycle)][| ]]
  is part of The Libre-Halaal ByStar Digital Ecosystem. http://www.by-star.net
  *CopyLeft*  This Software is a Libre-Halaal Poly-Existential. See http://www.freeprotocols.org
  A Python Interactively Command Module (PyICM).
@@ -91,13 +91,7 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 
 
 # import os
-# import pwd
-# import grp
-
 import collections
-
-# import enum
-#
 
 ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/bisos/apps/defaults/update/sw/icm/py/importUcfIcmBleepG.py"
 from unisos import ucf
@@ -112,40 +106,11 @@ G = icm.IcmGlobalContext()
 from blee.icmPlayer import bleep
 ####+END:
 
-# from bisos.platform import bxPlatformConfig
-# from bisos.platform import bxPlatformThis
-
-from bisos.basics import pattern
-
-from bisos.icm import clsMethod
-from bisos.icm import fp
-
-from bisos.bpo import bpo
-from bisos.pals import palsBpo
-#from bisos.pals import palsRepo
-from bisos.pals import repoLiveParams
-from bisos.pals import repoProfile
-from bisos.pals import palsSis
-# from bisos.pals import palsBases
-from bisos.pals import repoProfile
-from bisos.pals import baseLiveTargets
-
-PalsRepo_LiveParams_FPs = repoLiveParams.PalsRepo_LiveParams_FPs  # exec/eval-ed as __main__.ClassName
-PalsRepo_LiveParams = repoLiveParams.PalsRepo_LiveParams  # exec/eval-ed as __main__.ClassName
-
-PalsRepo_Profile_FPs = repoProfile.PalsRepo_Profile_FPs  # exec/eval-ed as __main__.ClassName
-PalsRepo_Profile = repoProfile.PalsRepo_Profile  # exec/eval-ed as __main__.ClassName
+# from bisos.basics import pattern
+from unisos.utils import shRun
 
 g_importedCmndsModules = [       # Enumerate modules from which CMNDs become invokable
     'blee.icmPlayer.bleep',
-    'bisos.bpo.bpo',
-    'bisos.bpo.bpoFpBases',
-    'bisos.pals.palsBpo',
-    'bisos.pals.palsRepo',
-    'bisos.pals.repoLiveParams',
-    'bisos.pals.repoProfile',
-    'bisos.pals.palsSis',
-    'bisos.pals.palsBases',
 ]
 
 
@@ -170,24 +135,6 @@ def g_paramsExtraSpecify(
     G = icm.IcmGlobalContext()
     icmParams = icm.ICM_ParamDict()
 
-    bleep.commonParamsSpecify(icmParams)
-
-    clsMethod.commonParamsSpecify(icmParams)  # --cls, --method
-
-    fp.commonParamsSpecify(icmParams)  # --fpBase
-
-    bpo.commonParamsSpecify(icmParams)
-
-    #palsBpo.commonParamsSpecify(icmParams)
-    #palsRepo.commonParamsSpecify(icmParams)
-
-    palsSis.commonParamsSpecify(icmParams)
-
-    PalsRepo_LiveParams_FPs.fps_asIcmParamsAdd(icmParams,)
-    PalsRepo_Profile_FPs.fps_asIcmParamsAdd(icmParams,)
-
-    # commonParamsSpecify(icmParams)
-
     icm.argsparseBasedOnIcmParams(parser, icmParams)
 
     # So that it can be processed later as well.
@@ -196,9 +143,16 @@ def g_paramsExtraSpecify(
     return
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "examples" :cmndType "ICM-Cmnd-FWrk"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:dblock:python:section :title "Class Definitions"
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd-FWrk :: /examples/ =FrameWrk: ICM Examples= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *Class Definitions*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
+"""
+####+END:
+
+
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "examples" :cmndType "ICM-Ex-Cmnd" :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+"""
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Ex-Cmnd :: /examples/ =FrameWrk: ICM Examples= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
 class examples(icm.Cmnd):
     cmndParamsMandatory = [ ]
@@ -220,8 +174,7 @@ class examples(icm.Cmnd):
 
 ####+END:
         def cpsInit(): return collections.OrderedDict()
-        def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
-        def extMenuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, icmName=icmExName, verbosity=verbosity) # 'little' or 'none'
+        def menuItem(verbosity, **kwargs): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity, **kwargs)
         # def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
 
         logControler = icm.LOG_Control()
@@ -233,257 +186,188 @@ class examples(icm.Cmnd):
 
         bleep.examples_icmBasic()
 
-        oneBpo = "pmi_ByD-100001"
-        # oneSiRelPath = "plone3/main"
+####+BEGIN: bx:icm:python:cmnd:subSection :title "Create (Update) Vagrant File -- With Defaults"
+        """
+**  [[elisp:(beginning-of-buffer)][Top]] ============== [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]          *Create (Update) Vagrant File -- With Defaults*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
+"""
+####+END:
+        icm.cmndExampleMenuChapter('*Simple Example Of shRun*')
 
-        bpo.examples_bpo_basicAccess(oneBpo)
+        cmndName = "shRunSimple" ; cmndArgs = ""
+        cps=cpsInit() ; menuItem(verbosity='none', comment="# run cmnds -- dont echo cmnds and don't show stdout/err")
 
-        # palsBpo.examples_palsBpo_basicAccess(oneBpo, oneSiRelPath, menuLevel='chapter')
+        cmndName = "shRunSimple" ; cmndArgs = ""
+        cps=cpsInit() ; menuItem(verbosity='full', comment="# full verbosity")
 
-        icm.cmndExampleMenuChapter('*PALS-BASES Update*')
+        cmndName = "shRunSimple" ; cmndArgs = ""
+        cps=cpsInit() ; menuItem(verbosity='little', comment="# show stdout/err but dont echo cmnds")
 
-        cmndName = "basesUpdate" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
-        menuItem(verbosity='little')
+        cmndName = "shRunSimple" ; cmndArgs = ""
+        cps=cpsInit() ; cps['callTrackings'] = 'monitor+' ; menuItem(verbosity='little', comment="# echo cmnds and show stdout/err")
 
-        cmndName = "palsToBxBash" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
-        menuItem(verbosity='little')
+        icm.cmndExampleMenuChapter('*Simple Example Of shRun*')
 
-        icmExName = "palsBaseLiveTargets.py" ; cmndName = "examples" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
-        extMenuItem(verbosity='none')
+        cmndName = "bashCommandSubstitution" ; cmndArgs = ""
+        cps=cpsInit() ; menuItem(verbosity='none', comment="# backtick,")
+        menuItem(verbosity='little', comment="# backtick,")
 
-        icm.cmndExampleMenuChapter('*PALS-REPOs Example-Cmnds*')
-
-        icmExName = "palsRepoProfile.py" ; cmndName = "examples" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
-        extMenuItem(verbosity='none')
-
-        icmExName = "palsRepoLiveParams.py" ; cmndName = "examples" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
-        extMenuItem(verbosity='none')
-
-        icm.cmndExampleMenuChapter('*Digest-SIs Example-Cmnds*')
-
-        cmndName = "enabledSisInfo" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
-        menuItem(verbosity='none')
-
-        icm.cmndExampleMenuChapter('*PALS-SIs Example-Cmnds*')
-
-        thisBpo = palsBpo.obtainBpo(oneBpo,)
-        thisBpo.sis.sisDigest()
-
-        icmExName = "palsSiPlone3.py" ; cmndName = "examples" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
-
-        for eachSiPath in thisBpo.sis.svcInst_primary_enabled:
-            cps['si'] = palsSis.siPathToSiId(oneBpo, eachSiPath,)
-            extMenuItem(verbosity='none')
-
-        icm.cmndExampleMenuChapter('*PALS-VirDom-SIs Example-Cmnds*')
-
-        icmExName = "palsSivdApache2.py" ; cmndName = "examples" ; cmndArgs = "" ;
-        cps=cpsInit() ; cps['bpoId'] = oneBpo ;
-
-        for eachSiPath in thisBpo.sis.svcInst_virDom_enabled:
-            cps['si'] = palsSis.siPathToSiId(oneBpo, eachSiPath,)
-            extMenuItem(verbosity='none')
+        cmndName = "bashSingleCommand" ; cmndArgs = ""
+        cps=cpsInit() ; menuItem(verbosity='none', comment="# log or record")
+        menuItem(verbosity='little', comment="# log or record")
 
         return(cmndOutcome)
 
-####+BEGIN: bx:dblock:python:section :title "ICM Commands"
+    def cmndDocStr(self): return """
+** ICM Examples -- List of commonly used lines for this ICM [[elisp:(org-cycle)][| ]]
+"""
+
+
+####+BEGIN: bx:icm:python:section :title "ICM Commands"
 """
 *  [[elisp:(beginning-of-buffer)][Top]] ############## [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *ICM Commands*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
 """
 ####+END:
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "palsBpoInfo" :comment "" :parsMand "bpoId si" :parsOpt "" :argsMin "1" :argsMax "1" :asFunc "" :interactiveP ""
+
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "shRunSimple" :comment "" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /palsBpoInfo/ parsMand=bpoId si parsOpt= argsMin=1 argsMax=1 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /shRunSimple/ parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-class palsBpoInfo(icm.Cmnd):
-    cmndParamsMandatory = [ 'bpoId', 'si', ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 1, 'Max': 1,}
-
-    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-        interactive=False,        # Can also be called non-interactively
-        bpoId=None,         # or Cmnd-Input
-        si=None,         # or Cmnd-Input
-        argsList=[],         # or Args-Input
-    ):
-        cmndOutcome = self.getOpOutcome()
-        if interactive:
-            if not self.cmndLineValidate(outcome=cmndOutcome):
-                return cmndOutcome
-            effectiveArgsList = G.icmRunArgsGet().cmndArgs  # type: ignore
-        else:
-            effectiveArgsList = argsList
-
-        callParamsDict = {'bpoId': bpoId, 'si': si, }
-        if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
-            return cmndOutcome
-        bpoId = callParamsDict['bpoId']
-        si = callParamsDict['si']
-
-        cmndArgsSpecDict = self.cmndArgsSpec()
-        if not self.cmndArgsValidate(effectiveArgsList, cmndArgsSpecDict, outcome=cmndOutcome):
-            return cmndOutcome
-####+END:
-
-        # infoType = effectiveArgsList[0]
-
-        thisBpo = palsBpo.obtainBpo(bpoId,)
-
-        print("AAA")
-
-        print(thisBpo.__dict__)
-
-        #thisBpo.activate("apache2/plone3/main")
-
-        print(thisBpo.basesObj.varBase_obtain())
-        print(thisBpo.basesObj.tmpBase_obtain())
-        print(thisBpo.basesObj.logBase_obtain())
-
-        thisBpo.repo_rbxe.info()
-        thisBpo.repo_bxeTree.info()
-
-        thisBpo.repo_live.info()
-
-        # a2VirDomProvider = palsBpo.obtainSiObj(thisBpo, "apache2")
-
-        # print(palsBpo.svcProv_virDom_list())
-        # print(palsBpo.svcProv_prim_list())
-
-        thisBpo.sis.sisDigest()
-
-        siPath = palsSis.siIdToSiPath(bpoId, si)
-
-        thisSi = palsSis.EffectiveSis.givenSiPathFindSiObj(bpoId, siPath,)
-        print(thisSi)
-
-        print(thisBpo.effectiveSisList)
-
-        return cmndOutcome.set(
-            opError=icm.OpError.Success,  # type: ignore
-            opResults=None,
-        )
-
-
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "enabledSisInfo" :parsMand "bpoId" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
-"""
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /enabledSisInfo/ parsMand=bpoId parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
-"""
-class enabledSisInfo(icm.Cmnd):
-    cmndParamsMandatory = [ 'bpoId', ]
+class shRunSimple(icm.Cmnd):
+    cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
-        bpoId=None,         # or Cmnd-Input
     ):
         cmndOutcome = self.getOpOutcome()
         if interactive:
             if not self.cmndLineValidate(outcome=cmndOutcome):
                 return cmndOutcome
 
-        callParamsDict = {'bpoId': bpoId, }
+        callParamsDict = {}
         if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
             return cmndOutcome
-        bpoId = callParamsDict['bpoId']
 
 ####+END:
-        thisBpo = palsBpo.obtainBpo(bpoId,)
-        thisBpo.sis.sisDigest()
+        #
+        # cmndArgs are in the form of name=value  to become additional vagrant env vars
+        #
+        cmnd = """\
+echo "There are many different ways of running a bash command.";
+echo "Just running shRun.bash(cmnd) leaves it to -v 20 to enable stdout, stderr verbosity";
+echo "Just running shRun.bash(cmnd) leaves it to --callTrackings monitor+ for input verbosity";
+echo "Next we are adding a sleep to have a delay between cmnd echo and output";
+# sleep 5;
+echo "VAGRANT_VAGRANTFILE={vagrantFile} vagrant up"\
+""".format(vagrantFile="someFileName")
 
-        print(f"svcProv_primary_enabled={thisBpo.sis.svcProv_primary_enabled}")
-        print(f"svcInst_primary_enabled={thisBpo.sis.svcInst_primary_enabled}")
 
-        print(f"svcProv_virDom_enabled={thisBpo.sis.svcProv_virDom_enabled}")
-        print(f"svcType_virDom_enabled={thisBpo.sis.svcType_virDom_enabled}")
-        print(f"svcInst_virDom_enabled={thisBpo.sis.svcInst_virDom_enabled}")
+        result = shRun.bash(cmnd)
+
+        print("=========== Obtained Result: ==============")
+        print((result.ok))
+        print((result.stdout))
+        print((result.stderr))
+
+        cmnd = """\
+echo "You can also specify your verbosity parameters directly.";
+echo "For example: shRun.bash(cmnd, hide=False, warn=True, echo=True)";
+echo "These explicit specifications will not be overwritten with command line options";\
+"""
+
+        result = shRun.bash(cmnd, hide=False, warn=True, echo=True)
+
+        cmnd = """\
+dateTag=$(date)
+echo "Current time is: ${dateTag}"
+function funcName {
+    echo "Inside of $0"
+    return
+}
+funcName
+"""
+
+        result = shRun.bash(cmnd, hide=False, echo=True)
+        print(f"{result}")
+
+        return cmndOutcome.set(
+            opError=icm.OpError.Success,
+            opResults=None,
+        )
+
+
+
+
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "bashCommandSubstitution" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+"""
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /bashCommandSubstitution/ parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+"""
+class bashCommandSubstitution(icm.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+        interactive=False,        # Can also be called non-interactively
+    ):
+        cmndOutcome = self.getOpOutcome()
+        if interactive:
+            if not self.cmndLineValidate(outcome=cmndOutcome):
+                return cmndOutcome
+
+        callParamsDict = {}
+        if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
+            return cmndOutcome
+
+####+END:
+
+        if not  (homeDir := icm.subProc_bashOut(
+                f"""grep games /etc/passwd | cut -d ":" -f 6""",
+        outcome=cmndOutcome,)): return icm.EH_badOutcome(cmndOutcome)
+
+        print(homeDir)
 
         return cmndOutcome
 
 
-####+BEGIN: bx:icm:python:method :methodName "cmndDocStr" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList ""
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-anyOrNone :: /cmndDocStr/ retType=bool argsList=nil deco=default  [[elisp:(org-cycle)][| ]]
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "bashSingleCommand" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """
-    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmndDocStr(self):
-####+END:
-        return """
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Returns the full path of the Sr baseDir.
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /bashSingleCommand/ parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-
-
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "palsToBxBash" :comment "" :parsMand "bpoId" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
-"""
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /palsToBxBash/ parsMand=bpoId parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
-"""
-class palsToBxBash(icm.Cmnd):
-    cmndParamsMandatory = [ 'bpoId', ]
+class bashSingleCommand(icm.Cmnd):
+    cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
-        bpoId=None,         # or Cmnd-Input
     ):
         cmndOutcome = self.getOpOutcome()
         if interactive:
             if not self.cmndLineValidate(outcome=cmndOutcome):
                 return cmndOutcome
 
-        callParamsDict = {'bpoId': bpoId, }
+        callParamsDict = {}
         if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
             return cmndOutcome
-        bpoId = callParamsDict['bpoId']
 
 ####+END:
-        palsProfile = repoProfile.PalsRepo_Profile(bpoId)
-        bpoFpsBaseInst = palsProfile.fps_baseMake()
 
-        baseDomain = bpoFpsBaseInst.fps_getParam('baseDomain').parValueGet()
-        bystarType = bpoFpsBaseInst.fps_getParam('bystarType').parValueGet()
-        correspondingEntity = bpoFpsBaseInst.fps_getParam('correspondingEntity').parValueGet()
+        icm.subProc_bash(
+            f"""grep games /etc/passwd | cut -d ":" -f 6""",
+        outcome=cmndOutcome,).log()
 
-        icm.unusedSuppressForEval(bystarType,)
-        icm.unusedSuppressForEval(correspondingEntity,)
+        icm.subProc_bash(f"""date""",
+                         outcome=cmndOutcome,).log()
 
-        def get_bystarDomFormTld_plone():
-            """
-*** First, we try  to resolve *baseDomain*. If that works, baseDomain it is.
-            Otherwise, we get the live target ipAddr.
-            """
-            liveParamsInst = pattern.sameInstance(baseLiveTargets.PalsBase_LiveParams, bpoId)
-            liveParamsFpInst = liveParamsInst.fps_baseMake()
-            return (
-                liveParamsFpInst.fps_getParam('palsPlatformIpAddr').parValueGet()
-            )
 
-        bystarDomFormTld_plone = get_bystarDomFormTld_plone()
+        return cmndOutcome
 
-        print(f"""\
-cp_acctPrefix=""
-cp_acctNu="{bpoId}"
-bpoIdPasswdDecrypted="NOTYET"
-bystarDomFormTld_plone="{bystarDomFormTld_plone}"
-cp_acctMainBaseDomain="{baseDomain}"
-cp_acctUid="NOTYET"
-        """)
-
-        return cmndOutcome.set(
-            opError=icm.OpError.Success,  # type: ignore
-            opResults=None,
-        )
 
 
 

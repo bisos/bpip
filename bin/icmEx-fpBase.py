@@ -276,6 +276,8 @@ class examples(icm.Cmnd):
 
         fp.examples_fpBase(fpBase, clsName)
 
+        icm.cmndExampleMenuChapter(f"*FpParam for {clsName}*")
+
         cmndName = "fpParamsSet" ; cmndArgs = "" ;
         cps=cpsInit() ; cps['fpBase'] = fpBase ; cps['cls'] = clsName
 
@@ -288,11 +290,14 @@ class examples(icm.Cmnd):
         cmndName = "fpParamSetWithNameValue"
         cps=cpsInit() ; cps['fpBase'] = fpBase ; cps['cls'] = clsName
 
-        cmndArgs = "exPar1 someValueA" ;
-        menuItem(verbosity='little')
+        cmndArgs = "exPar1 someValueA" ; menuItem(verbosity='little')
+        cmndArgs = "exPar2 otherValueB" ; menuItem(verbosity='little')
 
-        cmndArgs = "exPar2 otherValueB" ;
-        menuItem(verbosity='little')
+        cmndName = "fpParamGetWithName"
+        cps=cpsInit() ; cps['fpBase'] = fpBase ; cps['cls'] = clsName
+
+        cmndArgs = "exPar1" ; menuItem(verbosity='little')
+        cmndArgs = "exPar2" ; menuItem(verbosity='little')
 
         return(cmndOutcome)
 
