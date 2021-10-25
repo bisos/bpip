@@ -4,12 +4,8 @@
 Summary:: An =ICM=: a small example in traditional python style -- Not COMEEGA.
 """
 
-from unisos import ucf
 from unisos import icm
-
 import collections
-
-icm.unusedSuppressForEval(ucf.__file__)  # in case icm and ucf are not used
 
 G = icm.IcmGlobalContext()
 
@@ -19,7 +15,7 @@ def g_paramsExtraSpecify(
     """Module Specific Command Line Parameters.
     g_argsExtraSpecify is passed to G_main and is executed before argsSetup (can not be decorated)
     """
-    G = icm.IcmGlobalContext()
+    # G = icm.IcmGlobalContext()
     icmParams = icm.ICM_ParamDict()
 
     icmParams.parDictAdd(
@@ -70,6 +66,7 @@ class examples(icm.Cmnd):
         cmndName = "argsProc" ; cmndArgs = "list argOne twoArg arg3" ;
         cps = collections.OrderedDict() ;
         icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity='little')
+        icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity='full')
 
         return(cmndOutcome)
 

@@ -107,7 +107,8 @@ from blee.icmPlayer import bleep
 ####+END:
 
 # from bisos.basics import pattern
-from unisos.utils import shRun
+#from unisos.utils import shRun
+from bisos.icm import shRun
 
 g_importedCmndsModules = [       # Enumerate modules from which CMNDs become invokable
     'blee.icmPlayer.bleep',
@@ -214,6 +215,11 @@ class examples(icm.Cmnd):
         cmndName = "bashSingleCommand" ; cmndArgs = ""
         cps=cpsInit() ; menuItem(verbosity='none', comment="# log or record")
         menuItem(verbosity='little', comment="# log or record")
+
+        cmndName = "sudoCmnds" ; cmndArgs = ""
+        cps=cpsInit() ; menuItem(verbosity='none', comment="# log or record")
+        menuItem(verbosity='little', comment="# log or record")
+
 
         return(cmndOutcome)
 
@@ -364,6 +370,51 @@ class bashSingleCommand(icm.Cmnd):
 
         icm.subProc_bash(f"""date""",
                          outcome=cmndOutcome,).log()
+
+
+        return cmndOutcome
+
+
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "sudoCmnds" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+"""
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /sudoCmnds/ parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+"""
+class sudoCmnds(icm.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+        interactive=False,        # Can also be called non-interactively
+    ):
+        cmndOutcome = self.getOpOutcome()
+        if interactive:
+            if not self.cmndLineValidate(outcome=cmndOutcome):
+                return cmndOutcome
+
+        callParamsDict = {}
+        if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
+            return cmndOutcome
+
+####+END:
+
+        shRun.sudoCmnds(f"""id; whoami""").out()
+        shRun.sudoCmnds(f"""id; whoami""").log()
+
+        if not (result := shRun.sudoOut(
+                f"""grep games /etc/passwd | cut -d ":" -f 6""",
+        outcome=cmndOutcome,)): return icm.EH_badOutcome(cmndOutcome)
+
+        print(result)
+        cmndOutcome.out()
+
+        if not (result := shRun.sudoOut(
+                f"""id; whoami""",
+        outcome=cmndOutcome,)): return icm.EH_badOutcome(cmndOutcome)
+
+        print(result)
+        cmndOutcome.out()
 
 
         return cmndOutcome

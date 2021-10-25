@@ -120,6 +120,7 @@ from bisos.pals import sivdApache2  # type: ignore
 
 g_importedCmndsModules = [       # Enumerate modules from which CMNDs become invokable
     'blee.icmPlayer.bleep',
+    'bisos.pals.palsBases',
     'bisos.pals.sivdApache2',
 ]
 
@@ -188,7 +189,7 @@ class examples(icm.Cmnd):
 ####+END:
 
         def cpsInit(): return collections.OrderedDict()
-        #def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
+        #def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity)
         #def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
 
         oneBpo = "pmi_ByD-100001"
@@ -209,10 +210,10 @@ class examples(icm.Cmnd):
 
         def oneSvcExample(svcName):
             sivd = os.path.join("apache2", svcName)
-            def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
+            def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity)
             cmndName = "svcExamples" ; cmndArgs = "create" ;
             cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['sivd'] = sivd
-            menuItem(verbosity='none')
+            menuItem(verbosity='little')
 
         def listOfSvcs():
             virDomSvcs = sivdApache2.listOfA2VirDomTypes()
