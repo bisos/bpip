@@ -463,10 +463,11 @@ class palsToBxBash(icm.Cmnd):
 *** First, we try  to resolve *baseDomain*. If that works, baseDomain it is.
             Otherwise, we get the live target ipAddr.
             """
-            liveParamsInst = pattern.sameInstance(baseLiveTargets.PalsBase_LiveParams, bpoId)
-            liveParamsFpInst = liveParamsInst.fps_baseMake()
+            # liveParamsInst = pattern.sameInstance(baseLiveTargets.PalsBase_LiveParams, bpoId)
+            # liveParamsFpInst = liveParamsInst.fps_baseMake()
             return (
-                liveParamsFpInst.fps_getParam('palsPlatformIpAddr').parValueGet()
+                "www.{baseDomain}".format(baseDomain=baseDomain)
+                #liveParamsFpInst.fps_getParam('palsPlatformIpAddr').parValueGet()
             )
 
         bystarDomFormTld_plone = get_bystarDomFormTld_plone()
