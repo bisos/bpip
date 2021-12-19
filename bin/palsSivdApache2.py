@@ -110,6 +110,8 @@ G = icm.IcmGlobalContext()
 from blee.icmPlayer import bleep
 ####+END:
 
+from bisos.currents import bxCurrentsConfig
+
 from bisos.icm import clsMethod
 # from bisos.icm import fp
 
@@ -159,6 +161,22 @@ def g_paramsExtraSpecify(
 
     return
 
+####+BEGIN: bx:icm:python:section :title "Common Module Conventions (BxoIdSr)"
+"""
+*  [[elisp:(beginning-of-buffer)][Top]] ################ [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]    *Common Module Conventions (BxoIdSr)*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
+"""
+####+END:
+
+####+BEGIN: bx:dblock:global:file-insert :file "/libre/ByStar/InitialTemplates/update/sw/icm/py/curGetBxOSr.py"
+"""
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(org-tree-to-indirect-buffer)][|>]] [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Func-BxoIdSr   :: /curGet_{bxoId,sr}/ retType=str argsList=nil  [[elisp:(org-cycle)][| ]]
+"""
+
+def curGet_bxoId(): return bxCurrentsConfig.bxoId_fpObtain(configBaseDir=None)
+def curGet_sr(): return bxCurrentsConfig.sr_fpObtain(configBaseDir=None)
+def cmndParsCurBxoSr(cps): cps['bxoId'] = curGet_bxoId(); cps['sr'] = curGet_sr()
+
+####+END:
 
 ####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "examples" :cmndType "Cmnd-FWrk"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "bpoId sivd" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """
@@ -190,9 +208,10 @@ class examples(icm.Cmnd):
 
         def cpsInit(): return collections.OrderedDict()
         #def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity)
-        #def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
+        def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
 
-        oneBpo = "pmi_ByD-100001"
+        #oneBpo = "pmi_ByD-100001"
+        oneBpo = curGet_bxoId()
 
         if bpoId: oneBpo = bpoId
         # if si: oneSiRelPath = si
@@ -204,12 +223,14 @@ class examples(icm.Cmnd):
 
         icm.G_commonBriefExamples()
 
+        execLineEx("""bx-currentsManage.py -v 20 --bxoId="pmi_ByD-100002"  -i pkgInfoParsSet""")
+
         bleep.examples_icmBasic()
 
         icm.cmndExampleMenuChapter('*Service Creation Examples*')
 
         def oneSvcExample(svcName):
-            sivd = os.path.join("apache2", svcName)
+            sivd = os.path.join("apache2", svcName, "main")
             def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity)
             cmndName = "svcExamples" ; cmndArgs = "create" ;
             cps=cpsInit() ; cps['bpoId'] = oneBpo ; cps['sivd'] = sivd
@@ -223,6 +244,8 @@ class examples(icm.Cmnd):
         listOfSvcs()
 
         sivdApache2.digestedSvcsExamples().cmnd(bpoId=oneBpo,)
+
+        execLineEx("""sudo systemctl restart apache2""")
 
         return(cmndOutcome)
 
