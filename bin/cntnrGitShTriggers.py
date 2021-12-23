@@ -103,6 +103,8 @@ from bisos.icm import clsMethod
 
 from bisos import bpf
 
+import getpass
+
 g_importedCmndsModules = [       # Enumerate modules from which CMNDs become invokable
     'blee.icmPlayer.bleep',
 ]
@@ -144,8 +146,7 @@ def g_paramsExtraSpecify(
 ####+END:
 
 
-####+BEGINNOT: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/bisos/apps/defaults/update/sw/icm/py/curGetBxOSr.py"
-
+####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/bisos/apps/defaults/update/sw/icm/py/curGetBxOSr.py"
 def curGet_bxoId(): return bxCurrentsConfig.bxoId_fpObtain(configBaseDir=None)
 def curGet_sr(): return bxCurrentsConfig.sr_fpObtain(configBaseDir=None)
 def cmndParsCurBxoSr(cps): cps['bxoId'] = curGet_bxoId(); cps['sr'] = curGet_sr()
@@ -186,8 +187,7 @@ class examples(icm.Cmnd):
 
         def cpsInit(): return collections.OrderedDict()
         cmndArgs = "" ; cps=cpsInit() ;
-        def noArgsAndParams(): cmndArgs = "" ; cps=cpsInit() ;
-        def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
+        def menuItem(verbosity='little'): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
         # def extMenuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, icmName=icmExName, verbosity=verbosity) # 'little' or 'none'
         def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
 
@@ -214,24 +214,27 @@ bisosAccounts.sh -h -v -n showRun -i gitShBxSysAcctCreate  # acctAdd, report
 bisosAccounts.sh -h -v -n showRun -i userAcctsDelete gitSh""")
 
         icm.cmndExampleMenuChapter('*Full Actions*')
-        cmndName = "fullUpdate" ; noArgsAndParams(); menuItem(verbosity='little')
+        cmndName = "fullServiceUpdate" ; menuItem(verbosity='little')
+        cmndName = "fullUserUpdate" ; menuItem(verbosity='little')
 
         icm.cmndExampleMenuChapter('*Home Account And Keys Setup*')
-        cmndName = "gitShAccountCreate" ; noArgsAndParams(); menuItem(verbosity='little')
-        cmndName = "noInteractiveShellSetup" ; noArgsAndParams(); menuItem(verbosity='little')
+        cmndName = "gitShAccountCreate" ; menuItem(verbosity='little')
+        cmndName = "noInteractiveShellSetup" ; menuItem(verbosity='little')
 
         icm.cmndExampleMenuChapter('*Invoker (client) Side:: SSH Setup*')
-        cmndName = "gitSh_invoker_sshUsgSetup" ; cmndArgs = "performerCntnrId" ; menuItem(verbosity='little')
-        cmndName = "gitSh_invoker_sshUsgLogin" ; cmndArgs = "performerCntnrId" ; menuItem(verbosity='little')
+        cmndName = "gitSh_invoker_sshUsgSetup" ; cmndArgs = "localhost" ; menuItem()
+        cmndName = "gitSh_invoker_sshUsgSetup" ; cmndArgs = "localhost performerCntnrId" ; menuItem()
+        cmndName = "gitSh_invoker_sshUsgLogin" ; cmndArgs = "localhost" ; menuItem()
 
         icm.cmndExampleMenuChapter('*Performer (server) Side:: SSH Setup*')
-        cmndName = "gitSh_performer_sshSetup" ; cmndArgs = "cntnrName pubKeyFile" ; menuItem(verbosity='little')
+        cmndName = "gitSh_performer_sshSetup" ; cmndArgs = "localhost ~/.ssh/id_rsa.pub" ; menuItem(verbosity='little')
 
         icm.cmndExampleMenuChapter('*Performer (server) Side:: Repos Create And Triggers Setup*')
         cmndName = "gitSh_performer_repo_jekyll" ; cmndArgs = "" ; menuItem(verbosity='little')
 
         icm.cmndExampleMenuChapter('*Invoker (client) Side:: Trigger With Git Push*')
-        cmndName = "gitSh_invoker_repo_jekyll" ; cmndArgs = "" ; menuItem(verbosity='little')
+        cmndName = "gitSh_invoker_repo_jekyll" ; cmndArgs = "/tmp" ; menuItem(verbosity='little')
+        cmndName = "gitSh_invoker_trigger_jekyll" ; cmndArgs = "/tmp/trigger-jekyll" ; menuItem(verbosity='little')
 
         return(cmndOutcome)
 
@@ -431,97 +434,181 @@ exit 128
 
         return icm.opSuccessAnNoResult(cmndOutcome)
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_invoker_sshUsgSetup" :comment "USER" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_invoker_sshUsgSetup" :comment "USER" :parsMand "" :parsOpt "" :argsMin "1" :argsMax "9999" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_invoker_sshUsgSetup/ =USER= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_invoker_sshUsgSetup/ =USER= parsMand= parsOpt= argsMin=1 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
 class gitSh_invoker_sshUsgSetup(icm.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    cmndArgsLen = {'Min': 1, 'Max': 9999,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
+        argsList=[],         # or Args-Input
     ) -> icm.OpOutcome:
         cmndOutcome = self.getOpOutcome()
         if not self.obtainDocStr:
             if interactive:
                 if not self.cmndLineValidate(outcome=cmndOutcome):
                     return cmndOutcome
+                effectiveArgsList = G.icmRunArgsGet().cmndArgs  # type: ignore
+            else:
+                effectiveArgsList = argsList
 
             callParamsDict = {}
             if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
                 return cmndOutcome
 
+            cmndArgsSpecDict = self.cmndArgsSpec()
+            if not self.cmndArgsValidate(effectiveArgsList, cmndArgsSpecDict, outcome=cmndOutcome):
+                return cmndOutcome
 ####+END:
         docStr = """
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] NOTYET_
-***** Add to ~/.ssh/config file as tested -- Use existing usgSshCustom
-***** $1 is performer cntnrId
-
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Create an entry for each specified triggerable service container.
+***** Process each arg as a performer cntnrId  using usgBpoSshCustomManage.sh. Adds to ~/.ssh/config.
         """
         if self.docStrClassSet(docStr,): return cmndOutcome
 
+        curUser = getpass.getuser()
+
+        curUserSshPrivKeyFile = os.path.join(
+            os.path.expanduser("~"),
+            ".ssh",
+            "id_rsa",
+        )
+
+        shIcmComOpts = bpf.shIcm.comOpts(self)
+
+        for each in effectiveArgsList:  # type: ignore
+            gitSshLabel = f"gitSh-{each}"
+            if bpf.subProc.WOpW(invedBy=self,).bash(
+                f"""usgBpoSshCustomManage.sh {shIcmComOpts} -p usg={curUser} -i usgCustomFullUpdate {gitSshLabel} {curUserSshPrivKeyFile} {each}  gitSh 22""",
+            ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
+
         return icm.opSuccessAnNoResult(cmndOutcome)
 
-
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_invoker_sshUsgLogin" :comment "USER" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:method :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList ""
+    """
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-anyOrNone :: /cmndArgsSpec/ retType=bool argsList=nil deco=default  [[elisp:(org-cycle)][| ]]
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_invoker_sshUsgLogin/ =USER= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self):
+####+END:
+        """
+***** Cmnd Args Specification: process each as any cntnr -- 0&9999
+"""
+        cmndArgsSpecDict = icm.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0&9999",
+            argName="cntnrs",
+            argDefault='localhost',
+            argChoices='any',
+            argDescription="Process Each",
+        )
+
+        return cmndArgsSpecDict
+
+
+
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_invoker_sshUsgLogin" :comment "USER" :parsMand "" :parsOpt "" :argsMin "1" :argsMax "9999" :asFunc "" :interactiveP ""
+"""
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_invoker_sshUsgLogin/ =USER= parsMand= parsOpt= argsMin=1 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
 class gitSh_invoker_sshUsgLogin(icm.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    cmndArgsLen = {'Min': 1, 'Max': 9999,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
+        argsList=[],         # or Args-Input
     ) -> icm.OpOutcome:
         cmndOutcome = self.getOpOutcome()
         if not self.obtainDocStr:
             if interactive:
                 if not self.cmndLineValidate(outcome=cmndOutcome):
                     return cmndOutcome
+                effectiveArgsList = G.icmRunArgsGet().cmndArgs  # type: ignore
+            else:
+                effectiveArgsList = argsList
 
             callParamsDict = {}
             if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
                 return cmndOutcome
 
+            cmndArgsSpecDict = self.cmndArgsSpec()
+            if not self.cmndArgsValidate(effectiveArgsList, cmndArgsSpecDict, outcome=cmndOutcome):
+                return cmndOutcome
 ####+END:
         docStr = """
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] NOTYET_
-***** Arg1 is performer address. No password prompt. Login declined.
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Login to each container.
+***** For each, there should be no password prompt. But login should be declined.
         """
         if self.docStrClassSet(docStr,): return cmndOutcome
 
+        for each in effectiveArgsList:  # type: ignore
+            gitSshLabel = f"gitSh-{each}"
+            bpf.subProc.WOpW(invedBy=self,).bash(
+                f"""ssh {gitSshLabel}""",
+            )
+
         return icm.opSuccessAnNoResult(cmndOutcome)
 
-
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_performer_sshSetup" :comment "SERVICE" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:method :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList ""
+    """
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-anyOrNone :: /cmndArgsSpec/ retType=bool argsList=nil deco=default  [[elisp:(org-cycle)][| ]]
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_performer_sshSetup/ =SERVICE= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self):
+####+END:
+        """
+***** Cmnd Args Specification: process each as any cntnr -- 0&9999
+"""
+        cmndArgsSpecDict = icm.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0&9999",
+            argName="cntnrs",
+            argDefault='localhost',
+            argChoices='any',
+            argDescription="Process Each",
+        )
+
+        return cmndArgsSpecDict
+
+
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_performer_sshSetup" :comment "SERVICE" :parsMand "" :parsOpt "" :argsMin "2" :argsMax "2" :asFunc "" :interactiveP ""
+"""
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_performer_sshSetup/ =SERVICE= parsMand= parsOpt= argsMin=2 argsMax=2 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
 class gitSh_performer_sshSetup(icm.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    cmndArgsLen = {'Min': 2, 'Max': 2,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
+        argsList=[],         # or Args-Input
     ) -> icm.OpOutcome:
         cmndOutcome = self.getOpOutcome()
         if not self.obtainDocStr:
             if interactive:
                 if not self.cmndLineValidate(outcome=cmndOutcome):
                     return cmndOutcome
+                effectiveArgsList = G.icmRunArgsGet().cmndArgs  # type: ignore
+            else:
+                effectiveArgsList = argsList
 
             callParamsDict = {}
             if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
                 return cmndOutcome
 
+            cmndArgsSpecDict = self.cmndArgsSpec()
+            if not self.cmndArgsValidate(effectiveArgsList, cmndArgsSpecDict, outcome=cmndOutcome):
+                return cmndOutcome
 ####+END:
         docStr = """
 ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] NOTYET_
@@ -530,7 +617,72 @@ class gitSh_performer_sshSetup(icm.Cmnd):
         """
         if self.docStrClassSet(docStr,): return cmndOutcome
 
+        cntnrName = effectiveArgsList[0]  # type: ignore
+        pubKeyFile = effectiveArgsList[1]  # type: ignore
+        #
+
+        if cntnrName != "localhost":
+            print("Unimplemented")
+            return icm.opSuccessAnNoResult(cmndOutcome)
+
+        gitShAuthorizedFile = os.path.join(
+            os.path.expanduser("~gitSh"),
+            ".ssh",
+            "authorized_keys",
+        )
+
+        with open(pubKeyFile, 'r') as file:
+            pubKeyAsStr = file.read().rstrip()
+
+        if not bpf.subProc.WOpW(invedBy=self,).bash(
+                f"""sudo -u gitSh grep "{pubKeyAsStr}" {gitShAuthorizedFile}""",
+        ).exitCode():
+            icm.LOG_here(f"pubKey already in {gitShAuthorizedFile}")
+            return icm.opSuccessAnNoResult(cmndOutcome)
+
+        if bpf.subProc.WOpW(invedBy=self,).bash(
+                f"""cat {pubKeyFile} | sudo -u gitSh tee -a {gitShAuthorizedFile}""",
+        ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
+
+        if bpf.subProc.WOpW(invedBy=self,).bash(
+            f"""sudo -u gitSh chmod go-w {gitShAuthorizedFile}""",
+        ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
+        print(
+            bpf.subProc.WOpW(invedBy=self,).bash(
+                f"""sudo -u gitSh ls -l {gitShAuthorizedFile}""",
+            ).stdout
+        )
+
         return icm.opSuccessAnNoResult(cmndOutcome)
+
+
+####+BEGIN: bx:icm:python:method :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList ""
+    """
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-anyOrNone :: /cmndArgsSpec/ retType=bool argsList=nil deco=default  [[elisp:(org-cycle)][| ]]
+"""
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self):
+####+END:
+        """
+***** Cmnd Args Specification: cntnr and pubKey
+"""
+        cmndArgsSpecDict = icm.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0",
+            argName="cntnr",
+            argDefault='localhost',
+            argChoices='any',
+            argDescription="Container to which pubKey will be added.",
+        )
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="1",
+            argName="pubKey",
+            argDefault='~gitSh/.ssh/id_rsa.pub',
+            argChoices='any',
+            argDescription="pubKey to be added to cntnr.",
+        )
+        return cmndArgsSpecDict
+
 
 
 ####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_performer_repo_jekyll" :comment "SERVICE" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
@@ -563,31 +715,91 @@ class gitSh_performer_repo_jekyll(icm.Cmnd):
         """
         if self.docStrClassSet(docStr,): return cmndOutcome
 
+        triggerJekyllRepoName = "trigger-jekyll.git"
+
+        triggerJekyllRepoBaseDir = os.path.join(
+            os.path.expanduser("~gitSh"),
+            triggerJekyllRepoName,
+        )
+        if os.path.isdir(triggerJekyllRepoBaseDir):
+            icm.LOG_here(f"{triggerJekyllRepoBaseDir} is in place -- creation skipped")
+            return icm.opSuccessAnNoResult(cmndOutcome)
+        else:
+            if bpf.subProc.WOpW(invedBy=self,).bash(
+                f"""sudo -u gitSh mkdir {triggerJekyllRepoBaseDir}""",
+            ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
+
+        if bpf.subProc.WOpW(invedBy=self, cd=triggerJekyllRepoBaseDir).bash(
+                f"""sudo -u gitSh git init --bare""",
+        ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
+
+        #
+        # NOTYET, Cleanup sammy ...
+        #
+        postReceiveHookContent = """\
+#!/usr/bin/env bash
+
+GIT_REPO=$HOME/sammy-blog.git
+TMP_GIT_CLONE=/tmp/sammy-blog
+PUBLIC_WWW=/var/www/html
+
+
+dateTag=$(date +%y%m%d%H%M%S)
+
+echo ${TMP_GIT_CLONE} > /tmp/trigger.${dateTag}
+
+exit
+"""
+        postReceiveHookPath = os.path.join(
+            triggerJekyllRepoBaseDir,
+            "hooks",
+            "post-receive",
+        )
+        bpf.pyRunAs.as_gitSh_writeToFile(
+            postReceiveHookPath,
+            postReceiveHookContent,
+        )
+        bpf.subProc.WOpW(invedBy=self,).bash(
+            f"""sudo -u gitSh chmod +x {postReceiveHookPath}""",
+        )
+        print(
+            bpf.subProc.WOpW(invedBy=self,).bash(
+                f"""ls -l {postReceiveHookPath}""",
+            ).stdout
+        )
+
         return icm.opSuccessAnNoResult(cmndOutcome)
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_invoke_trigger_jekyll" :comment "USER" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_invoker_repo_jekyll" :comment "USER" :parsMand "" :parsOpt "" :argsMin "1" :argsMax "1" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_invoke_trigger_jekyll/ =USER= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_invoker_repo_jekyll/ =USER= parsMand= parsOpt= argsMin=1 argsMax=1 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-class gitSh_invoke_trigger_jekyll(icm.Cmnd):
+class gitSh_invoker_repo_jekyll(icm.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    cmndArgsLen = {'Min': 1, 'Max': 1,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
+        argsList=[],         # or Args-Input
     ) -> icm.OpOutcome:
         cmndOutcome = self.getOpOutcome()
         if not self.obtainDocStr:
             if interactive:
                 if not self.cmndLineValidate(outcome=cmndOutcome):
                     return cmndOutcome
+                effectiveArgsList = G.icmRunArgsGet().cmndArgs  # type: ignore
+            else:
+                effectiveArgsList = argsList
 
             callParamsDict = {}
             if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
                 return cmndOutcome
 
+            cmndArgsSpecDict = self.cmndArgsSpec()
+            if not self.cmndArgsValidate(effectiveArgsList, cmndArgsSpecDict, outcome=cmndOutcome):
+                return cmndOutcome
 ####+END:
         docStr = """
 ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] NOTYET_
@@ -595,7 +807,126 @@ class gitSh_invoke_trigger_jekyll(icm.Cmnd):
         """
         if self.docStrClassSet(docStr,): return cmndOutcome
 
+        repoBase = effectiveArgsList[0]  # type: ignore
+
+        if not os.path.isdir(repoBase):
+            return(icm.EH_badOutcome(cmndOutcome))
+
+        triggerJekyllRepoName = "trigger-jekyll.git"
+
+        if os.path.isdir(os.path.join(repoBase, triggerJekyllRepoName)):
+            icm.LOG_here(f"{os.path.join(repoBase, triggerJekyllRepoName)} is in place -- creation skipped")
+            return icm.opSuccessAnNoResult(cmndOutcome)
+
+        if bpf.subProc.WOpW(invedBy=self, cd=repoBase).bash(
+                f"""git clone gitSh@gitSh-localhost:trigger-jekyll.git""",
+        ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
+
         return icm.opSuccessAnNoResult(cmndOutcome)
+
+
+####+BEGIN: bx:icm:python:method :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList ""
+    """
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-anyOrNone :: /cmndArgsSpec/ retType=bool argsList=nil deco=default  [[elisp:(org-cycle)][| ]]
+"""
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self):
+####+END:
+        """
+***** Cmnd Args Specification: cntnr and pubKey
+"""
+        cmndArgsSpecDict = icm.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0",
+            argName="repoBase",
+            argDefault='/tmp',
+            argChoices='any',
+            argDescription="Base dir in which repo will be created.",
+        )
+        return cmndArgsSpecDict
+
+
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_invoker_trigger_jekyll" :comment "USER" :parsMand "" :parsOpt "" :argsMin "1" :argsMax "1" :asFunc "" :interactiveP ""
+"""
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_invoker_trigger_jekyll/ =USER= parsMand= parsOpt= argsMin=1 argsMax=1 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+"""
+class gitSh_invoker_trigger_jekyll(icm.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 1, 'Max': 1,}
+
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+        interactive=False,        # Can also be called non-interactively
+        argsList=[],         # or Args-Input
+    ) -> icm.OpOutcome:
+        cmndOutcome = self.getOpOutcome()
+        if not self.obtainDocStr:
+            if interactive:
+                if not self.cmndLineValidate(outcome=cmndOutcome):
+                    return cmndOutcome
+                effectiveArgsList = G.icmRunArgsGet().cmndArgs  # type: ignore
+            else:
+                effectiveArgsList = argsList
+
+            callParamsDict = {}
+            if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
+                return cmndOutcome
+
+            cmndArgsSpecDict = self.cmndArgsSpec()
+            if not self.cmndArgsValidate(effectiveArgsList, cmndArgsSpecDict, outcome=cmndOutcome):
+                return cmndOutcome
+####+END:
+        docStr = """
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] NOTYET_
+***** update file. add .; commit; push
+        """
+        if self.docStrClassSet(docStr,): return cmndOutcome
+
+        repoBase = effectiveArgsList[0]  # type: ignore
+
+        if not os.path.isdir(repoBase):
+            icm.EH_problem_usageError(f"Missing {repoBase}")
+            return(icm.EH_badOutcome(cmndOutcome))
+
+        if bpf.subProc.WOpW(invedBy=self, cd=repoBase).bash(
+                f"""date | tee -a oneFile""",
+        ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
+
+        if bpf.subProc.WOpW(invedBy=self, cd=repoBase).bash(
+                f"""git add .""",
+        ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
+
+        if bpf.subProc.WOpW(invedBy=self, cd=repoBase).bash(
+                f"""git commit -m "Auto Generated." """,
+        ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
+
+        if bpf.subProc.WOpW(invedBy=self, cd=repoBase).bash(
+                f"""git push""",
+        ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
+
+        return icm.opSuccessAnNoResult(cmndOutcome)
+
+
+####+BEGIN: bx:icm:python:method :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList ""
+    """
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-anyOrNone :: /cmndArgsSpec/ retType=bool argsList=nil deco=default  [[elisp:(org-cycle)][| ]]
+"""
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self):
+####+END:
+        """
+***** Cmnd Args Specification: cntnr and pubKey
+"""
+        cmndArgsSpecDict = icm.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0",
+            argName="repoBase",
+            argDefault='/tmp/trigger-jekyll',
+            argChoices='any',
+            argDescription="Base dir in which repo will be created.",
+        )
+        return cmndArgsSpecDict
 
 
 ####+BEGIN: bx:icm:py3:section :title "Supporting Classes And Functions"
