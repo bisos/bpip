@@ -105,6 +105,13 @@ from bisos import bpf
 
 import getpass
 
+
+####+BEGIN: bx:icm:py3:section :title "Imported Commands Modules"
+"""
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    :: *Imported Commands Modules*  [[elisp:(org-cycle)][| ]]
+"""
+####+END:
+
 g_importedCmndsModules = [       # Enumerate modules from which CMNDs become invokable
     'blee.icmPlayer.bleep',
 ]
