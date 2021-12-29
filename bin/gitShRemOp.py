@@ -233,35 +233,35 @@ class examples(icm.Cmnd):
 
         bleep.examples_icmBasic()
 
-        icm.cmndExampleMenuChapter('*BISOS System (gitSsh) Account*')
+        icm.cmndExampleMenuChapter('*BISOS System (gitSh) Account*')
         execLineEx("""\
 bisosAccounts.sh
-bisosAccounts.sh -h -v -n showRun -i gitSshBxSysAcctVerify  # Info
-bisosAccounts.sh -h -v -n showRun -i gitSshBxSysAcctCreate  # acctAdd, report
-bisosAccounts.sh -h -v -n showRun -i userAcctsDelete gitSsh""")
+bisosAccounts.sh -h -v -n showRun -i gitShBxSysAcctVerify  # Info
+bisosAccounts.sh -h -v -n showRun -i gitShBxSysAcctCreate  # acctAdd, report
+bisosAccounts.sh -h -v -n showRun -i userAcctsDelete gitSh""")
 
         icm.cmndExampleMenuChapter('*Full Actions*')
         cmndName = "fullServiceUpdate" ; menuItem(verbosity='little')
         cmndName = "fullUserUpdate" ; menuItem(verbosity='little')
 
         icm.cmndExampleMenuChapter('*Home Account And Keys Setup*')
-        cmndName = "gitSshAccountCreate" ; menuItem(verbosity='little')
+        cmndName = "gitShAccountCreate" ; menuItem(verbosity='little')
         cmndName = "noInteractiveShellSetup" ; menuItem(verbosity='little')
 
         icm.cmndExampleMenuChapter('*Invoker (client) Side:: SSH Setup*')
-        cmndName = "gitSsh_invoker_sshUsgSetup" ; cmndArgs = "localhost" ; menuItem()
-        cmndName = "gitSsh_invoker_sshUsgSetup" ; cmndArgs = "localhost performerCntnrId" ; menuItem()
-        cmndName = "gitSsh_invoker_sshUsgLogin" ; cmndArgs = "localhost" ; menuItem()
+        cmndName = "gitSh_invoker_sshUsgSetup" ; cmndArgs = "localhost" ; menuItem()
+        cmndName = "gitSh_invoker_sshUsgSetup" ; cmndArgs = "localhost performerCntnrId" ; menuItem()
+        cmndName = "gitSh_invoker_sshUsgLogin" ; cmndArgs = "localhost" ; menuItem()
 
         icm.cmndExampleMenuChapter('*Performer (server) Side:: SSH Setup*')
-        cmndName = "gitSsh_performer_sshSetup" ; cmndArgs = "localhost ~/.ssh/id_rsa.pub" ; menuItem(verbosity='little')
+        cmndName = "gitSh_performer_sshSetup" ; cmndArgs = "localhost ~/.ssh/id_rsa.pub" ; menuItem(verbosity='little')
 
         icm.cmndExampleMenuChapter('*Performer (server) Side:: Repos Create And Triggers Setup*')
-        cmndName = "gitSsh_performer_repo_jekyll" ; cmndArgs = "" ; menuItem(verbosity='little', comment="#create repo in ~gitSsh/trigger-jekyll")
+        cmndName = "gitSh_performer_repo_jekyll" ; cmndArgs = "" ; menuItem(verbosity='little', comment="#create repo in ~gitSh/trigger-jekyll")
 
         icm.cmndExampleMenuChapter('*Invoker (client) Side:: Trigger With Git Push*')
-        cmndName = "gitSsh_invoker_repo_jekyll" ; cmndArgs = "/bisos/var/gitSsh/invoker" ; menuItem(verbosity='little', comment="# clone baseDir")
-        cmndName = "gitSsh_invoker_trigger_jekyll" ; cmndArgs = "/bisos/var/gitSsh/invoker/trigger-jekyll" ; menuItem(verbosity='little', comment="# repo baseDir")
+        cmndName = "gitSh_invoker_repo_jekyll" ; cmndArgs = "/bisos/var/gitSh/invoker" ; menuItem(verbosity='little', comment="# clone baseDir")
+        cmndName = "gitSh_invoker_trigger_jekyll" ; cmndArgs = "/bisos/var/gitSh/invoker/trigger-jekyll" ; menuItem(verbosity='little', comment="# repo baseDir")
 
         return(cmndOutcome)
 
@@ -351,11 +351,11 @@ class fullUserUpdate(icm.Cmnd):
         )
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSshAccountCreate" :comment "SERVICE" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitShAccountCreate" :comment "SERVICE" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSshAccountCreate/ =SERVICE= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitShAccountCreate/ =SERVICE= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-class gitSshAccountCreate(icm.Cmnd):
+class gitShAccountCreate(icm.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
@@ -383,12 +383,12 @@ class gitSshAccountCreate(icm.Cmnd):
         shIcmComOpts = bpf.shIcm.comOpts(self)
 
         if not bpf.subProc.WOpW(invedBy=self,).bash(
-                f"""bisosAccounts.sh {shIcmComOpts} -i gitSshBxSysAcctVerify""",
+                f"""bisosAccounts.sh {shIcmComOpts} -i gitShBxSysAcctVerify""",
         ).exitCode():
-            icm.LOG_here("gitSsh acct is in place -- creation skipped")
+            icm.LOG_here("gitSh acct is in place -- creation skipped")
         else:
             if bpf.subProc.WOpW(invedBy=self,).bash(
-                f"""bisosAccounts.sh {shIcmComOpts} -i gitSshBxSysAcctCreate""",
+                f"""bisosAccounts.sh {shIcmComOpts} -i gitShBxSysAcctCreate""",
             ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
 
         return icm.opSuccessAnNoResult(cmndOutcome)
@@ -419,20 +419,20 @@ class noInteractiveShellSetup(icm.Cmnd):
 
 ####+END:
         docStr = """\
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Create ~gitSsh/git-shell-commands if needed
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Create ~gitSh/git-shell-commands if needed
 ***** TODO For now this is a bash translation. Needs to be done in pure python.
         """
         if self.docStrClassSet(docStr,): return cmndOutcome
 
-        gitSshCommandsBaseDir = os.path.join(
-            os.path.expanduser("~gitSsh"),
+        gitShCommandsBaseDir = os.path.join(
+            os.path.expanduser("~gitSh"),
             "git-shell-commands",
         )
-        if os.path.isdir(gitSshCommandsBaseDir):
-            icm.LOG_here(f"{gitSshCommandsBaseDir} is in place -- creation skipped")
+        if os.path.isdir(gitShCommandsBaseDir):
+            icm.LOG_here(f"{gitShCommandsBaseDir} is in place -- creation skipped")
         else:
             bpf.subProc.WOpW(invedBy=self,).bash(
-                f"""sudo -u gitSsh  mkdir {gitSshCommandsBaseDir}""",
+                f"""sudo -u gitSh  mkdir {gitShCommandsBaseDir}""",
             )
 
         noInteractiveLoginFileContent = """\
@@ -442,20 +442,20 @@ printf '%s\\n' "Authenticated as $USER user, but interactive logins are disabled
 
 exit 128
 """
-        gitSshNoInteractiveLogingPath = os.path.join(
-            gitSshCommandsBaseDir,
+        gitShNoInteractiveLogingPath = os.path.join(
+            gitShCommandsBaseDir,
             "no-interactive-login",
         )
-        bpf.pyRunAs.as_gitSsh_writeToFile(
-            gitSshNoInteractiveLogingPath,
+        bpf.pyRunAs.as_gitSh_writeToFile(
+            gitShNoInteractiveLogingPath,
             noInteractiveLoginFileContent,
         )
         bpf.subProc.WOpW(invedBy=self,).bash(
-            f"""sudo -u gitSsh chmod +x {gitSshNoInteractiveLogingPath}""",
+            f"""sudo -u gitSh chmod +x {gitShNoInteractiveLogingPath}""",
         )
         print(
             bpf.subProc.WOpW(invedBy=self,).bash(
-                f"""ls -l {gitSshNoInteractiveLogingPath}""",
+                f"""ls -l {gitShNoInteractiveLogingPath}""",
             ).stdout
         )
 
@@ -469,11 +469,11 @@ exit 128
 ####+END:
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSsh_invoker_sshUsgSetup" :comment "USER" :parsMand "" :parsOpt "" :argsMin "1" :argsMax "9999" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_invoker_sshUsgSetup" :comment "USER" :parsMand "" :parsOpt "" :argsMin "1" :argsMax "9999" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSsh_invoker_sshUsgSetup/ =USER= parsMand= parsOpt= argsMin=1 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_invoker_sshUsgSetup/ =USER= parsMand= parsOpt= argsMin=1 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-class gitSsh_invoker_sshUsgSetup(icm.Cmnd):
+class gitSh_invoker_sshUsgSetup(icm.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 1, 'Max': 9999,}
@@ -517,9 +517,9 @@ class gitSsh_invoker_sshUsgSetup(icm.Cmnd):
         shIcmComOpts = bpf.shIcm.comOpts(self)
 
         for each in effectiveArgsList:  # type: ignore
-            gitSshLabel = f"gitSsh-{each}"
+            gitShLabel = f"gitSh-{each}"
             if bpf.subProc.WOpW(invedBy=self,).bash(
-                f"""usgBpoSshCustomManage.sh {shIcmComOpts} -p usg={curUser} -i usgCustomFullUpdate {gitSshLabel} {curUserSshPrivKeyFile} {each}  gitSsh 22""",
+                f"""usgBpoSshCustomManage.sh {shIcmComOpts} -p usg={curUser} -i usgCustomFullUpdate {gitShLabel} {curUserSshPrivKeyFile} {each}  gitSh 22""",
             ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
 
         return icm.opSuccessAnNoResult(cmndOutcome)
@@ -545,11 +545,11 @@ class gitSsh_invoker_sshUsgSetup(icm.Cmnd):
 
         return cmndArgsSpecDict
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSsh_invoker_sshUsgLogin" :comment "USER" :parsMand "" :parsOpt "" :argsMin "1" :argsMax "9999" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_invoker_sshUsgLogin" :comment "USER" :parsMand "" :parsOpt "" :argsMin "1" :argsMax "9999" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSsh_invoker_sshUsgLogin/ =USER= parsMand= parsOpt= argsMin=1 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_invoker_sshUsgLogin/ =USER= parsMand= parsOpt= argsMin=1 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-class gitSsh_invoker_sshUsgLogin(icm.Cmnd):
+class gitSh_invoker_sshUsgLogin(icm.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 1, 'Max': 9999,}
@@ -583,9 +583,9 @@ class gitSsh_invoker_sshUsgLogin(icm.Cmnd):
         if self.docStrClassSet(docStr,): return cmndOutcome
 
         for each in effectiveArgsList:  # type: ignore
-            gitSshLabel = f"gitSsh-{each}"
+            gitShLabel = f"gitSh-{each}"
             bpf.subProc.WOpW(invedBy=self,).bash(
-                f"""ssh {gitSshLabel}""",
+                f"""ssh {gitShLabel}""",
             )
 
         return icm.opSuccessAnNoResult(cmndOutcome)
@@ -612,11 +612,11 @@ class gitSsh_invoker_sshUsgLogin(icm.Cmnd):
         return cmndArgsSpecDict
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSsh_performer_sshSetup" :comment "SERVICE" :parsMand "" :parsOpt "" :argsMin "2" :argsMax "2" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_performer_sshSetup" :comment "SERVICE" :parsMand "" :parsOpt "" :argsMin "2" :argsMax "2" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSsh_performer_sshSetup/ =SERVICE= parsMand= parsOpt= argsMin=2 argsMax=2 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_performer_sshSetup/ =SERVICE= parsMand= parsOpt= argsMin=2 argsMax=2 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-class gitSsh_performer_sshSetup(icm.Cmnd):
+class gitSh_performer_sshSetup(icm.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 2, 'Max': 2,}
@@ -658,8 +658,8 @@ class gitSsh_performer_sshSetup(icm.Cmnd):
             print("Unimplemented")
             return icm.opSuccessAnNoResult(cmndOutcome)
 
-        gitSshAuthorizedFile = os.path.join(
-            os.path.expanduser("~gitSsh"),
+        gitShAuthorizedFile = os.path.join(
+            os.path.expanduser("~gitSh"),
             ".ssh",
             "authorized_keys",
         )
@@ -668,21 +668,21 @@ class gitSsh_performer_sshSetup(icm.Cmnd):
             pubKeyAsStr = file.read().rstrip()
 
         if not bpf.subProc.WOpW(invedBy=self,).bash(
-                f"""sudo -u gitSsh grep "{pubKeyAsStr}" {gitSshAuthorizedFile}""",
+                f"""sudo -u gitSh grep "{pubKeyAsStr}" {gitShAuthorizedFile}""",
         ).exitCode():
-            icm.LOG_here(f"pubKey already in {gitSshAuthorizedFile}")
+            icm.LOG_here(f"pubKey already in {gitShAuthorizedFile}")
             return icm.opSuccessAnNoResult(cmndOutcome)
 
         if bpf.subProc.WOpW(invedBy=self,).bash(
-                f"""cat {pubKeyFile} | sudo -u gitSsh tee -a {gitSshAuthorizedFile}""",
+                f"""cat {pubKeyFile} | sudo -u gitSh tee -a {gitShAuthorizedFile}""",
         ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
 
         if bpf.subProc.WOpW(invedBy=self,).bash(
-            f"""sudo -u gitSsh chmod go-w {gitSshAuthorizedFile}""",
+            f"""sudo -u gitSh chmod go-w {gitShAuthorizedFile}""",
         ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
         print(
             bpf.subProc.WOpW(invedBy=self,).bash(
-                f"""sudo -u gitSsh ls -l {gitSshAuthorizedFile}""",
+                f"""sudo -u gitSh ls -l {gitShAuthorizedFile}""",
             ).stdout
         )
 
@@ -710,7 +710,7 @@ class gitSsh_performer_sshSetup(icm.Cmnd):
         cmndArgsSpecDict.argsDictAdd(
             argPosition="1",
             argName="pubKey",
-            argDefault='~gitSsh/.ssh/id_rsa.pub',
+            argDefault='~gitSh/.ssh/id_rsa.pub',
             argChoices='any',
             argDescription="pubKey to be added to cntnr.",
         )
@@ -724,11 +724,11 @@ class gitSsh_performer_sshSetup(icm.Cmnd):
 ####+END:
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSsh_performer_rosuAp_create" :comment "SERVICE" :parsMand "rosu rosuAp" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_performer_rosuAp_create" :comment "SERVICE" :parsMand "rosu rosuAp" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSsh_performer_rosuAp_create/ =SERVICE= parsMand=rosu rosuAp parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_performer_rosuAp_create/ =SERVICE= parsMand=rosu rosuAp parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-class gitSsh_performer_rosuAp_create(icm.Cmnd):
+class gitSh_performer_rosuAp_create(icm.Cmnd):
     cmndParamsMandatory = [ 'rosu', 'rosuAp', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
@@ -763,7 +763,7 @@ class gitSsh_performer_rosuAp_create(icm.Cmnd):
         repoName = f"{rosu}.git"
 
         repoBaseDir = os.path.join(
-            os.path.expanduser("~gitSsh"),
+            os.path.expanduser("~gitSh"),
             repoName,
         )
         if os.path.isdir(repoBaseDir):
@@ -771,11 +771,11 @@ class gitSsh_performer_rosuAp_create(icm.Cmnd):
             return icm.opSuccessAnNoResult(cmndOutcome)
         else:
             if bpf.subProc.WOpW(invedBy=self,).bash(
-                f"""sudo -u gitSsh mkdir {repoBaseDir}""",
+                f"""sudo -u gitSh mkdir {repoBaseDir}""",
             ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
 
             if bpf.subProc.WOpW(invedBy=self, cd=repoBaseDir).bash(
-                    f"""sudo -u gitSsh git init --bare""",
+                    f"""sudo -u gitSh git init --bare""",
             ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
 
         #
@@ -803,12 +803,12 @@ exit
             "hooks",
             "post-receive",
         )
-        bpf.pyRunAs.as_gitSsh_writeToFile(
+        bpf.pyRunAs.as_gitSh_writeToFile(
             postReceiveHookPath,
             postReceiveHookContent,
         )
         bpf.subProc.WOpW(invedBy=self,).bash(
-            f"""sudo -u gitSsh chmod +x {postReceiveHookPath}""",
+            f"""sudo -u gitSh chmod +x {postReceiveHookPath}""",
         )
         print(
             bpf.subProc.WOpW(invedBy=self,).bash(
@@ -820,11 +820,11 @@ exit
 
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSsh_invoker_rosuAp_create" :comment "USER" :parsMand "rosu" :parsOpt "" :argsMin "0" :argsMax "2" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_invoker_rosuAp_create" :comment "USER" :parsMand "rosu" :parsOpt "" :argsMin "0" :argsMax "2" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSsh_invoker_rosuAp_create/ =USER= parsMand=rosu parsOpt= argsMin=0 argsMax=2 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_invoker_rosuAp_create/ =USER= parsMand=rosu parsOpt= argsMin=0 argsMax=2 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-class gitSsh_invoker_rosuAp_create(icm.Cmnd):
+class gitSh_invoker_rosuAp_create(icm.Cmnd):
     cmndParamsMandatory = [ 'rosu', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 2,}
@@ -872,7 +872,7 @@ class gitSsh_invoker_rosuAp_create(icm.Cmnd):
             return icm.opSuccessAnNoResult(cmndOutcome)
 
         if bpf.subProc.WOpW(invedBy=self, cd=repoBase).bash(
-                f"""git clone gitSsh@gitSsh-localhost:{rosu}.git""",
+                f"""git clone gitSh@gitSh-localhost:{rosu}.git""",
         ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
 
         return icm.opSuccessAnNoResult(cmndOutcome)
@@ -892,7 +892,7 @@ class gitSsh_invoker_rosuAp_create(icm.Cmnd):
         cmndArgsSpecDict.argsDictAdd(
             argPosition="0",
             argName="repoBase",
-            argDefault='/bisos/var/gitSsh/invoker',
+            argDefault='/bisos/var/gitSh/invoker',
             argChoices='any',
             argDescription="Base dir in which repo will be cloned.",
         )
@@ -900,11 +900,11 @@ class gitSsh_invoker_rosuAp_create(icm.Cmnd):
         return cmndArgsSpecDict
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSsh_inv_opAP_create" :comment "USER" :parsMand "rosu" :parsOpt "" :argsMin "1" :argsMax "1" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "_gitSh_inv_opAP_create" :comment "USER" :parsMand "rosu" :parsOpt "" :argsMin "1" :argsMax "1" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSsh_inv_opAP_create/ =USER= parsMand=rosu parsOpt= argsMin=1 argsMax=1 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /_gitSh_inv_opAP_create/ =USER= parsMand=rosu parsOpt= argsMin=1 argsMax=1 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-class gitSsh_inv_opAP_create(icm.Cmnd):
+class _gitSh_inv_opAP_create(icm.Cmnd):
     cmndParamsMandatory = [ 'rosu', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 1, 'Max': 1,}
@@ -935,97 +935,6 @@ class gitSsh_inv_opAP_create(icm.Cmnd):
 ####+END:
         docStr = """
 ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Creates an invokation Access Point
-***** update file. add .; commit; push
-        """
-        if self.docStrClassSet(docStr,): return cmndOutcome
-
-        repoBase = effectiveArgsList[0]  # type: ignore
-
-        if not os.path.isdir(repoBase):
-            icm.EH_problem_usageError(f"Missing {repoBase}")
-            return(icm.EH_badOutcome(cmndOutcome))
-
-        if bpf.subProc.WOpW(invedBy=self, cd=repoBase).bash(
-                f"""date | tee -a oneFile""",
-        ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
-
-        if bpf.subProc.WOpW(invedBy=self, cd=repoBase).bash(
-                f"""git add .""",
-        ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
-
-        if bpf.subProc.WOpW(invedBy=self, cd=repoBase).bash(
-                f"""git commit -m "Auto Generated." """,
-        ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
-
-        if bpf.subProc.WOpW(invedBy=self, cd=repoBase).bash(
-                f"""git push""",
-        ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
-
-        return icm.opSuccessAnNoResult(cmndOutcome)
-
-
-####+BEGIN: bx:icm:python:method :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList ""
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-anyOrNone :: /cmndArgsSpec/ retType=bool argsList=nil deco=default  [[elisp:(org-cycle)][| ]]
-"""
-    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmndArgsSpec(self):
-####+END:
-        """
-***** Cmnd Args Specification: cntnr and pubKey
-"""
-        cmndArgsSpecDict = icm.CmndArgsSpecDict()
-        cmndArgsSpecDict.argsDictAdd(
-            argPosition="0",
-            argName="repoBase",
-            argDefault='/tmp/trigger-jekyll',
-            argChoices='any',
-            argDescription="Base dir in which repo will be created.",
-        )
-        cmndArgsSpecDict.argsDictAdd(
-            argPosition="1",
-            argName="palsId",
-            argDefault='thisPalsId',
-            argChoices='any',
-            argDescription="Base dir in which repo will be created.",
-        )
-        return cmndArgsSpecDict
-
-
-
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSsh_invoker_trigger_jekyll" :comment "USER" :parsMand "" :parsOpt "" :argsMin "1" :argsMax "1" :asFunc "" :interactiveP ""
-"""
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSsh_invoker_trigger_jekyll/ =USER= parsMand= parsOpt= argsMin=1 argsMax=1 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
-"""
-class gitSsh_invoker_trigger_jekyll(icm.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 1, 'Max': 1,}
-
-    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-        interactive=False,        # Can also be called non-interactively
-        argsList=[],         # or Args-Input
-    ) -> icm.OpOutcome:
-        cmndOutcome = self.getOpOutcome()
-        if not self.obtainDocStr:
-            if interactive:
-                if not self.cmndLineValidate(outcome=cmndOutcome):
-                    return cmndOutcome
-                effectiveArgsList = G.icmRunArgsGet().cmndArgs  # type: ignore
-            else:
-                effectiveArgsList = argsList
-
-            callParamsDict = {}
-            if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
-                return cmndOutcome
-
-            cmndArgsSpecDict = self.cmndArgsSpec()
-            if not self.cmndArgsValidate(effectiveArgsList, cmndArgsSpecDict, outcome=cmndOutcome):
-                return cmndOutcome
-####+END:
-        docStr = """
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] NOTYET_
 ***** update file. add .; commit; push
         """
         if self.docStrClassSet(docStr,): return cmndOutcome
@@ -1148,7 +1057,7 @@ class RosuAccessPoint(object):
 ** Abstraction of ROSU Access Point
 """
 
-    rosuBase = "/bisos/var/gitSsh/performer"
+    rosuBase = "/bisos/var/gitSh/performer"
 
 ####+BEGIN: bx:icm:py3:method :methodName "__init__" :deco "default"
     """
@@ -1200,17 +1109,18 @@ class RosuAccessPoint(object):
         return self._performerAddr
 
 
-####+BEGIN: bx:dblock:python:class :className "GitSsh_RosuAccessPoint" :superClass "RosuAccessPoint" :comment "ROSU Access Point" :classType "basic"
+####+BEGIN: bx:dblock:python:class :className "GitSh_RosuAccessPoint" :superClass "RosuAccessPoint" :comment "ROSU Access Point" :classType "basic"
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /GitSsh_RosuAccessPoint/ RosuAccessPoint =ROSU Access Point=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /GitSh_RosuAccessPoint/ RosuAccessPoint =ROSU Access Point=  [[elisp:(org-cycle)][| ]]
 """
-class GitSsh_RosuAccessPoint(RosuAccessPoint):
+class GitSh_RosuAccessPoint(RosuAccessPoint):
 ####+END:
     """
 ** Abstraction of the base ByStar Portable Object
 """
 
-    rosuBase = "/bisos/var/gitSsh/performer"
+    rosuPerformerBase = "/bisos/var/gitSh/performer"
+    rosuInvokerBase = "/bisos/var/gitSh/invoker"
 
 ####+BEGIN: bx:icm:py3:method :methodName "__init__" :deco "default"
     """
@@ -1224,45 +1134,34 @@ class GitSsh_RosuAccessPoint(RosuAccessPoint):
             rosuApName: str,
             performerAddr: str,
     ):
-        self._rosu = rosu
-        self._rosuApName = rosuApName
-        self._performerAddr = performerAddr
+        super().__init__(rosu, rosuApName, performerAddr,)
 
-####+BEGIN: bx:icm:py3:method :methodName "rosu" :deco "property"
+####+BEGIN: bx:icm:py3:method :methodName "rosuAp_invPath" :deco "property"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosu/ deco=property  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosuAp_invPath/ deco=property  [[elisp:(org-cycle)][| ]]
 """
     @property
-    def rosu(
+    def rosuAp_invPath(
 ####+END:
             self,
     ):
-        return self._rosu
+        return (
+            os.path.join(class().rosuInvokerBase, self.rosuApName,)
+        )
 
-####+BEGIN: bx:icm:py3:method :methodName "rosuApName" :deco "property"
+
+####+BEGIN: bx:icm:py3:method :methodName "rosuAp_perfPath" :deco "property"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosuApName/ deco=property  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosuAp_perfPath/ deco=property  [[elisp:(org-cycle)][| ]]
 """
     @property
-    def rosuApName(
+    def rosuAp_perfPath(
 ####+END:
             self,
     ):
-        return self._rosuApName
-
-####+BEGIN: bx:icm:py3:method :methodName "performerAddr" :deco "property"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /performerAddr/ deco=property  [[elisp:(org-cycle)][| ]]
-"""
-    @property
-    def performerAddr(
-####+END:
-            self,
-    ):
-        return self._performerAddr
-
-
-
+        return (
+            os.path.join(class().rosuInvokerBase, self.rosuApName,)
+        )
 
 ####+BEGIN: bx:dblock:python:class :className "OperationAccessPoint" :superClass "object" :comment "Operation Access Point" :classType "basic"
 """
@@ -1401,11 +1300,11 @@ class OperationAccessPoint(ABC):
         """
         pass
 
-####+BEGIN: bx:dblock:python:class :className "GitSsh_InvokerOpAP" :superClass "OperationAccessPoint" :comment "Operation Access Point" :classType "basic"
+####+BEGIN: bx:dblock:python:class :className "GitSh_InvokerOpAP" :superClass "OperationAccessPoint" :comment "Operation Access Point" :classType "basic"
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /GitSsh_InvokerOpAP/ OperationAccessPoint =Operation Access Point=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /GitSh_InvokerOpAP/ OperationAccessPoint =Operation Access Point=  [[elisp:(org-cycle)][| ]]
 """
-class GitSsh_InvokerOpAP(OperationAccessPoint):
+class GitSh_InvokerOpAP(OperationAccessPoint):
 ####+END:
     """
 ** Abstraction of the base ByStar Portable Object
@@ -1420,44 +1319,35 @@ class GitSsh_InvokerOpAP(OperationAccessPoint):
     def __init__(
 ####+END:
             self,
-            rosuAp: RosuAP,
+            rosuAp: GitSh_RosuAccessPoint,
     ):
         self._rosuAp = rosuAp
 
-####+BEGIN: bx:icm:py3:method :methodName "rosuAp" :deco "property"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosuAp/ deco=property  [[elisp:(org-cycle)][| ]]
-"""
-    @property
-    def rosuAp(
-####+END:
-            self,
-    ):
-        return self._rosuAp
 
-####+BEGIN: bx:icm:py3:method :methodName "invokeIdCreate" :deco "abstractmethod"
+####+BEGIN: bx:icm:py3:method :methodName "invokeIdCreate" :deco "default"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invokeIdCreate/ deco=abstractmethod  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invokeIdCreate/ deco=default  [[elisp:(org-cycle)][| ]]
 """
-    @abstractmethod
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def invokeIdCreate(
 ####+END:
             self,
     ):
-        self._id = "NOTYET"  # datetag, plus file check
+        self._invId = "NOTYET"  # datetag, plus file check
+        self._invIdPath = "NOTYET"
 
-####+BEGIN: bx:icm:py3:method :methodName "id" :deco "property"
+####+BEGIN: bx:icm:py3:method :methodName "invId" :deco "default"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /id/ deco=property  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invId/ deco=default  [[elisp:(org-cycle)][| ]]
 """
-    @property
-    def id(
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def invId(
 ####+END:
             self,
     ):
-        return self._id
+        return self._invId
 
-####+BEGIN: bx:icm:py3:method :methodName "invoke" :deco "abstractmethod"
+####+BEGIN: bx:icm:py3:method :methodName "invoke" :deco "default"
     """
 **  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invoke/ deco=default  [[elisp:(org-cycle)][| ]]
 """
@@ -1473,11 +1363,11 @@ class GitSsh_InvokerOpAP(OperationAccessPoint):
         """
         print(f"{opName}{opParams}")
 
-####+BEGIN: bx:icm:py3:method :methodName "invokeSubmit" :deco "abstractmethod"
+####+BEGIN: bx:icm:py3:method :methodName "invokeSubmit" :deco "default"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invokeSubmit/ deco=abstractmethod  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invokeSubmit/ deco=default  [[elisp:(org-cycle)][| ]]
 """
-    @abstractmethod
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def invokeSubmit(
 ####+END:
             self,
@@ -1489,11 +1379,11 @@ class GitSsh_InvokerOpAP(OperationAccessPoint):
         """
         print(f"{opName}{opParams}")
 
-####+BEGIN: bx:icm:py3:method :methodName "invokeOutcomeRetreive" :deco "abstractmethod"
+####+BEGIN: bx:icm:py3:method :methodName "invokeOutcomeRetreive" :deco "default"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invokeOutcomeRetreive/ deco=abstractmethod  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invokeOutcomeRetreive/ deco=default  [[elisp:(org-cycle)][| ]]
 """
-    @abstractmethod
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def invokeOutcomeRetreive(
 ####+END:
             self,
@@ -1505,51 +1395,15 @@ class GitSsh_InvokerOpAP(OperationAccessPoint):
         """
         print(f"{opName}{opParams}")
 
-
-####+BEGIN: bx:icm:py3:method :methodName "perform" :deco "abstractmethod"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /perform/ deco=abstractmethod  [[elisp:(org-cycle)][| ]]
+####+BEGIN: bx:dblock:python:class :className "GitSh_PerformerOpAP" :superClass "OperationAccessPoint" :comment "Operation Access Point" :classType "basic"
 """
-    @abstractmethod
-    def perform(
-####+END:
-            self,
-            opName: str,
-            opParams: str,
-    ):
-        """
-*** Look into rosd, subject opName to access control, then invoke
-        """
-        print(f"{opName}{opParams}")
-
-####+BEGIN: bx:icm:py3:method :methodName "performOutcomeSubmit" :deco "abstractmethod"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /performOutcomeSubmit/ deco=abstractmethod  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /GitSh_PerformerOpAP/ OperationAccessPoint =Operation Access Point=  [[elisp:(org-cycle)][| ]]
 """
-    @abstractmethod
-    def performOutcomeSubmit(
-####+END:
-            self,
-            opName: str,
-            opParams: str,
-    ):
-        """
-*** Look into rosd, subject opName to access control, then invoke
-        """
-        print(f"{opName}{opParams}")
-
-
-
-####+BEGIN: bx:dblock:python:class :className "GitSsh_PerformerOpAP" :superClass "OperationAccessPoint" :comment "Operation Access Point" :classType "basic"
-"""
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /GitSsh_PerformerOpAP/ OperationAccessPoint =Operation Access Point=  [[elisp:(org-cycle)][| ]]
-"""
-class GitSsh_PerformerOpAP(OperationAccessPoint):
+class GitSh_PerformerOpAP(OperationAccessPoint):
 ####+END:
     """
 ** Abstraction of the base ByStar Portable Object
 """
-
 
 ####+BEGIN: bx:icm:py3:method :methodName "__init__" :deco "default"
     """
@@ -1559,7 +1413,7 @@ class GitSsh_PerformerOpAP(OperationAccessPoint):
     def __init__(
 ####+END:
             self,
-            rosuAp: RosuAP,
+            rosuAp: GitSh_RosuAccessPoint,
     ):
         self._rosuAp = rosuAp
 
@@ -1574,82 +1428,23 @@ class GitSsh_PerformerOpAP(OperationAccessPoint):
     ):
         return self._rosuAp
 
-####+BEGIN: bx:icm:py3:method :methodName "invokeIdCreate" :deco "abstractmethod"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invokeIdCreate/ deco=abstractmethod  [[elisp:(org-cycle)][| ]]
-"""
-    @abstractmethod
-    def invokeIdCreate(
-####+END:
-            self,
-    ):
-        self._id = "NOTYET"  # datetag, plus file check
 
-####+BEGIN: bx:icm:py3:method :methodName "id" :deco "property"
+####+BEGIN: bx:icm:py3:method :methodName "invId" :deco "property"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /id/ deco=property  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invId/ deco=property  [[elisp:(org-cycle)][| ]]
 """
     @property
-    def id(
+    def invId(
 ####+END:
             self,
     ):
-        return self._id
+        return self._invId
 
-####+BEGIN: bx:icm:py3:method :methodName "invoke" :deco "abstractmethod"
+####+BEGIN: bx:icm:py3:method :methodName "perform" :deco "default"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invoke/ deco=default  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /perform/ deco=default  [[elisp:(org-cycle)][| ]]
 """
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
-    def invoke(
-####+END:
-            self,
-            opName: str,
-            opParams: str,
-    ):
-        """
-*** Look into rosd, subject opName to access control, then invoke
-        """
-        print(f"{opName}{opParams}")
-
-####+BEGIN: bx:icm:py3:method :methodName "invokeSubmit" :deco "abstractmethod"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invokeSubmit/ deco=abstractmethod  [[elisp:(org-cycle)][| ]]
-"""
-    @abstractmethod
-    def invokeSubmit(
-####+END:
-            self,
-            opName: str,
-            opParams: str,
-    ):
-        """
-*** Look into rosd, subject opName to access control, then invoke
-        """
-        print(f"{opName}{opParams}")
-
-####+BEGIN: bx:icm:py3:method :methodName "invokeOutcomeRetreive" :deco "abstractmethod"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /invokeOutcomeRetreive/ deco=abstractmethod  [[elisp:(org-cycle)][| ]]
-"""
-    @abstractmethod
-    def invokeOutcomeRetreive(
-####+END:
-            self,
-            opName: str,
-            opParams: str,
-    ):
-        """
-*** Look into rosd, subject opName to access control, then invoke
-        """
-        print(f"{opName}{opParams}")
-
-
-####+BEGIN: bx:icm:py3:method :methodName "perform" :deco "abstractmethod"
-    """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /perform/ deco=abstractmethod  [[elisp:(org-cycle)][| ]]
-"""
-    @abstractmethod
     def perform(
 ####+END:
             self,
@@ -1661,11 +1456,11 @@ class GitSsh_PerformerOpAP(OperationAccessPoint):
         """
         print(f"{opName}{opParams}")
 
-####+BEGIN: bx:icm:py3:method :methodName "performOutcomeSubmit" :deco "abstractmethod"
+####+BEGIN: bx:icm:py3:method :methodName "performOutcomeSubmit" :deco "default"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /performOutcomeSubmit/ deco=abstractmethod  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /performOutcomeSubmit/ deco=default  [[elisp:(org-cycle)][| ]]
 """
-    @abstractmethod
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def performOutcomeSubmit(
 ####+END:
             self,
