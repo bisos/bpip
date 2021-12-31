@@ -116,26 +116,26 @@ g_importedCmndsModules = [       # Enumerate modules from which CMNDs become inv
     'blee.icmPlayer.bleep',
 ]
 
-####+BEGIN: bx:icm:python:func :funcName "commonParamsSpecify" :comment "Params Spec for: --rosu" :funcType "FmWrk" :retType "Void" :deco "" :argsList "icmParams"
+####+BEGIN: bx:icm:python:func :funcName "commonParamsSpecify" :comment "Params Spec for: --rosmu" :funcType "FmWrk" :retType "Void" :deco "" :argsList "icmParams"
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-FmWrk :: /commonParamsSpecify/ =Params Spec for: --rosu= retType=Void argsList=(icmParams)  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-FmWrk :: /commonParamsSpecify/ =Params Spec for: --rosmu= retType=Void argsList=(icmParams)  [[elisp:(org-cycle)][| ]]
 """
 def commonParamsSpecify(
     icmParams,
 ):
 ####+END:
     """
-** --rosu (Remote Operations Service Unit. Name of the ROS)
+** --rosmu (Remote Operations Service Unit. Name of the ROS)
     """
     icmParams.parDictAdd(
-        parName='rosu',
+        parName='rosmu',
         parDescription="Remote Operations Service Unit. Name of the ROS",
         parDataType=None,
         parDefault=None,
         parChoices=["any"],
         # parScope=icm.ICM_ParamScope.TargetParam,
         argparseShortOpt=None,
-        argparseLongOpt='--rosu',
+        argparseLongOpt='--rosmu',
     )
 
 ####+BEGIN: bx:icm:python:func :funcName "g_paramsExtraSpecify" :comment "FrameWork: ArgsSpec" :funcType "FmWrk" :retType "Void" :deco "" :argsList "parser"
@@ -717,27 +717,27 @@ class gitSh_performer_sshSetup(icm.Cmnd):
         return cmndArgsSpecDict
 
 
-####+BEGIN: bx:icm:py3:section :title "ICM Actions: RosuAP Create -- Invoker And Performer"
+####+BEGIN: bx:icm:py3:section :title "ICM Actions: RosmuAP Create -- Invoker And Performer"
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    :: *ICM Actions: RosuAP Create -- Invoker And Performer*  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    :: *ICM Actions: RosmuAP Create -- Invoker And Performer*  [[elisp:(org-cycle)][| ]]
 """
 ####+END:
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_performer_rosuAp_create" :comment "SERVICE" :parsMand "rosu rosuAp" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_performer_rosmuAp_create" :comment "SERVICE" :parsMand "rosmu rosmuAp" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_performer_rosuAp_create/ =SERVICE= parsMand=rosu rosuAp parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_performer_rosmuAp_create/ =SERVICE= parsMand=rosmu rosmuAp parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-class gitSh_performer_rosuAp_create(icm.Cmnd):
-    cmndParamsMandatory = [ 'rosu', 'rosuAp', ]
+class gitSh_performer_rosmuAp_create(icm.Cmnd):
+    cmndParamsMandatory = [ 'rosmu', 'rosmuAp', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
-        rosu=None,         # or Cmnd-Input
-        rosuAp=None,         # or Cmnd-Input
+        rosmu=None,         # or Cmnd-Input
+        rosmuAp=None,         # or Cmnd-Input
     ) -> icm.OpOutcome:
         cmndOutcome = self.getOpOutcome()
         if not self.obtainDocStr:
@@ -745,22 +745,22 @@ class gitSh_performer_rosuAp_create(icm.Cmnd):
                 if not self.cmndLineValidate(outcome=cmndOutcome):
                     return cmndOutcome
 
-            callParamsDict = {'rosu': rosu, 'rosuAp': rosuAp, }
+            callParamsDict = {'rosmu': rosmu, 'rosmuAp': rosmuAp, }
             if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
                 return cmndOutcome
-            rosu = callParamsDict['rosu']
-            rosuAp = callParamsDict['rosuAp']
+            rosmu = callParamsDict['rosmu']
+            rosmuAp = callParamsDict['rosmuAp']
 
 ####+END:
         docStr = """
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Create the repo named rosu, if it does not exist.
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Create the repo named rosmu, if it does not exist.
 ***** Repo Create; Create post-./post-receive
-***** In complete implementation -- not this -- There is a rosuAP create service to which invoker provides rosuAP.
-***** This is a short cut implementation, where rosu and rosuAP are the same and when this is implemented on performer.
+***** In complete implementation -- not this -- There is a rosmuAP create service to which invoker provides rosmuAP.
+***** This is a short cut implementation, where rosmu and rosmuAP are the same and when this is implemented on performer.
         """
         if self.docStrClassSet(docStr,): return cmndOutcome
 
-        repoName = f"{rosu}.git"
+        repoName = f"{rosmu}.git"
 
         repoBaseDir = os.path.join(
             os.path.expanduser("~gitSh"),
@@ -820,19 +820,19 @@ exit
 
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_invoker_rosuAp_create" :comment "USER" :parsMand "rosu" :parsOpt "" :argsMin "0" :argsMax "2" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "gitSh_invoker_rosmuAp_create" :comment "USER" :parsMand "rosmu" :parsOpt "" :argsMin "0" :argsMax "2" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_invoker_rosuAp_create/ =USER= parsMand=rosu parsOpt= argsMin=0 argsMax=2 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /gitSh_invoker_rosmuAp_create/ =USER= parsMand=rosmu parsOpt= argsMin=0 argsMax=2 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
-class gitSh_invoker_rosuAp_create(icm.Cmnd):
-    cmndParamsMandatory = [ 'rosu', ]
+class gitSh_invoker_rosmuAp_create(icm.Cmnd):
+    cmndParamsMandatory = [ 'rosmu', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 2,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
-        rosu=None,         # or Cmnd-Input
+        rosmu=None,         # or Cmnd-Input
         argsList=[],         # or Args-Input
     ) -> icm.OpOutcome:
         cmndOutcome = self.getOpOutcome()
@@ -844,17 +844,17 @@ class gitSh_invoker_rosuAp_create(icm.Cmnd):
             else:
                 effectiveArgsList = argsList
 
-            callParamsDict = {'rosu': rosu, }
+            callParamsDict = {'rosmu': rosmu, }
             if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
                 return cmndOutcome
-            rosu = callParamsDict['rosu']
+            rosmu = callParamsDict['rosmu']
 
             cmndArgsSpecDict = self.cmndArgsSpec()
             if not self.cmndArgsValidate(effectiveArgsList, cmndArgsSpecDict, outcome=cmndOutcome):
                 return cmndOutcome
 ####+END:
         docStr = """
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Use arg0 and param rosu to clone
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Use arg0 and param rosmu to clone
 ***** update file. add .; commit; push
         """
         if self.docStrClassSet(docStr,): return cmndOutcome
@@ -865,14 +865,14 @@ class gitSh_invoker_rosuAp_create(icm.Cmnd):
         if not os.path.isdir(repoBase):
             return(icm.EH_badOutcome(cmndOutcome))
 
-        repoName = rosu
+        repoName = rosmu
 
         if os.path.isdir(os.path.join(repoBase, repoName)):
             icm.LOG_here(f"{os.path.join(repoBase, repoName)} is in place -- git-cloning skipped")
             return icm.opSuccessAnNoResult(cmndOutcome)
 
         if bpf.subProc.WOpW(invedBy=self, cd=repoBase).bash(
-                f"""git clone gitSh@gitSh-localhost:{rosu}.git""",
+                f"""git clone gitSh@gitSh-localhost:{rosmu}.git""",
         ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
 
         return icm.opSuccessAnNoResult(cmndOutcome)
@@ -900,19 +900,19 @@ class gitSh_invoker_rosuAp_create(icm.Cmnd):
         return cmndArgsSpecDict
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "_gitSh_inv_opAP_create" :comment "USER" :parsMand "rosu" :parsOpt "" :argsMin "1" :argsMax "1" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "_gitSh_inv_opAP_create" :comment "USER" :parsMand "rosmu" :parsOpt "" :argsMin "1" :argsMax "1" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /_gitSh_inv_opAP_create/ =USER= parsMand=rosu parsOpt= argsMin=1 argsMax=1 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /_gitSh_inv_opAP_create/ =USER= parsMand=rosmu parsOpt= argsMin=1 argsMax=1 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
 class _gitSh_inv_opAP_create(icm.Cmnd):
-    cmndParamsMandatory = [ 'rosu', ]
+    cmndParamsMandatory = [ 'rosmu', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 1, 'Max': 1,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
-        rosu=None,         # or Cmnd-Input
+        rosmu=None,         # or Cmnd-Input
         argsList=[],         # or Args-Input
     ) -> icm.OpOutcome:
         cmndOutcome = self.getOpOutcome()
@@ -924,10 +924,10 @@ class _gitSh_inv_opAP_create(icm.Cmnd):
             else:
                 effectiveArgsList = argsList
 
-            callParamsDict = {'rosu': rosu, }
+            callParamsDict = {'rosmu': rosmu, }
             if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
                 return cmndOutcome
-            rosu = callParamsDict['rosu']
+            rosmu = callParamsDict['rosmu']
 
             cmndArgsSpecDict = self.cmndArgsSpec()
             if not self.cmndArgsValidate(effectiveArgsList, cmndArgsSpecDict, outcome=cmndOutcome):
@@ -998,11 +998,11 @@ class _gitSh_inv_opAP_create(icm.Cmnd):
 """
 ####+END:
 
-####+BEGIN: bx:dblock:python:class :className "ROSU" :superClass "object" :comment "Remote Operations Service Unit" :classType "basic"
+####+BEGIN: bx:dblock:python:class :className "ROSMU" :superClass "object" :comment "Remote Operations Service Unit" :classType "basic"
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /ROSU/ object =Remote Operations Service Unit=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /ROSMU/ object =Remote Operations Service Unit=  [[elisp:(org-cycle)][| ]]
 """
-class ROSU(object):
+class ROSMU(object):
 ####+END:
     """
 ** Abstraction of Remote Operations Service Unit.
@@ -1015,49 +1015,49 @@ class ROSU(object):
     def __init__(
 ####+END:
             self,
-            rosuName: str,
-            rosd: str,
+            rosmuName: str,
+            rosmuSpec: str,
     ):
-        self._rosuName = rosuName
-        self._rosd = rosd
+        self._rosmuName = rosmuName  # A named reference to rosmuSpec
+        self._rosmuSpec = rosmuSpec  # List Of Units, List Of rosmuStates
 
-####+BEGIN: bx:icm:py3:method :methodName "rosuName" :deco "property"
+####+BEGIN: bx:icm:py3:method :methodName "rosmuName" :deco "property"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosuName/ deco=property  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosmuName/ deco=property  [[elisp:(org-cycle)][| ]]
 """
     @property
-    def rosuName(
+    def rosmuName(
 ####+END:
             self,
     ):
-        return self._rosuName
+        return self._rosmuName
 
-####+BEGIN: bx:icm:py3:method :methodName "rosd" :deco "property"
+####+BEGIN: bx:icm:py3:method :methodName "rosmuSpec" :deco "property"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosd/ deco=property  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosmuSpec/ deco=property  [[elisp:(org-cycle)][| ]]
 """
     @property
-    def rosd(
+    def rosmuSpec(
 ####+END:
             self,
     ):
         """
 *** ROS Description. The Contract Specification. Points to a file.
         """
-        return self._rosd
+        return self._rosmuSpec
 
 
-####+BEGIN: bx:dblock:python:class :className "RosuAccessPoint" :superClass "object" :comment "ROSU Access Point" :classType "basic"
+####+BEGIN: bx:dblock:python:class :className "RosmuAccessPoint" :superClass "object" :comment "ROSMU Access Point" :classType "basic"
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /RosuAccessPoint/ object =ROSU Access Point=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /RosmuAccessPoint/ object =ROSMU Access Point=  [[elisp:(org-cycle)][| ]]
 """
-class RosuAccessPoint(object):
+class RosmuAccessPoint(object):
 ####+END:
     """
-** Abstraction of ROSU Access Point
+** Abstraction of ROSMU Access Point
 """
 
-    rosuBase = "/bisos/var/gitSh/performer"
+    rosmuBase = "/bisos/var/gitSh/performer"
 
 ####+BEGIN: bx:icm:py3:method :methodName "__init__" :deco "default"
     """
@@ -1067,35 +1067,39 @@ class RosuAccessPoint(object):
     def __init__(
 ####+END:
             self,
-            rosu: ROSU,
-            rosuApName: str,
+            rosmu: ROSMU,
+            rosmuApName: str,
             performerAddr: str,
+            rosmuState: str,
+            rosmuFiles: str,
     ):
-        self._rosu = rosu
-        self._rosuApName = rosuApName
+        self._rosmu = rosmu
+        self._rosmuApName = rosmuApName
         self._performerAddr = performerAddr
+        self._rosmuState = rosmuState
+        self._rosmuFiles = rosmuFiles  # slash root of the file system for this rosmu
 
-####+BEGIN: bx:icm:py3:method :methodName "rosu" :deco "property"
+####+BEGIN: bx:icm:py3:method :methodName "rosmu" :deco "property"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosu/ deco=property  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosmu/ deco=property  [[elisp:(org-cycle)][| ]]
 """
     @property
-    def rosu(
+    def rosmu(
 ####+END:
             self,
     ):
-        return self._rosu
+        return self._rosmu
 
-####+BEGIN: bx:icm:py3:method :methodName "rosuApName" :deco "property"
+####+BEGIN: bx:icm:py3:method :methodName "rosmuApName" :deco "property"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosuApName/ deco=property  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosmuApName/ deco=property  [[elisp:(org-cycle)][| ]]
 """
     @property
-    def rosuApName(
+    def rosmuApName(
 ####+END:
             self,
     ):
-        return self._rosuApName
+        return self._rosmuApName
 
 ####+BEGIN: bx:icm:py3:method :methodName "performerAddr" :deco "property"
     """
@@ -1109,18 +1113,18 @@ class RosuAccessPoint(object):
         return self._performerAddr
 
 
-####+BEGIN: bx:dblock:python:class :className "GitSh_RosuAccessPoint" :superClass "RosuAccessPoint" :comment "ROSU Access Point" :classType "basic"
+####+BEGIN: bx:dblock:python:class :className "GitSh_RosmuAccessPoint" :superClass "RosmuAccessPoint" :comment "ROSMU Access Point" :classType "basic"
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /GitSh_RosuAccessPoint/ RosuAccessPoint =ROSU Access Point=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /GitSh_RosmuAccessPoint/ RosmuAccessPoint =ROSMU Access Point=  [[elisp:(org-cycle)][| ]]
 """
-class GitSh_RosuAccessPoint(RosuAccessPoint):
+class GitSh_RosmuAccessPoint(RosmuAccessPoint):
 ####+END:
     """
 ** Abstraction of the base ByStar Portable Object
 """
 
-    rosuPerformerBase = "/bisos/var/gitSh/performer"
-    rosuInvokerBase = "/bisos/var/gitSh/invoker"
+    rosmuPerformerBase = "/bisos/var/gitSh/performer"
+    rosmuInvokerBase = "/bisos/var/gitSh/invoker"
 
 ####+BEGIN: bx:icm:py3:method :methodName "__init__" :deco "default"
     """
@@ -1130,37 +1134,37 @@ class GitSh_RosuAccessPoint(RosuAccessPoint):
     def __init__(
 ####+END:
             self,
-            rosu: ROSU,
-            rosuApName: str,
+            rosmu: ROSMU,
+            rosmuApName: str,
             performerAddr: str,
     ):
-        super().__init__(rosu, rosuApName, performerAddr,)
+        super().__init__(rosmu, rosmuApName, performerAddr,)
 
-####+BEGIN: bx:icm:py3:method :methodName "rosuAp_invPath" :deco "property"
+####+BEGIN: bx:icm:py3:method :methodName "rosmuAp_invPath" :deco "property"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosuAp_invPath/ deco=property  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosmuAp_invPath/ deco=property  [[elisp:(org-cycle)][| ]]
 """
     @property
-    def rosuAp_invPath(
+    def rosmuAp_invPath(
 ####+END:
             self,
     ):
         return (
-            os.path.join(class().rosuInvokerBase, self.rosuApName,)
+            os.path.join(__class__.rosmuInvokerBase, self.rosmuApName,)
         )
 
 
-####+BEGIN: bx:icm:py3:method :methodName "rosuAp_perfPath" :deco "property"
+####+BEGIN: bx:icm:py3:method :methodName "rosmuAp_perfPath" :deco "property"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosuAp_perfPath/ deco=property  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosmuAp_perfPath/ deco=property  [[elisp:(org-cycle)][| ]]
 """
     @property
-    def rosuAp_perfPath(
+    def rosmuAp_perfPath(
 ####+END:
             self,
     ):
         return (
-            os.path.join(class().rosuInvokerBase, self.rosuApName,)
+            os.path.join(__class__.rosmuInvokerBase, self.rosmuApName,)
         )
 
 ####+BEGIN: bx:dblock:python:class :className "OperationAccessPoint" :superClass "object" :comment "Operation Access Point" :classType "basic"
@@ -1181,20 +1185,20 @@ class OperationAccessPoint(ABC):
     def __init__(
 ####+END:
             self,
-            rosuAp: RosuAccessPoint,
+            rosmuAp: RosmuAccessPoint,
     ):
-        self._rosuAp = rosuAp
+        self._rosmuAp = rosmuAp
 
-####+BEGIN: bx:icm:py3:method :methodName "rosuAp" :deco "property"
+####+BEGIN: bx:icm:py3:method :methodName "rosmuAp" :deco "property"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosuAp/ deco=property  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosmuAp/ deco=property  [[elisp:(org-cycle)][| ]]
 """
     @property
-    def rosuAp(
+    def rosmuAp(
 ####+END:
             self,
     ):
-        return self._rosuAp
+        return self._rosmuAp
 
 ####+BEGIN: bx:icm:py3:method :methodName "invIdCreate" :deco "abstractmethod"
     """
@@ -1231,7 +1235,7 @@ class OperationAccessPoint(ABC):
             opParams: str,
     ):
         """
-*** Look into rosd, subject opName to access control, then invoke
+*** Look into rosmuSpec, subject opName to access control, then invoke
         """
         print(f"{opName}{opParams}")
 
@@ -1247,7 +1251,7 @@ class OperationAccessPoint(ABC):
             opParams: str,
     ):
         """
-*** Look into rosd, subject opName to access control, then invoke
+*** Look into rosmuSpec, subject opName to access control, then invoke
         """
         pass
 
@@ -1263,7 +1267,7 @@ class OperationAccessPoint(ABC):
             opParams: str,
     ):
         """
-*** Look into rosd, subject opName to access control, then invoke
+*** Look into rosmuSpec, subject opName to access control, then invoke
         """
         pass
 
@@ -1280,7 +1284,7 @@ class OperationAccessPoint(ABC):
             opParams: str,
     ):
         """
-*** Look into rosd, subject opName to access control, then invoke
+*** Look into rosmuSpec, subject opName to access control, then invoke
         """
         pass
 
@@ -1296,7 +1300,7 @@ class OperationAccessPoint(ABC):
             opParams: str,
     ):
         """
-*** Look into rosd, subject opName to access control, then invoke
+*** Look into rosmuSpec, subject opName to access control, then invoke
         """
         pass
 
@@ -1319,9 +1323,9 @@ class GitSh_InvokerOpAP(OperationAccessPoint):
     def __init__(
 ####+END:
             self,
-            rosuAp: GitSh_RosuAccessPoint,
+            rosmuAp: GitSh_RosmuAccessPoint,
     ):
-        self._rosuAp = rosuAp
+        self._rosmuAp = rosmuAp
 
 
 ####+BEGIN: bx:icm:py3:method :methodName "invokeIdCreate" :deco "default"
@@ -1359,7 +1363,7 @@ class GitSh_InvokerOpAP(OperationAccessPoint):
             opParams: str,
     ):
         """
-*** Look into rosd, subject opName to access control, then invoke
+*** Look into rosmuSpec, subject opName to access control, then invoke
         """
         print(f"{opName}{opParams}")
 
@@ -1375,7 +1379,7 @@ class GitSh_InvokerOpAP(OperationAccessPoint):
             opParams: str,
     ):
         """
-*** Look into rosd, subject opName to access control, then invoke
+*** Look into rosmuSpec, subject opName to access control, then invoke
         """
         print(f"{opName}{opParams}")
 
@@ -1391,7 +1395,7 @@ class GitSh_InvokerOpAP(OperationAccessPoint):
             opParams: str,
     ):
         """
-*** Look into rosd, subject opName to access control, then invoke
+*** Look into rosmuSpec, subject opName to access control, then invoke
         """
         print(f"{opName}{opParams}")
 
@@ -1413,20 +1417,20 @@ class GitSh_PerformerOpAP(OperationAccessPoint):
     def __init__(
 ####+END:
             self,
-            rosuAp: GitSh_RosuAccessPoint,
+            rosmuAp: GitSh_RosmuAccessPoint,
     ):
-        self._rosuAp = rosuAp
+        self._rosmuAp = rosmuAp
 
-####+BEGIN: bx:icm:py3:method :methodName "rosuAp" :deco "property"
+####+BEGIN: bx:icm:py3:method :methodName "rosmuAp" :deco "property"
     """
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosuAp/ deco=property  [[elisp:(org-cycle)][| ]]
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Method-    :: /rosmuAp/ deco=property  [[elisp:(org-cycle)][| ]]
 """
     @property
-    def rosuAp(
+    def rosmuAp(
 ####+END:
             self,
     ):
-        return self._rosuAp
+        return self._rosmuAp
 
 
 ####+BEGIN: bx:icm:py3:method :methodName "invId" :deco "property"
@@ -1452,7 +1456,7 @@ class GitSh_PerformerOpAP(OperationAccessPoint):
             opParams: str,
     ):
         """
-*** Look into rosd, subject opName to access control, then invoke
+*** Look into rosmuSpec, subject opName to access control, then invoke
         """
         print(f"{opName}{opParams}")
 
@@ -1468,7 +1472,7 @@ class GitSh_PerformerOpAP(OperationAccessPoint):
             opParams: str,
     ):
         """
-*** Look into rosd, subject opName to access control, then invoke
+*** Look into rosmuSpec, subject opName to access control, then invoke
         """
         print(f"{opName}{opParams}")
 
@@ -1493,7 +1497,7 @@ class GitSh_PerformerOpAP(OperationAccessPoint):
 if __name__ == "__main__":
     icm.g_icmMain(
         icmInfo=icmInfo,
-        noCmndEntry=examples, # noCmndEntry=mainEntry,
+        noCmndEntry=examples,
         extraParamsHook=g_paramsExtraSpecify,
         importedCmndsModules=g_importedCmndsModules,
     )
