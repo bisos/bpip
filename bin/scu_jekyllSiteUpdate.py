@@ -316,9 +316,10 @@ class jekyllSiteUpdate(icm.Cmnd):
         """
         if self.docStrClassSet(docStr,): return cmndOutcome
 
-        print(f"bpoId={bpoId} -- si={si}")
-
-        return icm.opSuccessAnNoResult(cmndOutcome)
+        return cmndOutcome.set(
+            opError=icm.OpError.Success,  # type: ignore
+            opResults=f"bpoId={bpoId} -- si={si}",
+        )
 
 
 ####+BEGIN: bx:icm:py3:section :title "Supporting Classes And Functions"
