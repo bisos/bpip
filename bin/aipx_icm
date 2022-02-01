@@ -283,54 +283,6 @@ class examples(icm.Cmnd):
 
         return(cmndOutcome)
 
-
-####+BEGIN: icm:py3:cmnd:classHead :cmndName "noCmndProcessorPrev" :cmndType "ICM-Cmnd"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "aipxBase" :argsMin "0" :argsMax "9999" :asFunc "" :interactiveP ""
-"""
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /noCmndProcessorPrev/ =FrameWrk: ICM Examples= parsMand= parsOpt=aipxBase argsMin=0 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
-"""
-class noCmndProcessorPrev(icm.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ 'aipxBase', ]
-    cmndArgsLen = {'Min': 0, 'Max': 9999,}
-
-    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-        interactive=False,        # Can also be called non-interactively
-        aipxBase=None,         # or Cmnd-Input
-        argsList=[],         # or Args-Input
-    ) -> icm.OpOutcome:
-####+END:
-        """\
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] ICM examples, all on one place.
-        """
-        cmndOutcome = self.getOpOutcome()
-
-        def processCmndLineArgs():
-            """
-*** Process cmndLineArgs, since we know that it exists.
-            """
-            aipxBaseIns = pathlib.Path(aipxBase).joinpath('ins')
-            withInvModel = f"{cmndLineArgs[0]} --insAsFPs={aipxBaseIns}"
-            cmndLineArgs.pop(0)
-
-            for each in cmndLineArgs:
-                withInvModel = withInvModel + " " + each
-
-            aipxBaseIns.mkdir(parents=True, exist_ok=True)
-
-            if bpf.subProc.WOpW(invedBy=self,).bash(f"{withInvModel}",
-            ).isProblematic():  return(icm.EH_badOutcome(cmndOutcome))
-
-        cmndLineArgs = G.icmRunArgsGet().cmndArgs
-        # cmndLineArgs = argsList
-
-        if cmndLineArgs:
-            processCmndLineArgs()
-        else:
-            examples().cmnd()
-
-        return(cmndOutcome)
-
 ####+BEGIN: icm:py3:cmnd:classHead :cmndName "noCmndProcessor" :cmndType "ICM-Cmnd"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "aipxBase" :argsMin "0" :argsMax "9999" :asFunc "" :interactiveP ""
 """
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /noCmndProcessor/ =FrameWrk: ICM Examples= parsMand= parsOpt=aipxBase argsMin=0 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
@@ -534,9 +486,9 @@ class perfAtBase(icm.Cmnd):
         return(cmndOutcome)
 
 
-####+BEGIN: icm:py3:cmnd:classHead :cmndName "perf" :cmndType "ICM-Cmnd"  :comment "FrameWrk: ICM Examples" :parsMand "aipxRoot" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: icm:py3:cmnd:classHead :cmndName "perf" :cmndType "ICM-Cmnd"  :comment "Uses perfAtBase" :parsMand "aipxRoot" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /perf/ =FrameWrk: ICM Examples= parsMand=aipxRoot parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /perf/ =Uses perfAtBase= parsMand=aipxRoot parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
 class perf(icm.Cmnd):
     cmndParamsMandatory = [ 'aipxRoot', ]
@@ -575,9 +527,9 @@ class perf(icm.Cmnd):
 
         return(cmndOutcome)
 
-####+BEGIN: icm:py3:cmnd:classHead :cmndName "invPerf" :cmndType "ICM-Cmnd"  :comment "" :parsMand "aipxRoot" :parsOpt "" :argsMin "0" :argsMax "9999" :asFunc "" :interactiveP ""
+####+BEGIN: icm:py3:cmnd:classHead :cmndName "invPerf" :cmndType "ICM-Cmnd"  :comment "= inv + perf" :parsMand "aipxRoot" :parsOpt "" :argsMin "0" :argsMax "9999" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /invPerf/ parsMand=aipxRoot parsOpt= argsMin=0 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /invPerf/ == inv + perf= parsMand=aipxRoot parsOpt= argsMin=0 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
 class invPerf(icm.Cmnd):
     cmndParamsMandatory = [ 'aipxRoot', ]
@@ -590,10 +542,11 @@ class invPerf(icm.Cmnd):
         aipxRoot=None,         # or Cmnd-Input
         argsList=[],         # or Args-Input
     ) -> icm.OpOutcome:
+        """= inv + perf"""
 ####+END:
-        """\
+        self.cmndDocStr(f"""\
 ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] ICM examples, all on one place.
-        """
+        """)
         cmndOutcome = self.getOpOutcome()
 
         inv(cmndOutcome=cmndOutcome).cmnd(
@@ -604,37 +557,6 @@ class invPerf(icm.Cmnd):
              aipxRoot=aipxRoot,
         )
         return cmndOutcome
-
-####+BEGIN: icm:py3:cmnd:classHead :cmndName "newStyleCmnd" :cmndType "ICM-Cmnd"  :comment "" :parsMand "aipxBase" :parsOpt "" :argsMin "0" :argsMax "9999" :asFunc "" :interactiveP ""
-"""
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /newStyleCmnd/ parsMand=aipxBase parsOpt= argsMin=0 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
-"""
-class newStyleCmnd(icm.Cmnd):
-    cmndParamsMandatory = [ 'aipxBase', ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 9999,}
-
-    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-        interactive=False,        # Can also be called non-interactively
-        aipxBase=None,         # or Cmnd-Input
-        argsList=[],         # or Args-Input
-    ) -> icm.OpOutcome:
-####+END:
-        """\
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] ICM examples, all on one place.
-        """
-
-        cmndOutcome = self.getOpOutcome()
-
-        milliSecTimeTag = datetime.utcnow().strftime('%Y%m%d%H%M%S%f')[:-3]
-
-        if interactive:
-            print(f"{aipxBase} -- {argsList} -- {milliSecTimeTag}")
-
-        return(cmndOutcome)
-
-
 
 ####+BEGIN: bx:dblock:python:section :title "Class Definitions"
 """
