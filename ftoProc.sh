@@ -57,8 +57,8 @@ _CommentEnd_
 ####+BEGIN: bx:dblock:ploneProc:bash:nodesList :types ""
 # {{{ DBLOCK-nodesList
 nodesList="
-bin
 lib
+bin
 adopt
 "
 # }}} DBLOCK-nodesList
