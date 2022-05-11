@@ -485,7 +485,8 @@ class invPerf(icm.Cmnd):
 """
 ####+END:
 
-####+BEGIN: bx:icm:py3:main :mainType  "noCmndProcessor" :comment "Common"
+#BEGINNOT: bx:icm:py3:main :mainType  "noCmndProcessor" :comment "Common"
+####+BEGINNOT: bx:icm:py3:main :mainType  "examples" :comment "Common"
 """
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =Framework=  ::   __main__ g_icmMain :: /noCmndProcessor/ =Common=  [[elisp:(org-cycle)][| ]]
 """
@@ -495,7 +496,7 @@ class invPerf(icm.Cmnd):
 if __name__ == "__main__":
     icm.g_icmMain(
         icmInfo=icmInfo,
-        noCmndEntry=noCmndProcessor,
+        noCmndEntry=examples,
         extraParamsHook=g_paramsExtraSpecify,
         importedCmndsModules=g_importedCmndsModules,
     )
