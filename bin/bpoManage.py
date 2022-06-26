@@ -173,7 +173,7 @@ class examples(icm.Cmnd):
 
         logControler = icm.LOG_Control()
         logControler.loggerSetLevel(20)
-        
+
         icm.icmExampleMyName(G.icmMyName(), G.icmMyFullName())
         
         icm.G_commonBriefExamples()

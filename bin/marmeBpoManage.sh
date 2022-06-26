@@ -101,11 +101,11 @@ from unisos import icm
 
 from blee.icmPlayer import bleep
 
-from unisos.marme import marmeAcctsLib
+from bisos.marmee import marmeAcctsLib
 
 from bisos.common import serviceObject
 
-import bpo
+import bisos.bpo
 
 
 g_importedCmnds = {        # Enumerate modules from which CMNDs become invokable
@@ -309,7 +309,7 @@ class examples(icm.Cmnd):
 
         marmeAcctsLib.examples_bxoSrPkgInfoParsGet()
 
-        bpo.examples_bpo_srBaseDir()
+        bisos.bpo.examples_bpo_srBaseDir()
 
         print(bpo.moduleDescription)
 
