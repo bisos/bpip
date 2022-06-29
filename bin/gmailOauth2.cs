@@ -12,7 +12,7 @@ icmInfo: typing.Dict[str, typing.Any] = { 'moduleDescription': ["""
 *** +
 *** https://github.com/google/gmail-oauth2-tools -- An origin for this module.
 *** https://github.com/googleworkspace/python-samples/blob/master/gmail/quickstart/quickstart.py  -- Origin for this module.
-*** https://developers.google.com/gmail/api/quickstart/python -- An origin for this module.
+*** https://developers.google.com/gmail/api/quickstart/python -- Python 2.6+ An origin for this module.
 *** ---
 *** https://developers.google.com/gmail/api/auth/scopes
 *** https://google-auth.readthedocs.io/en/stable/_modules/google/oauth2/credentials.html
@@ -322,8 +322,18 @@ class refreshToken(icm.Cmnd):
                 creds = pickle.load(token)
                 # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
+            if creds:
+                print(f"creds.valid={creds.valid}")
             if creds and creds.expired and creds.refresh_token:
+                if creds:
+                    print(f"creds.expired={creds.expired}")
+                    print(f"creds.refresh_token={creds.refresh_token}")
                 creds.refresh(Request())
+                # 
+                # if the above fails like below:
+                # google.auth.exceptions.RefreshError: ('invalid_grant: Token has been expired or revoked.', {'error': 'invalid_grant', 'error_description': 'Token has been expired or revoked.'})
+                # remove the token.pickle file and run again
+                #
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
                        credsJsonFile, SCOPES)
