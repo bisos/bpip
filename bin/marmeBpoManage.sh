@@ -1,4 +1,4 @@
-#!/bisos/venv/py3/bisos3/bin/python
+#!/bin/env python
 # -*- coding: utf-8 -*-
 """\
 * *[Summary]* :: An =ICM=: Manages Mail Account Profiles.
@@ -105,8 +105,7 @@ from bisos.marmee import marmeAcctsLib
 
 from bisos.common import serviceObject
 
-import bisos.bpo
-
+from bisos.bpo import bpo
 
 g_importedCmnds = {        # Enumerate modules from which CMNDs become invokable
     'bleep': bleep.__file__,
@@ -309,11 +308,11 @@ class examples(icm.Cmnd):
 
         marmeAcctsLib.examples_bxoSrPkgInfoParsGet()
 
-        bisos.bpo.examples_bpo_srBaseDir()
+        #bpo.examples_bpo_srBaseDir()
 
-        print(bpo.moduleDescription)
+        # print(bpo.moduleDescription)
 
-        return
+        # return
 
         marmeAcctsLib.examples_controlProfileManage()
 
