@@ -1,7 +1,7 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 """\
-* *[Summary]* :: A /library/ Beginning point for development of new ICM oriented libraries.
+* *[Summary]* :: A CS (Command Service) for running the equivalent of facter in py.
 """
 
 import typing
@@ -33,7 +33,7 @@ icmInfo['moduleStatus'] = """
 *  [[elisp:(org-cycle)][| *ICM-INFO:* |]] :: Author, Copyleft and Version Information
 """
 ####+BEGIN: bx:icm:py:name :style "fileName"
-icmInfo['moduleName'] = "aaRepoLiveParams"
+icmInfo['moduleName'] = "facter"
 ####+END:
 
 ####+BEGIN: bx:icm:py:version-timestamp :style "date"
