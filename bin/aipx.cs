@@ -1,6 +1,7 @@
+#!/bin/env python
 # -*- coding: utf-8 -*-
 """\
-* *[Summary]* :: A /library/ Beginning point for development of new ICM oriented libraries.
+* *[Summary]* :: A CommandService for Audit-trailed Invoke Perform eXection (AIPX) of other CommandServices.
 """
 
 
