@@ -1,44 +1,43 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
-"""\
-* *[Summary]* :: A CommandService for Audit-trailed Invoke Perform eXection (AIPX) of other CommandServices.
-"""
-
-
+""" #+begin_org\
+* *[Summary]* :: A CommandService for Audit-trailed Invoke Perform eXection (~AIPX~) over other CommandServices using this aipx.cs.
+#+end_org """
 import typing
 
-icmInfo: typing.Dict[str, typing.Any] = { 'moduleDescription': ["""
+icmInfo: typing.Dict[str, typing.Any] = { 'moduleDescription': [""" #+begin_org
 *       [[elisp:(org-show-subtree)][|=]]  [[elisp:(org-cycle)][| *Description:* | ]]
 **  [[elisp:(org-cycle)][| ]]  [Xref]          :: *[Related/Xrefs:]*  <<Xref-Here->>  -- External Documents  [[elisp:(org-cycle)][| ]]
 
 **  [[elisp:(org-cycle)][| ]]   Model and Terminology                                      :Overview:
 *** concept             -- Desctiption of concept
 **      [End-Of-Description]
-"""], }
+#+end_org """], }
 
-icmInfo['moduleUsage'] = """
+icmInfo['moduleUsage'] = """ #+begin_org
 *       [[elisp:(org-show-subtree)][|=]]  [[elisp:(org-cycle)][| *Usage:* | ]]
 
 **      How-Tos:
 **      [End-Of-Usage]
-"""
+#+end_org """
 
-icmInfo['moduleStatus'] = """
+icmInfo['moduleStatus'] = """ #+begin_org
 *       [[elisp:(org-show-subtree)][|=]]  [[elisp:(org-cycle)][| *Status:* | ]]
 **  [[elisp:(org-cycle)][| ]]  [Info]          :: *[Current-Info:]* Status/Maintenance -- General TODO List [[elisp:(org-cycle)][| ]]
 ** TODO [[elisp:(org-cycle)][| ]]  Current     :: For now it is an ICM. Turn it into ICM-Lib. [[elisp:(org-cycle)][| ]]
 **      [End-Of-Status]
-"""
+#+end_org """
 
-"""
+""" #+begin_org
 *  [[elisp:(org-cycle)][| *ICM-INFO:* |]] :: Author, Copyleft and Version Information
-"""
+#+end_org """
+
 ####+BEGIN: bx:icm:py:name :style "fileName"
-icmInfo['moduleName'] = "aipx_icm"
+icmInfo['moduleName'] = "aipx"
 ####+END:
 
 ####+BEGIN: bx:icm:py:version-timestamp :style "date"
-icmInfo['version'] = "202202015606"
+icmInfo['version'] = "202207031206"
 ####+END:
 
 ####+BEGIN: bx:icm:py:status :status "Production"
@@ -62,10 +61,10 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 
 
 ####+BEGIN: bx:icm:python:topControls :partof "bystar" :copyleft "halaal+minimal"
-""" #+begin_org {
+""" #+begin_org
 *  [[elisp:(org-cycle)][|/Controls/| ]] :: [[elisp:(org-show-subtree)][|=]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
 ** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]
-} #+end_org """
+#+end_org """
 ####+END:
 
 
@@ -77,7 +76,7 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 
 ####+BEGIN: bx:icm:python:icmItem :itemType "=Imports=" :itemTitle "*IMPORTS*"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =Imports=  :: *IMPORTS*  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =Imports=  :: *IMPORTS*  [[elisp:(org-cycle)][| ]]
 #+end_org """
 ####+END:
 
@@ -108,7 +107,7 @@ import pathlib
 
 ####+BEGIN: bx:icm:python:icmItem :itemType "=ImportICMs=" :itemTitle "*Imported Commands Modules*"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =ImportICMs= :: *Imported Commands Modules*  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =ImportICMs= :: *Imported Commands Modules*  [[elisp:(org-cycle)][| ]]
 #+end_org """
 ####+END:
 
@@ -118,7 +117,7 @@ g_importedCmndsModules = [       # Enumerate modules from which CMNDs become inv
 
 ####+BEGIN: bx:icm:python:func :funcName "commonParamsSpecify" :comment "Params Spec for: --aipxBase --aipxRoot" :funcType "FmWrk" :retType "Void" :deco "" :argsList "icmParams"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-FmWrk :: /commonParamsSpecify/ =Params Spec for: --aipxBase --aipxRoot= retType=Void argsList=(icmParams)  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-FmWrk :: /commonParamsSpecify/ =Params Spec for: --aipxBase --aipxRoot= retType=Void argsList=(icmParams)  [[elisp:(org-cycle)][| ]]
 #+end_org """
 def commonParamsSpecify(
     icmParams,
@@ -152,7 +151,7 @@ def commonParamsSpecify(
 
 ####+BEGIN: bx:icm:python:func :funcName "g_paramsExtraSpecify" :comment "FmWrk: ArgsSpec" :funcType "FmWrk" :retType "Void" :deco "" :argsList "parser"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-FmWrk :: /g_paramsExtraSpecify/ =FmWrk: ArgsSpec= retType=Void argsList=(parser)  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-FmWrk :: /g_paramsExtraSpecify/ =FmWrk: ArgsSpec= retType=Void argsList=(parser)  [[elisp:(org-cycle)][| ]]
 #+end_org """
 def g_paramsExtraSpecify(
     parser,
@@ -175,7 +174,7 @@ def g_paramsExtraSpecify(
 
 ####+BEGIN: bx:icm:python:icmItem :itemType "=Currents=  " :itemTitle "*Currents -- curBpoId, curSi*"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =Currents=   :: *Currents -- curBpoId, curSi*  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =Currents=   :: *Currents -- curBpoId, curSi*  [[elisp:(org-cycle)][| ]]
 #+end_org """
 ####+END:
 
@@ -189,7 +188,7 @@ def cmndParsCurBxoSr(cps): cps['bxoId'] = curGet_bxoId(); cps['sr'] = curGet_sr(
 
 ####+BEGIN: icm:py3:cmnd:classHead :cmndName "examples" :cmndType "Cmnd-FmWrk"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "bpoId si" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cmnd-FmWrk :: /examples/ =FrameWrk: ICM Examples= parsMand= parsOpt=bpoId si argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cmnd-FmWrk :: /examples/ =FrameWrk: ICM Examples= parsMand= parsOpt=bpoId si argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 #+end_org """
 class examples(icm.Cmnd):
     cmndParamsMandatory = [ ]
@@ -204,9 +203,10 @@ class examples(icm.Cmnd):
     ) -> icm.OpOutcome:
         """FrameWrk: ICM Examples"""
 ####+END:
-        """\
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] ICM examples, all in one place.
-        """
+        self.cmndDocStr(f""" #+begin_org \
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Conventional top level example.
+        #+end_org """)
+
         cmndOutcome = self.getOpOutcome()
 
         def cpsInit(): return collections.OrderedDict()
@@ -277,9 +277,9 @@ class examples(icm.Cmnd):
 
         return(cmndOutcome)
 
-####+BEGIN: icm:py3:cmnd:classHead :cmndName "noCmndProcessor" :cmndType "ICM-Cmnd"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "aipxBase" :argsMin "0" :argsMax "9999" :asFunc "" :interactiveP ""
+####+BEGIN: icm:py3:cmnd:classHead :cmndName "noCmndProcessor" :cmndType ""  :comment "None CS Args Processing" :parsMand "" :parsOpt "aipxBase" :argsMin "0" :argsMax "9999" :asFunc "" :interactiveP ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /noCmndProcessor/ =FrameWrk: ICM Examples= parsMand= parsOpt=aipxBase argsMin=0 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    :: /noCmndProcessor/ =None CS Args Processing= parsMand= parsOpt=aipxBase argsMin=0 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 #+end_org """
 class noCmndProcessor(icm.Cmnd):
     cmndParamsMandatory = [ ]
@@ -292,11 +292,12 @@ class noCmndProcessor(icm.Cmnd):
         aipxBase=None,         # or Cmnd-Input
         argsList=[],         # or Args-Input
     ) -> icm.OpOutcome:
-        """FrameWrk: ICM Examples"""
+        """None CS Args Processing"""
 ####+END:
-        """\
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] ICM examples, all on one place.
-        """
+        self.cmndDocStr(f""" #+begin_org \
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  With no args, run examples. otherwise, pass args to invAtBase.
+        #+end_org """)
+
         cmndOutcome = self.getOpOutcome()
 
         if argsList:
@@ -312,9 +313,9 @@ class noCmndProcessor(icm.Cmnd):
 
 
 
-####+BEGIN: icm:py3:cmnd:classHead :cmndName "invAtBase" :cmndType "ICM-Cmnd"  :comment "FrameWrk: ICM Examples" :parsMand "aipxBase" :parsOpt "" :argsMin "1" :argsMax "9999" :asFunc "" :interactiveP ""
+####+BEGIN: icm:py3:cmnd:classHead :cmndName "invAtBase" :cmndType ""  :comment "Foundational invAtBase" :parsMand "aipxBase" :parsOpt "" :argsMin "1" :argsMax "9999" :asFunc "" :interactiveP ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /invAtBase/ =FrameWrk: ICM Examples= parsMand=aipxBase parsOpt= argsMin=1 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    :: /invAtBase/ =Foundational invAtBase= parsMand=aipxBase parsOpt= argsMin=1 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 #+end_org """
 class invAtBase(icm.Cmnd):
     cmndParamsMandatory = [ 'aipxBase', ]
@@ -327,11 +328,12 @@ class invAtBase(icm.Cmnd):
         aipxBase=None,         # or Cmnd-Input
         argsList=[],         # or Args-Input
     ) -> icm.OpOutcome:
-        """FrameWrk: ICM Examples"""
+        """Foundational invAtBase"""
 ####+END:
-        """\
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] ICM examples, all on one place.
-        """
+        self.cmndDocStr(f""" #+begin_org \
+***** TODO [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Needs a better description.
+        #+end_org """)
+
         cmndOutcome = self.getOpOutcome()
 
         # cmndLineArgs = G.icmRunArgsGet().cmndArgs
@@ -368,9 +370,9 @@ class invAtBase(icm.Cmnd):
         return(cmndOutcome)
 
 
-####+BEGIN: icm:py3:cmnd:classHead :cmndName "inv" :cmndType "ICM-Cmnd"  :comment "FrameWrk: ICM Examples" :parsMand "aipxRoot" :parsOpt "" :argsMin "0" :argsMax "9999" :asFunc "" :interactiveP ""
+####+BEGIN: icm:py3:cmnd:classHead :cmndName "inv" :cmndType ""  :comment "Invoke using invAtBase" :parsMand "aipxRoot" :parsOpt "" :argsMin "0" :argsMax "9999" :asFunc "" :interactiveP ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /inv/ =FrameWrk: ICM Examples= parsMand=aipxRoot parsOpt= argsMin=0 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    :: /inv/ =Invoke using invAtBase= parsMand=aipxRoot parsOpt= argsMin=0 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 #+end_org """
 class inv(icm.Cmnd):
     cmndParamsMandatory = [ 'aipxRoot', ]
@@ -383,11 +385,13 @@ class inv(icm.Cmnd):
         aipxRoot=None,         # or Cmnd-Input
         argsList=[],         # or Args-Input
     ) -> icm.OpOutcome:
-        """FrameWrk: ICM Examples"""
+        """Invoke using invAtBase"""
 ####+END:
-        """\
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] ICM examples, all on one place.
-        """
+        self.cmndDocStr(f""" #+begin_org \
+        ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Invoke based on =aipxRoot= , recording all relevant information.
+        For each invokaction use ~milliSecTimeTag~ as a uniq tag.
+        #+end_org """)
+
         cmndOutcome = self.getOpOutcome()
 
         milliSecTimeTag = datetime.utcnow().strftime('%Y%m%d%H%M%S%f')[:-3]
@@ -403,9 +407,9 @@ class inv(icm.Cmnd):
         return(cmndOutcome)
 
 
-####+BEGIN: icm:py3:cmnd:classHead :cmndName "perfAtBase" :cmndType "ICM-Cmnd"  :comment "FrameWrk: ICM Examples" :parsMand "aipxBase" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: icm:py3:cmnd:classHead :cmndName "perfAtBase" :cmndType ""  :comment "Perform At Base" :parsMand "aipxBase" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /perfAtBase/ =FrameWrk: ICM Examples= parsMand=aipxBase parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    :: /perfAtBase/ =Perform At Base= parsMand=aipxBase parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 #+end_org """
 class perfAtBase(icm.Cmnd):
     cmndParamsMandatory = [ 'aipxBase', ]
@@ -417,16 +421,17 @@ class perfAtBase(icm.Cmnd):
         interactive=False,        # Can also be called non-interactively
         aipxBase=None,         # or Cmnd-Input
     ) -> icm.OpOutcome:
-        """FrameWrk: ICM Examples"""
+        """Perform At Base"""
 ####+END:
-        """\
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] ICM examples, all on one place.
+        self.cmndDocStr(f""" #+begin_org \
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Perform at =aipxBase=. Foundation for other perform functions.
         - Go to the base and read parameters
         - Run prog there
         - Write outcome
         - timeTag start/end
         - capture execution logs
-        """
+        #+end_org """)
+
         cmndOutcome = self.getOpOutcome()
 
         baseDirPath = pathlib.Path(aipxBase,)
@@ -484,9 +489,9 @@ class perfAtBase(icm.Cmnd):
         return(cmndOutcome)
 
 
-####+BEGIN: icm:py3:cmnd:classHead :cmndName "perf" :cmndType "ICM-Cmnd"  :comment "Uses perfAtBase" :parsMand "aipxRoot" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: icm:py3:cmnd:classHead :cmndName "perf" :cmndType ""  :comment "Uses perfAtBase" :parsMand "aipxRoot" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /perf/ =Uses perfAtBase= parsMand=aipxRoot parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    :: /perf/ =Uses perfAtBase= parsMand=aipxRoot parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 #+end_org """
 class perf(icm.Cmnd):
     cmndParamsMandatory = [ 'aipxRoot', ]
@@ -500,11 +505,10 @@ class perf(icm.Cmnd):
     ) -> icm.OpOutcome:
         """Uses perfAtBase"""
 ####+END:
-        """\
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] ICM examples, all on one place.
-        - List dirs at root.
-        - Sort in reverse order
-        """
+        self.cmndDocStr(f""" #+begin_org \
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Perform at base with =aipxRoot=
+        #+end_org """)
+
         cmndOutcome = self.getOpOutcome()
 
         # paths = sorted(pathlib.Path(aipxRoot).iterdir(), key=os.path.getmtime)
@@ -526,9 +530,9 @@ class perf(icm.Cmnd):
 
         return(cmndOutcome)
 
-####+BEGIN: icm:py3:cmnd:classHead :cmndName "invPerf" :cmndType "ICM-Cmnd"  :comment "= inv + perf" :parsMand "aipxRoot" :parsOpt "" :argsMin "0" :argsMax "9999" :asFunc "" :interactiveP ""
+####+BEGIN: icm:py3:cmnd:classHead :cmndName "invPerf" :cmndType ""  :comment "inv + perf" :parsMand "aipxRoot" :parsOpt "" :argsMin "0" :argsMax "9999" :asFunc "" :interactiveP ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd   :: /invPerf/ == inv + perf= parsMand=aipxRoot parsOpt= argsMin=0 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    :: /invPerf/ =inv + perf= parsMand=aipxRoot parsOpt= argsMin=0 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 #+end_org """
 class invPerf(icm.Cmnd):
     cmndParamsMandatory = [ 'aipxRoot', ]
@@ -541,11 +545,11 @@ class invPerf(icm.Cmnd):
         aipxRoot=None,         # or Cmnd-Input
         argsList=[],         # or Args-Input
     ) -> icm.OpOutcome:
-        """= inv + perf"""
+        """inv + perf"""
 ####+END:
-        self.cmndDocStr(f"""\
-***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] ICM examples, all on one place.
-        """)
+        self.cmndDocStr(f""" #+begin_org \
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Invoke and then perform recording all information in =aipxRoot=
+        #+end_org """)
         cmndOutcome = self.getOpOutcome()
 
         inv(cmndOutcome=cmndOutcome).cmnd(
@@ -565,7 +569,7 @@ class invPerf(icm.Cmnd):
 
 ####+BEGIN: bx:icm:py3:main :mainType  "noCmndProcessor" :comment "Common"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =Framework=  ::   __main__ g_icmMain :: /noCmndProcessor/ =Common=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =Framework=  ::   __main__ g_icmMain :: /noCmndProcessor/ =Common=  [[elisp:(org-cycle)][| ]]
 #+end_org """
 #
 # ICM Main Type is: noCmndProcessor
