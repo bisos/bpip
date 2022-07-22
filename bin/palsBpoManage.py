@@ -90,7 +90,7 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 ####+END:
 
 
-# import os
+import os
 # import pwd
 # import grp
 
@@ -233,12 +233,17 @@ class examples(icm.Cmnd):
 
         bleep.examples_icmBasic()
 
-        oneBpo = "pmi_ByD-100001"
-        # oneSiRelPath = "plone3/main"
+        # oneBpo = "pmi_ByD-100001"
+        oneBpo = "pmi_ByN-100001"
+        oneSiRelPath = "plone3/main"
+        bpoBaseDir = os.path.expanduser(f"~{oneBpo}")
+        if bpoBaseDir == format(f"~{oneBpo}"):
+            icm.EH_problem_usageError(f"bpoId={oneBpo} is not a valid account")
+            return
 
         bpo.examples_bpo_basicAccess(oneBpo)
 
-        # palsBpo.examples_palsBpo_basicAccess(oneBpo, oneSiRelPath, menuLevel='chapter')
+        palsBpo.examples_palsBpo_basicAccess(oneBpo, oneSiRelPath, menuLevel='chapter')
 
         icm.cmndExampleMenuChapter('*PALS-BASES Update*')
 

@@ -1,0 +1,1 @@
+/bisos/git/bxRepos/bisos-pip/bpo/py3/bin/bpoManage.cs
