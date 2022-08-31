@@ -27,12 +27,12 @@
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 import typing
-icmInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['ex_rpyc'], }
-icmInfo['version'] = '202208193321'
-icmInfo['status']  = 'inUse'
-icmInfo['panel'] = 'ex_rpyc-Panel.org'
-icmInfo['groupingType'] = 'IcmGroupingType-pkged'
-icmInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
+csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['ex_rpyc'], }
+csInfo['version'] = '202208193321'
+csInfo['status']  = 'inUse'
+csInfo['panel'] = 'ex_rpyc-Panel.org'
+csInfo['groupingType'] = 'IcmGroupingType-pkged'
+csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 ####+END:
 
 """ #+begin_org
@@ -68,7 +68,7 @@ Module description comes here.
 from bisos import cs
 from bisos import io
 
-G = cs.IcmGlobalContext()
+G = cs.globalContext.get()
 # G.icmLibsAppend = __file__
 # G.icmCmndsLibsAppend = __file__
 
@@ -120,7 +120,7 @@ def g_paramsExtraSpecify(
 ** Module Specific Command Line Parameters. This func is passed to G_main and can not be decorated.
 #+end_org """
 
-    G = cs.IcmGlobalContext()
+    G = cs.globalContext.get()
     icmParams = cs.ICM_ParamDict()
 
     bleep.commonParamsSpecify(icmParams)
@@ -138,7 +138,9 @@ def g_paramsExtraSpecify(
 #+end_org """
 ####+END:
 
-####+BEGINNOT: icm:py3:cmnd:classHead :cmndName "examples" :cmndType ""  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+
+
+####+BEGIN: bx:cs:py3:cmnd:classHead :cmndName "examples" :cmndType ""  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    [[elisp:(outline-show-subtree+toggle)][||]] <<examples>> =FrameWrk: ICM Examples= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 #+end_org """
@@ -162,35 +164,36 @@ class examples(cs.Cmnd):
 
         """FrameWrk: ICM Examples"""
 ####+END:
-        self.cmndDocStr(f""" #+begin_org ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Conventional top level example.
+        self.cmndDocStr(f""" #+begin_org
+***** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Conventional top level example.
         #+end_org """)
 
         def cpsInit(): return collections.OrderedDict()
         comment='none'
-        def menuItem(verbosity): cs.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity,
+        def menuItem(verbosity): cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity,
                          comment=comment, icmWrapper=None, icmName=None) # verbosity: 'little' 'basic' 'none'
-        def execLineEx(cmndStr): cs.ex_gExecMenuItem(execLine=cmndStr)
+        def execLineEx(cmndStr): cs.examples.execInsert(execLine=cmndStr)
 
         #logControler = cs.LOG_Control()
         #logControler.loggerSetLevel(20)
 
-        cs.icmExampleMyName(G.icmMyName(), G.icmMyFullName())
+        cs.examples.myName(G.icmMyName(), G.icmMyFullName())
 
-        cs.G_commonBriefExamples()
+        cs.examples.commonBrief()
 
         bleep.examples_icmBasic()
 
-        cs.cmndExampleMenuChapter('*Basic RPyC Operations*')
+        cs.examples.menuChapter('*Basic RPyC Operations*')
 
         cmndName = 'basicPerformer' ; cmndArgs = '' ; cps=cpsInit(); comment="# Minimally Tested" ; menuItem(verbosity='none')
-        cmndName = 'basicInvoker' ; cmndArgs = '' ; cps=cpsInit(); comment="# Minimally Tested" ; menuItem(verbosity='none')
+        cmndName = 'basicInvoker' ; cmndArgs = '' ; cps=cpsInit(); cps['port'] = "12345" ; comment="# Minimally Tested" ; menuItem(verbosity='none')
 
-        cs.cmndExampleMenuChapter('*SSL RPyC Operations*')
+        cs.examples.menuChapter('*SSL RPyC Operations*')
 
         cmndName = 'sslPerformer' ; cmndArgs = '' ; cps=cpsInit(); comment="# Place Holder" ; menuItem(verbosity='none')
         cmndName = 'sslInvoker' ; cmndArgs = '' ; cps=cpsInit();  comment="# Place Holder" ; menuItem(verbosity='none')
 
-        cs.cmndExampleMenuChapter('*GPG Commands*')
+        cs.examples.menuChapter('*GPG Commands*')
 
         execLineEx(f"""sudo apt -y install gnupg""")
 
@@ -242,11 +245,48 @@ class basicPerformer(cs.Cmnd):
         return(cmndOutcome)
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "basicInvoker" :comment "" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+
+####+BEGIN: bx:cs:py3:cmnd:classHead :cmndName "basicInvoker" :comment "" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    [[elisp:(outline-show-subtree+toggle)][||]] <<basicInvoker>> parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 #+end_org """
 class basicInvoker(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+        interactive=False,        # Can also be called non-interactively
+    ) -> bpf.op.Outcome:
+        cmndOutcome = self.getOpOutcome()
+        if interactive:
+            if not self.cmndLineValidate(outcome=cmndOutcome):
+                return cmndOutcome
+
+        callParamsDict = {}
+        if not cs.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
+            return cmndOutcome
+
+####+END:
+        self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+        #+end_org """)
+
+        port=12345
+
+        conn = rpyc.connect("localhost", port=port)
+        result = conn.root.echo("hello")
+        print(f"{result}")
+
+        return(cmndOutcome)
+
+
+####+BEGINNOT: bx:icm:python:cmnd:classHead :cmndName "basicInvoker" :comment "" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    [[elisp:(outline-show-subtree+toggle)][||]] <<basicInvoker>> parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+#+end_org """
+class basicInvokerNOT(cs.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
@@ -356,14 +396,14 @@ class sslInvoker(cs.Cmnd):
 #+end_org """
 ####+END:
 
-####+BEGIN: b:python:cs:framework/main :csInfo "icmInfo" :noCmndEntry "examples" :extraParamsHook "g_paramsExtraSpecify" :importedCmndsModules "g_importedCmndsModules"
+####+BEGINNOT: b:python:cs:framework/main :csInfo "csInfo" :noCmndEntry "examples" :extraParamsHook "g_paramsExtraSpecify" :importedCmndsModules "g_importedCmndsModules"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~g_icmMain~ (icmInfo, _examples_, g_paramsExtraSpecify, g_importedCmndsModules)
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~g_icmMain~ (csInfo, _examples_, g_paramsExtraSpecify, g_importedCmndsModules)
 #+end_org """
 
 if __name__ == '__main__':
-    cs.g_icmMain(
-        icmInfo=icmInfo,
+    cs.main.g_csMain(
+        csInfo=csInfo,
         noCmndEntry=examples,  # specify a Cmnd name
         extraParamsHook=g_paramsExtraSpecify,
         importedCmndsModules=g_importedCmndsModules,

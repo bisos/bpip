@@ -1,7 +1,7 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 """\
-* *[Summary]* :: A CS (Command Service) for running the equivalent of facter in py.
+* *[Summary]* :: A CS (Command Service) for setting up Marmee BPOs. Manages Mail Account Profiles.
 """
 
 import typing
@@ -33,15 +33,15 @@ icmInfo['moduleStatus'] = """
 *  [[elisp:(org-cycle)][| *ICM-INFO:* |]] :: Author, Copyleft and Version Information
 """
 ####+BEGIN: bx:icm:py:name :style "fileName"
-icmInfo['moduleName'] = "facter"
+icmInfo['moduleName'] = "marmeeBpoManage"
 ####+END:
 
 ####+BEGIN: bx:icm:py:version-timestamp :style "date"
-icmInfo['version'] = "202110074450"
+icmInfo['version'] = "202207015042"
 ####+END:
 
-####+BEGIN: bx:icm:py:status :status "Production"
-icmInfo['status']  = "Production"
+####+BEGIN: bx:icm:py:status :status "Development"
+icmInfo['status']  = "Development"
 ####+END:
 
 icmInfo['credits'] = ""
@@ -60,22 +60,19 @@ icmInfo['groupingType'] = "IcmGroupingType-pkged"
 icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 
 
-####+BEGIN: bx:icm:python:top-of-file :partof "bystar" :copyleft "halaal+minimal"
-"""
-*  This file:/bisos/git/auth/bxRepos/bisos-pip/pals/py3/bin/aaRepoLiveParams.py :: [[elisp:(org-cycle)][| ]]
+####+BEGINNOT: bx:icm:python:top-of-file :partof "bystar" :copyleft "halaal+minimal"
+""" #+begin_org
+*  This file:/bisos/git/auth/bxRepos/bisos/bpip1/bin/marmeeBpoManage.cs :: [[elisp:(org-cycle)][| ]]
  is part of The Libre-Halaal ByStar Digital Ecosystem. http://www.by-star.net
  *CopyLeft*  This Software is a Libre-Halaal Poly-Existential. See http://www.freeprotocols.org
- A Python Interactively Command Module (PyICM).
- Best Developed With COMEEGA-Emacs And Best Used With Blee-ICM-Players.
- *WARNING*: All edits wityhin Dynamic Blocks may be lost.
-"""
+""" #+end_org
 ####+END:
 
 ####+BEGIN: bx:icm:python:topControls :partof "bystar" :copyleft "halaal+minimal"
-"""
+""" #+begin_org
 *  [[elisp:(org-cycle)][|/Controls/| ]] :: [[elisp:(org-show-subtree)][|=]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
 ** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]
-"""
+#+end_org """
 ####+END:
 ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/bisos/apps/defaults/software/plusOrg/dblock/inserts/pyWorkBench.org"
 """
@@ -84,14 +81,15 @@ icmInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 ####+END:
 
 ####+BEGIN: bx:icm:python:icmItem :itemType "=Imports=" :itemTitle "*IMPORTS*"
-"""
+""" #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =Imports=  :: *IMPORTS*  [[elisp:(org-cycle)][| ]]
-"""
+#+end_org """
 ####+END:
 
+import sys
+import os
 
-# import os
-#import collections
+import collections
 
 ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/bisos/apps/defaults/update/sw/icm/py/importUcfIcmBleepG.py"
 from unisos import ucf
@@ -106,12 +104,22 @@ G = icm.IcmGlobalContext()
 from blee.icmPlayer import bleep
 ####+END:
 
-#from bisos.basics import facter
-from bisos.basics import facterIcm
+from bisos.marmee import marmeAcctsLib
+
+# from bisos.common import serviceObject
+
+# from bisos.bpo import bpo
+
+# g_importedCmnds = {        # Enumerate modules from which CMNDs become invokable
+#     'bleep': bleep.__file__,
+#     'marmeAcctsLib': marmeAcctsLib.__file__,
+#     'serviceObject': serviceObject.__file__,
+# }
 
 g_importedCmndsModules = [       # Enumerate modules from which CMNDs become invokable
     'blee.icmPlayer.bleep',
-    'bisos.basics.facterIcm',
+    'bisos.marmee.marmeAcctsLib',
+    'bisos.common.serviceObject',
 ]
 
 ####+BEGIN: bx:icm:python:section :title "= =Framework::= Options, Arguments and Examples Specifications ="
@@ -122,9 +130,9 @@ g_importedCmndsModules = [       # Enumerate modules from which CMNDs become inv
 
 
 ####+BEGIN: bx:icm:python:func :funcName "g_paramsExtraSpecify" :comment "FrameWrk: ArgsSpec" :funcType "FrameWrk" :retType "Void" :deco "" :argsList "parser"
-"""
+""" #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Func-FrameWrk :: /g_paramsExtraSpecify/ =FrameWrk: ArgsSpec= retType=Void argsList=(parser)  [[elisp:(org-cycle)][| ]]
-"""
+#+end_org """
 def g_paramsExtraSpecify(
     parser,
 ):
@@ -135,15 +143,32 @@ def g_paramsExtraSpecify(
     G = icm.IcmGlobalContext()
     icmParams = icm.ICM_ParamDict()
 
+    icmParams.parDictAdd(
+        parName='moduleVersion',
+        parDescription="Module Version",
+        parDataType=None,
+        parDefault=None,
+        parChoices=list(),
+        parScope=icm.ICM_ParamScope.TargetParam,
+        argparseShortOpt=None,
+        argparseLongOpt='--version',
+    )
+
+    bleep.commonParamsSpecify(icmParams)
+
+    marmeAcctsLib.commonParamsSpecify(icmParams)
+
+    icm.argsparseBasedOnIcmParams(parser, icmParams)
+
     # So that it can be processed later as well.
     G.icmParamDictSet(icmParams)
 
     return
 
 
-####+BEGIN: icm:py3:cmnd:classHead :cmndName "examples" :cmndType "ICM-Cmnd-FWrk"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "examples" :cmndType "ICM-Cmnd-FWrk"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd-FWrk :: /examples/ =FrameWrk: ICM Examples= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children)][|V]] [[elisp:(org-tree-to-indirect-buffer)][|>]] [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || ICM-Cmnd-FWrk  :: /examples/ =FrameWrk: ICM Examples= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
 """
 class examples(icm.Cmnd):
     cmndParamsMandatory = [ ]
@@ -153,12 +178,19 @@ class examples(icm.Cmnd):
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
         interactive=False,        # Can also be called non-interactively
-    ) -> icm.OpOutcome:
-####+END:
+    ):
         cmndOutcome = self.getOpOutcome()
-        # def cpsInit(): return collections.OrderedDict()
-        # def menuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
-        # def extMenuItem(verbosity): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, icmName=icmExName, verbosity=verbosity) # 'little' or 'none'
+        if interactive:
+            if not self.cmndLineValidate(outcome=cmndOutcome):
+                return cmndOutcome
+
+        callParamsDict = {}
+        if not icm.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
+            return cmndOutcome
+####+END:
+        def cpsInit(): return collections.OrderedDict()
+        def menuItem(): icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity='little')
+        def execLineEx(cmndStr): icm.ex_gExecMenuItem(execLine=cmndStr)
 
         logControler = icm.LOG_Control()
         logControler.loggerSetLevel(20)
@@ -169,33 +201,128 @@ class examples(icm.Cmnd):
 
         bleep.examples_icmBasic()
 
-        facterIcm.examples_facter().cmnd()
-
-        return(cmndOutcome)
-
-
-####+BEGIN: icm:py3:cmnd:classHead :cmndName "noCmndProcessor" :cmndType "ICM-Cmnd-FWrk"  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "9999" :asFunc "" :interactiveP ""
+####+BEGIN: bx:icm:python:cmnd:subSection :title "Dev And Testing"
+        """
+**  [[elisp:(beginning-of-buffer)][Top]] ================ [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]          *Dev And Testing*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
 """
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  ICM-Cmnd-FWrk :: /noCmndProcessor/ =FrameWrk: ICM Examples= parsMand= parsOpt= argsMin=0 argsMax=9999 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+####+END:
+
+        icm.cmndExampleMenuChapter('*General Dev and Testing IIFs*')
+
+        cmndName = "unitTest"
+
+        cmndArgs = ""
+        cps = cpsInit() ; # cps['icmsPkgName'] = icmsPkgName
+        icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity='little')
+        icm.ex_gCmndMenuItem(cmndName, cps, cmndArgs, verbosity='full')
+
+####+BEGIN: bx:icm:python:cmnd:subSection :title "marmeAcctsLib Examples"
+        """
+**  [[elisp:(beginning-of-buffer)][Top]] ================ [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]          *withVenv Run PIP Commands*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]]
 """
-class noCmndProcessor(icm.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 9999,}
+####+END:
+
+        marmeAcctsLib.examples_bxoSrPkgInfoParsGet()
+
+        #bpo.examples_bpo_srBaseDir()
+
+        # print(bpo.moduleDescription)
+
+        # return
+
+        marmeAcctsLib.examples_controlProfileManage()
+
+        #marmeAcctsLib.examples_marmeAcctsLibControls()
+
+        marmeAcctsLib.examples_enabledInMailAcctConfig()
+
+        marmeAcctsLib.examples_enabledOutMailAcctConfig()
+
+        marmeAcctsLib.examples_select_mailBox()
+
+        marmeAcctsLib.examples_inMailAcctAccessParsFull()
+
+        marmeAcctsLib.examples_outMailAcctAccessParsFull()
+
+        return
+
+"""
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Class-IIF    ::  inMailDaemon    [[elisp:(org-cycle)][| ]]
+"""
+class inMailDaemon(icm.Cmnd):
+    """."""
+
+    cmndParamsMandatory = []
+    cmndParamsOptional = ['inMailAcct']
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
-        interactive=False,        # Can also be called non-interactively
-        argsList=[],         # or Args-Input
-    ) -> icm.OpOutcome:
-####+END:
-        cmndOutcome = self.getOpOutcome()
-        if argsList:
-            facterIcm.factName().cmnd(argsList=argsList)
-        else:
-            examples().cmnd()
+            interactive=False,        # Can also be called non-interactively
+            inMailAcct=None,      # or IIF Parameter
+    ):
+        """ """
+        myName=self.myName()
+        G = icm.IcmGlobalContext()
+        thisOutcome = icm.OpOutcome(invokerName=myName)
+        if interactive:
+            if not self.cmndLineValidate(outcome=thisOutcome):
+                return(thisOutcome)
 
-        return(cmndOutcome)
+        if not inMailAcct:
+            if not interactive:
+                return icm.eh_problem_usageError(
+                    thisOutcome,
+                    "Missing Non-Interactive Arg (inMailAcct)",
+                )
+            inMailAcct = G.usageParams.inMailAcct
+
+        outcome = icm.subProc_bash("""echo Preparing the package""").log()
+        if outcome.isProblematic(): return(icm.EH_badOutcome(outcome))
+
+        return thisOutcome.set(
+            opError=icm.OpError.Success,
+            opResults=None,
+        )
+
+"""
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Class-IIF    ::  inMailRun    [[elisp:(org-cycle)][| ]]
+"""
+class inMailRun(icm.Cmnd):
+    """."""
+
+    cmndParamsMandatory = []
+    cmndParamsOptional = ['inMailAcct']
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @icm.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+            interactive=False,        # Can also be called non-interactively
+            inMailAcct=None,      # or IIF Parameter
+    ):
+        """ """
+        myName=self.myName()
+        G = icm.IcmGlobalContext()
+        thisOutcome = icm.OpOutcome(invokerName=myName)
+        if interactive:
+            if not self.cmndLineValidate(outcome=thisOutcome):
+                return(thisOutcome)
+
+        if not inMailAcct:
+            if not interactive:
+                return icm.eh_problem_usageError(
+                    thisOutcome,
+                    "Missing Non-Interactive Arg (inMailAcct)",
+                )
+            inMailAcct = G.usageParams.inMailAcct
+
+        outcome = icm.subProc_bash("""echo Preparing the package""").log()
+        if outcome.isProblematic(): return(icm.EH_badOutcome(outcome))
+
+        return thisOutcome.set(
+            opError=icm.OpError.Success,
+            opResults=None,
+        )
 
 
 ####+BEGIN: bx:dblock:python:section :title "Class Definitions"
@@ -213,7 +340,7 @@ class noCmndProcessor(icm.Cmnd):
 if __name__ == "__main__":
     icm.g_icmMain(
         icmInfo=icmInfo,
-        noCmndEntry=noCmndProcessor,
+        noCmndEntry=examples,
         extraParamsHook=g_paramsExtraSpecify,
         importedCmndsModules=g_importedCmndsModules,
     )

@@ -1167,10 +1167,10 @@ class GitSh_RosmuAccessPoint(RosmuAccessPoint):
             os.path.join(__class__.rosmuInvokerBase, self.rosmuApName,)
         )
 
-####+BEGIN: bx:dblock:python:class :className "OperationAccessPoint" :superClass "object" :comment "Operation Access Point" :classType "basic"
-"""
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Class-basic :: /OperationAccessPoint/ object =Operation Access Point=  [[elisp:(org-cycle)][| ]]
-"""
+####+BEGIN: bx:dblock:python:class :className "OperationAccessPoint" :superClass "ABC" :comment "Operation Access Point" :classType "basic"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-basic  [[elisp:(outline-show-subtree+toggle)][||]] /OperationAccessPoint/ ABC =Operation Access Point=  [[elisp:(org-cycle)][| ]]
+#+end_org """
 class OperationAccessPoint(ABC):
 ####+END:
     """
