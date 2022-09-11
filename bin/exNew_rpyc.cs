@@ -27,10 +27,10 @@
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['ex_rpyc'], }
-csInfo['version'] = '202208193321'
+csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['exNew_rpyc'], }
+csInfo['version'] = '202209052850'
 csInfo['status']  = 'inUse'
-csInfo['panel'] = 'ex_rpyc-Panel.org'
+csInfo['panel'] = 'exNew_rpyc-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
 csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 ####+END:
@@ -57,7 +57,7 @@ Module description comes here.
 #+end_org """
 ####+END:
 
-####+BEGIN: bx:icm:python:icmItem :itemType "=PyImports= " :itemTitle "*Py Library IMPORTS*"
+####+BEGIN: bx:cs:python:icmItem :itemType "=PyImports= " :itemTitle "*Py Library IMPORTS*"
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  =PyImports=  [[elisp:(outline-show-subtree+toggle)][||]] *Py Library IMPORTS*  [[elisp:(org-cycle)][| ]]
 #+end_org """
@@ -84,15 +84,39 @@ from rpyc.utils.server import ThreadedServer
 from rpyc.utils.authenticators import SSLAuthenticator
 
 
-
-####+BEGIN: b:python:cs:framework/importCmndsModules :cmndsModules ("blee.icmPlayer.bleep")
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~g_importedCmndsModules~ (blee.icmPlayer.bleep)
+
+#+BEGIN_SRC emacs-lisp
+(setq  b:py:cs:csuList
+  (list
+   "blee.icmPlayer.bleep"
+ ))
+#+END_SRC
+
+#+RESULTS:
+| blee.icmPlayer.bleep |
+
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] /csuList emacs-list Specifications/  [[elisp:(blee:org:code-block/above-run)][Eval Above:]] [[elisp:(org-cycle)][| ]]
+
 #+end_org """
 
-g_importedCmndsModules = [       # Enumerate modules from which CMNDs become invokable
-    'blee.icmPlayer.bleep',
-]
+
+####+BEGIN: b:py:cs:framework/csuListProc :pyImports t :csuImports t :csuParams t
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Process CSU List~ with 1 in csuList pyImports=t csuImports=t csuParams=t
+#+end_org """
+
+from blee.icmPlayer import bleep
+
+
+csuList = [ 'blee.icmPlayer.bleep', ]
+
+g_importedCmndsModules = cs.csuList_importedModules(csuList)
+
+def g_extraParams():
+    csParams = cs.param.CmndParamDict()
+    cs.csuList_commonParamsSpecify(csuList, csParams)
+    cs.argsparseBasedOnCsParams(csParams)
 
 ####+END:
 
@@ -102,47 +126,15 @@ g_importedCmndsModules = [       # Enumerate modules from which CMNDs become inv
 #+end_org """
 ####+END:
 
-####+BEGIN: bx:icm:py3:section :title "CS-Params"
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    [[elisp:(outline-show-subtree+toggle)][||]] *CS-Params*  [[elisp:(org-cycle)][| ]]
-#+end_org """
-####+END:
-
-####+BEGIN: bx:icm:python:func :funcType "CsFrmWrk" :funcName "g_paramsExtraSpecify" :comment "FmWrk: ArgsSpec"  :retType "Void" :deco "" :argsList "parser"
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  F-CsFrmWrk [[elisp:(outline-show-subtree+toggle)][||]] /g_paramsExtraSpecify/ =FmWrk: ArgsSpec= retType=Void argsList=(parser)  [[elisp:(org-cycle)][| ]]
-#+end_org """
-def g_paramsExtraSpecify(
-    parser,
-):
-####+END:
-    """  #+begin_org
-** Module Specific Command Line Parameters. This func is passed to G_main and can not be decorated.
-#+end_org """
-
-    G = cs.globalContext.get()
-    icmParams = cs.ICM_ParamDict()
-
-    bleep.commonParamsSpecify(icmParams)
-
-    cs.argsparseBasedOnIcmParams(parser, icmParams)
-
-    # So that it can be processed later as well.
-    G.icmParamDictSet(icmParams)
-
-    return
-
-####+BEGIN: bx:icm:py3:section :title "CS-Examples"
+####+BEGIN: bx:cs:py3:section :title "CS-Examples"
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    [[elisp:(outline-show-subtree+toggle)][||]] *CS-Examples*  [[elisp:(org-cycle)][| ]]
 #+end_org """
 ####+END:
 
-
-
-####+BEGIN: bx:cs:py3:cmnd:classHead :cmndName "examples" :cmndType ""  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "examples" :cmndType ""  :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    [[elisp:(outline-show-subtree+toggle)][||]] <<examples>> =FrameWrk: ICM Examples= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<examples>> =FrameWrk: ICM Examples=parsMand= parsOpt= argsMin=0 argsMax=0 pyInv=
 #+end_org """
 class examples(cs.Cmnd):
     cmndParamsMandatory = [ ]
@@ -151,18 +143,13 @@ class examples(cs.Cmnd):
 
     @io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
-        interactive=False,        # Can also be called non-interactively
+             rtInv: cs.RtInvoker,
+             cmndOutcome: bpf.op.Outcome,
     ) -> bpf.op.Outcome:
-        cmndOutcome = self.getOpOutcome()
-        if interactive:
-            if not self.cmndLineValidate(outcome=cmndOutcome):
-                return cmndOutcome
-
-        callParamsDict = {}
-        if not cs.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
-            return cmndOutcome
-
         """FrameWrk: ICM Examples"""
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return io.eh.badOutcome(cmndOutcome)
 ####+END:
         self.cmndDocStr(f""" #+begin_org
 ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Conventional top level example.
@@ -174,7 +161,7 @@ class examples(cs.Cmnd):
                          comment=comment, icmWrapper=None, icmName=None) # verbosity: 'little' 'basic' 'none'
         def execLineEx(cmndStr): cs.examples.execInsert(execLine=cmndStr)
 
-        #logControler = cs.LOG_Control()
+        #logControler = cs.io.log.Control()
         #logControler.loggerSetLevel(20)
 
         cs.examples.myName(G.icmMyName(), G.icmMyFullName())
@@ -186,12 +173,25 @@ class examples(cs.Cmnd):
         cs.examples.menuChapter('*Basic RPyC Operations*')
 
         cmndName = 'basicPerformer' ; cmndArgs = '' ; cps=cpsInit(); comment="# Minimally Tested" ; menuItem(verbosity='none')
-        cmndName = 'basicInvoker' ; cmndArgs = '' ; cps=cpsInit(); cps['port'] = "12345" ; comment="# Minimally Tested" ; menuItem(verbosity='none')
+        cmndName = 'basicInvoker' ; cmndArgs = '' ; cps=cpsInit(); comment="# Minimally Tested" ; menuItem(verbosity='none')
+
+        cs.examples.menuChapter('*Command Services RPyC Operations*')
+
+        cmndName = 'csPerformer' ; cmndArgs = '' ; cps=cpsInit(); comment="& # In Background, Minimally Tested" ; menuItem(verbosity='none')
+        cmndName = 'csInvoker' ; cmndArgs = '' ; cps=cpsInit(); comment="# Minimally Tested" ; menuItem(verbosity='none')
+
+        cs.examples.menuChapter('*Sample Commands*')
+        cmndName = 'sampleCmnd1' ; cmndArgs = '' ; cps=cpsInit(); comment="# To be invoked as a Cmnd or service" ; menuItem(verbosity='none')
 
         cs.examples.menuChapter('*SSL RPyC Operations*')
 
         cmndName = 'sslPerformer' ; cmndArgs = '' ; cps=cpsInit(); comment="# Place Holder" ; menuItem(verbosity='none')
         cmndName = 'sslInvoker' ; cmndArgs = '' ; cps=cpsInit();  comment="# Place Holder" ; menuItem(verbosity='none')
+
+        cs.examples.menuChapter('*CS Framework Commands*')
+
+        cmndName = 'rpyc_csPerformer' ; cmndArgs = '' ; cps=cpsInit(); comment=" & # In Background" ; menuItem(verbosity='none')
+        cmndName = 'sampleCmnd1' ; cmndArgs = '' ; cps=cpsInit(); cps['invModel'] = "rpyc" ; comment="# Need to specify invoker model" ; menuItem(verbosity='none')
 
         cs.examples.menuChapter('*GPG Commands*')
 
@@ -199,22 +199,31 @@ class examples(cs.Cmnd):
 
         return(cmndOutcome)
 
-####+BEGIN: bx:icm:py3:section :title "CS-Commands"
+####+BEGIN: bx:cs:py3:section :title "CS-Commands"
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    [[elisp:(outline-show-subtree+toggle)][||]] *CS-Commands*  [[elisp:(org-cycle)][| ]]
 #+end_org """
 ####+END:
 
+
+####+BEGIN: bx:dblock:python:class :className "MyService" :superClass "rpyc.Service" :comment "" :classType "RPyC"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-RPyC   [[elisp:(outline-show-subtree+toggle)][||]] /MyService/ rpyc.Service  [[elisp:(org-cycle)][| ]]
+#+end_org """
 class MyService(rpyc.Service):
+####+END:
+    """ #+begin_org
+** [[elisp:(org-cycle)][| DocStr| ]]  Class Doc String
+    #+end_org """
 
     def exposed_echo(self, text):
         print(text)
         return 55
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "basicPerformer" :comment "" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "basicPerformer" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    [[elisp:(outline-show-subtree+toggle)][||]] <<basicPerformer>> parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<basicPerformer>>parsMand= parsOpt= argsMin=0 argsMax=0 pyInv=
 #+end_org """
 class basicPerformer(cs.Cmnd):
     cmndParamsMandatory = [ ]
@@ -223,17 +232,13 @@ class basicPerformer(cs.Cmnd):
 
     @io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
-        interactive=False,        # Can also be called non-interactively
+             rtInv: cs.RtInvoker,
+             cmndOutcome: bpf.op.Outcome,
     ) -> bpf.op.Outcome:
-        cmndOutcome = self.getOpOutcome()
-        if interactive:
-            if not self.cmndLineValidate(outcome=cmndOutcome):
-                return cmndOutcome
 
         callParamsDict = {}
-        if not cs.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
-            return cmndOutcome
-
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return io.eh.badOutcome(cmndOutcome)
 ####+END:
         self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
@@ -246,9 +251,10 @@ class basicPerformer(cs.Cmnd):
 
 
 
-####+BEGIN: bx:cs:py3:cmnd:classHead :cmndName "basicInvoker" :comment "" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "basicInvoker" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    [[elisp:(outline-show-subtree+toggle)][||]] <<basicInvoker>> parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<basicInvoker>>parsMand= parsOpt= argsMin=0 argsMax=0 pyInv=
 #+end_org """
 class basicInvoker(cs.Cmnd):
     cmndParamsMandatory = [ ]
@@ -257,17 +263,13 @@ class basicInvoker(cs.Cmnd):
 
     @io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
-        interactive=False,        # Can also be called non-interactively
+             rtInv: cs.RtInvoker,
+             cmndOutcome: bpf.op.Outcome,
     ) -> bpf.op.Outcome:
-        cmndOutcome = self.getOpOutcome()
-        if interactive:
-            if not self.cmndLineValidate(outcome=cmndOutcome):
-                return cmndOutcome
 
         callParamsDict = {}
-        if not cs.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
-            return cmndOutcome
-
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return io.eh.badOutcome(cmndOutcome)
 ####+END:
         self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
@@ -281,45 +283,156 @@ class basicInvoker(cs.Cmnd):
 
         return(cmndOutcome)
 
-
-####+BEGINNOT: bx:icm:python:cmnd:classHead :cmndName "basicInvoker" :comment "" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:dblock:python:class :className "local_CsService" :superClass "" :comment "" :classType "Local"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    [[elisp:(outline-show-subtree+toggle)][||]] <<basicInvoker>> parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-Local  [[elisp:(outline-show-subtree+toggle)][||]] /local_CsService/ object  [[elisp:(org-cycle)][| ]]
 #+end_org """
-class basicInvokerNOT(cs.Cmnd):
+class local_CsService(object):
+####+END:
+    """ #+begin_org
+** [[elisp:(org-cycle)][| DocStr| ]]  Class Doc String
+    #+end_org """
+
+    def exposed_svcCmnd(self, cmndClass, *v, **k):
+        print(f"svcCmnd")
+        cmndClass().cmnd(*v, **k)
+
+
+
+
+####+BEGIN: bx:dblock:python:class :className "rpyc_CsService" :superClass "rpyc.Service" :comment "" :classType "RPyC"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-RPyC   [[elisp:(outline-show-subtree+toggle)][||]] /rpyc_CsService/ rpyc.Service  [[elisp:(org-cycle)][| ]]
+#+end_org """
+class rpyc_CsService(rpyc.Service):
+####+END:
+    """ #+begin_org
+** [[elisp:(org-cycle)][| DocStr| ]]  Class Doc String
+    #+end_org """
+
+    def exposed_svcCmnd(self, cmndClassName, *v, **k):
+        print(f"svcCmnd")
+        cmndClass = cs.cmndNameToClass(cmndClassName)
+        cmndClass().cmnd(*v, **k)
+
+
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "csPerformer" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<csPerformer>>parsMand= parsOpt= argsMin=0 argsMax=0 pyInv=
+#+end_org """
+class csPerformer(cs.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
     @io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
-        interactive=False,        # Can also be called non-interactively
+             rtInv: cs.RtInvoker,
+             cmndOutcome: bpf.op.Outcome,
     ) -> bpf.op.Outcome:
-        cmndOutcome = self.getOpOutcome()
-        if interactive:
-            if not self.cmndLineValidate(outcome=cmndOutcome):
-                return cmndOutcome
 
         callParamsDict = {}
-        if not cs.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
-            return cmndOutcome
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return io.eh.badOutcome(cmndOutcome)
+####+END:
+        self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+        #+end_org """)
+
+        server = ThreadedServer(rpyc_CsService, port=12345)
+        server.start()
+
+        return(cmndOutcome)
+
+
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "csInvoker" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<csInvoker>>parsMand= parsOpt= argsMin=0 argsMax=0 pyInv=
+#+end_org """
+class csInvoker(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: bpf.op.Outcome,
+    ) -> bpf.op.Outcome:
+
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return io.eh.badOutcome(cmndOutcome)
+####+END:
+        self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+        #+end_org """)
+
+        #loc = local_CsService()
+
+        #loc.exposed_svcCmnd(sampleCmnd1, rtInv, cmndOutcome)
+
+        #return(cmndOutcome)
+
+
+        port=12345
+
+        conn = rpyc.connect("localhost", port=port)
+        result = conn.root.svcCmnd('sampleCmnd1', rtInv, cmndOutcome)
+        print(f"{result}")
+
+        return(cmndOutcome)
+
+
+####+BEGIN: bx:cs:py3:section :title "Sample Commands"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    [[elisp:(outline-show-subtree+toggle)][||]] *Sample Commands*  [[elisp:(org-cycle)][| ]]
+#+end_org """
+####+END:
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "sampleCmnd1" :extent "mini" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<sampleCmnd1>>parsMand= parsOpt= argsMin=0 argsMax=0 pyInv=
+#+end_org """
+class sampleCmnd1(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: bpf.op.Outcome,
+    ) -> bpf.op.Outcome:
 
 ####+END:
         self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
         #+end_org """)
 
-        conn = rpyc.connect("localhost", port=12345)
-        result = conn.root.echo("hello")
-        print(f"{result}")
+
+        io.pr(f"sampleCmnd1")
+
+        io.pr(rtInv)
 
         return(cmndOutcome)
 
 
-
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "sslPerformer" :comment "" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: bx:cs:py3:section :title "SSL RPyC"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    [[elisp:(outline-show-subtree+toggle)][||]] <<sslPerformer>> parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    [[elisp:(outline-show-subtree+toggle)][||]] *SSL RPyC*  [[elisp:(org-cycle)][| ]]
+#+end_org """
+####+END:
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "sslPerformer" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<sslPerformer>>parsMand= parsOpt= argsMin=0 argsMax=0 pyInv=
 #+end_org """
 class sslPerformer(cs.Cmnd):
     cmndParamsMandatory = [ ]
@@ -328,17 +441,13 @@ class sslPerformer(cs.Cmnd):
 
     @io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
-        interactive=False,        # Can also be called non-interactively
+             rtInv: cs.RtInvoker,
+             cmndOutcome: bpf.op.Outcome,
     ) -> bpf.op.Outcome:
-        cmndOutcome = self.getOpOutcome()
-        if interactive:
-            if not self.cmndLineValidate(outcome=cmndOutcome):
-                return cmndOutcome
 
         callParamsDict = {}
-        if not cs.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
-            return cmndOutcome
-
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return io.eh.badOutcome(cmndOutcome)
 ####+END:
         self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
@@ -352,9 +461,9 @@ class sslPerformer(cs.Cmnd):
         return(cmndOutcome)
 
 
-####+BEGIN: bx:icm:python:cmnd:classHead :cmndName "sslInvoker" :comment "" :parsMand "" :parsOpt "" :argsMin "0" :argsMax "0" :asFunc "" :interactiveP ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "sslInvoker" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    [[elisp:(outline-show-subtree+toggle)][||]] <<sslInvoker>> parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<sslInvoker>>parsMand= parsOpt= argsMin=0 argsMax=0 pyInv=
 #+end_org """
 class sslInvoker(cs.Cmnd):
     cmndParamsMandatory = [ ]
@@ -363,17 +472,13 @@ class sslInvoker(cs.Cmnd):
 
     @io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
-        interactive=False,        # Can also be called non-interactively
+             rtInv: cs.RtInvoker,
+             cmndOutcome: bpf.op.Outcome,
     ) -> bpf.op.Outcome:
-        cmndOutcome = self.getOpOutcome()
-        if interactive:
-            if not self.cmndLineValidate(outcome=cmndOutcome):
-                return cmndOutcome
 
         callParamsDict = {}
-        if not cs.cmndCallParamsValidate(callParamsDict, interactive, outcome=cmndOutcome):
-            return cmndOutcome
-
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return io.eh.badOutcome(cmndOutcome)
 ####+END:
         self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
@@ -387,25 +492,16 @@ class sslInvoker(cs.Cmnd):
 
         return(cmndOutcome)
 
-
-
-
-####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Main" :anchor ""  :extraInfo "Framework Dblock"
+####+BEGIN: b:py3:cs:framework/main :csInfo "csInfo" :noCmndEntry "examples" :extraParamsHook "g_extraParams" :importedCmndsModules "g_importedCmndsModules"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _Main_: |]]  Framework Dblock  [[elisp:(org-shifttab)][<)]] E|
-#+end_org """
-####+END:
-
-####+BEGINNOT: b:python:cs:framework/main :csInfo "csInfo" :noCmndEntry "examples" :extraParamsHook "g_paramsExtraSpecify" :importedCmndsModules "g_importedCmndsModules"
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~g_icmMain~ (csInfo, _examples_, g_paramsExtraSpecify, g_importedCmndsModules)
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~g_icmMain~ (csInfo, _examples_, g_extraParams, g_importedCmndsModules)
 #+end_org """
 
 if __name__ == '__main__':
     cs.main.g_csMain(
         csInfo=csInfo,
         noCmndEntry=examples,  # specify a Cmnd name
-        extraParamsHook=g_paramsExtraSpecify,
+        extraParamsHook=g_extraParams,
         importedCmndsModules=g_importedCmndsModules,
     )
 
