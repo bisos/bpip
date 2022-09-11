@@ -94,16 +94,15 @@ csInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 import collections
 
 from bisos import b
-#from bisos.b import cs
-#from bisos.b import io
+from bisos.b import cs
+from bisos.b import io
 
 
 import sys
 
 
 
-G = b.cs.globalContext.get()
-print(G)
+G = cs.globalContext.get()
 
 from blee.icmPlayer import bleep
 

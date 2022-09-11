@@ -93,15 +93,7 @@ csInfo['cmndParts'] = "IcmCmndParts[common] IcmCmndParts[param]"
 # import os
 import collections
 
-####+BEGINNOT: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/bisos/apps/defaults/update/sw/icm/py/importUcfIcmBleepG.py"
-from bisos import cs
-from bisos import io
-from bisos import bpf
-
-#G = cs.globalContext.get()
-
-from blee.icmPlayer import bleep
-####+END:
+from bisos import b
 
 import collections
 
@@ -111,12 +103,12 @@ import collections
 (setq  b:py:cs:csuList
   (list
    "blee.icmPlayer.bleep"
-   "bisos.cs.ro"
+   "bisos.b.cs.ro"
  ))
 #+END_SRC
 
 #+RESULTS:
-| blee.icmPlayer.bleep | bisos.cs.ro |
+| blee.icmPlayer.bleep | bisos.b.cs.ro |
 
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] /csuList emacs-list Specifications/  [[elisp:(blee:org:code-block/above-run)][Eval Above:]] [[elisp:(org-cycle)][| ]]
 
@@ -129,63 +121,54 @@ import collections
 #+end_org """
 
 from blee.icmPlayer import bleep
-from bisos.cs import ro
+from bisos.b.cs import ro
 
 
-csuList = [ 'blee.icmPlayer.bleep', 'bisos.cs.ro', ]
+csuList = [ 'blee.icmPlayer.bleep', 'bisos.b.cs.ro', ]
 
-g_importedCmndsModules = cs.csuList_importedModules(csuList)
+g_importedCmndsModules = b.cs.csuList_importedModules(csuList)
 
 def g_extraParams():
-    csParams = cs.param.CmndParamDict()
-    cs.csuList_commonParamsSpecify(csuList, csParams)
-    cs.argsparseBasedOnCsParams(csParams)
+    csParams = b.cs.param.CmndParamDict()
+    b.cs.csuList_commonParamsSpecify(csuList, csParams)
+    b.cs.argsparseBasedOnCsParams(csParams)
 
 ####+END:
 
-####+BEGINNOT: b:py3:cs:cmnd/classHead :cmndName "examples" :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "examples" :comment "FrameWrk: ICM Examples" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc    [[elisp:(outline-show-subtree+toggle)][||]] <<example>> =FrameWrk: ICM Examples= parsMand= parsOpt= argsMin=0 argsMax=0 asFunc= interactive=  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<examples>> =FrameWrk: ICM Examples=parsMand= parsOpt= argsMin=0 argsMax=0 pyInv=
 #+end_org """
-class examples(cs.Cmnd):
+class examples(b.cs.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
 
-    @io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    @b.cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: bpf.op.Outcome,
-    ) -> bpf.op.Outcome:
-        cmndOutcome = self.getOpOutcome()
-        if rtInv.outs:
-            if not self.cmndLineValidate(outcome=cmndOutcome):
-                return cmndOutcome
-
-        callParamsDict = {}
-        if not cs.cmndCallParamsValidate(callParamsDict, rtInv, outcome=cmndOutcome):
-            return cmndOutcome
-
+             rtInv: b.cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+    ) -> b.op.Outcome:
         """FrameWrk: ICM Examples"""
 ####+END:
         def cpsInit(): return collections.OrderedDict()
-        def menuItem(verbosity): cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
+        def menuItem(verbosity): b.cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
         #def execLineEx(cmndStr): cs.examples.execInsert(execLine=cmndStr)
 
         #logControler = io.log.Control()
         #logControler.loggerSetLevel(20)
 
-        cs.examples.myName(cs.G.icmMyName(), cs.G.icmMyFullName())
+        b.cs.examples.myName(b.cs.G.icmMyName(), b.cs.G.icmMyFullName())
 
-        cs.examples.commonBrief()
+        b.cs.examples.commonBrief()
 
         bleep.examples_icmBasic()
 
-        cs.examples.menuChapter('=Misc=  *Facilities*')
+        # b.cs.examples.menuChapter('=Misc=  *Facilities*')
 
-        cmndName = "dirCreateExamples" ; cmndArgs = "" ;
-        cps=cpsInit() ;
-        menuItem(verbosity='little')
+        # cmndName = "dirCreateExamples" ; cmndArgs = "" ;
+        # cps=cpsInit() ;
+        # menuItem(verbosity='little')
 
         ro.examples_csu(sectionTitle="default")
 
@@ -198,7 +181,7 @@ class examples(cs.Cmnd):
 #+end_org """
 
 if __name__ == '__main__':
-    cs.main.g_csMain(
+    b.cs.main.g_csMain(
         csInfo=csInfo,
         noCmndEntry=examples,  # specify a Cmnd name
         extraParamsHook=g_extraParams,
