@@ -32,15 +32,15 @@
 #+end_org """
 ####+END:
 
-####+BEGIN: b:python:file/particulars-csInfo :status "inUse"
+####+BEGIN: b:py3:file/particulars-csInfo :status "inUse"
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['exNew_rpyc'], }
-csInfo['version'] = '202209113006'
+csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['csB2Examples'], }
+csInfo['version'] = '202209125126'
 csInfo['status']  = 'inUse'
-csInfo['panel'] = 'exNew_rpyc-Panel.org'
+csInfo['panel'] = 'csB2Examples-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
 csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 ####+END:
@@ -61,7 +61,7 @@ Module description comes here.
 #+end_org """
 ####+END:
 
-####+BEGIN: b:python:file/workbench :outLevel 1
+####+BEGIN: b:py3:file/workbench :outLevel 1
 """ #+begin_org
 * [[elisp:(org-cycle)][| Workbench |]] :: [[elisp:(python-check (format "/bisos/venv/py3/bisos3/bin/python -m pyclbr %s" (bx:buf-fname))))][pyclbr]] || [[elisp:(python-check (format "/bisos/venv/py3/bisos3/bin/python -m pydoc ./%s" (bx:buf-fname))))][pydoc]] || [[elisp:(python-check (format "/bisos/pipx/bin/pyflakes %s" (bx:buf-fname)))][pyflakes]] | [[elisp:(python-check (format "/bisos/pipx/bin/pychecker %s" (bx:buf-fname))))][pychecker (executes)]] | [[elisp:(python-check (format "/bisos/pipx/bin/pycodestyle %s" (bx:buf-fname))))][pycodestyle]] | [[elisp:(python-check (format "/bisos/pipx/bin/flake8 %s" (bx:buf-fname))))][flake8]] | [[elisp:(python-check (format "/bisos/pipx/bin/pylint %s" (bx:buf-fname))))][pylint]]  [[elisp:(org-cycle)][| ]]
 #+end_org """
@@ -96,15 +96,18 @@ import collections
    "bisos.examples.parsArgsStdinCmndResult_csu"
    "bisos.examples.subProcOps_csu"
    "bisos.examples.platformConfigs_csu"
+   "bisos.b.fpCls"
+   "bisos.b.clsMethod_csu"
+   "bisos.examples.fp_csu"
  ))
 #+END_SRC
 #+RESULTS:
-| blee.icmPlayer.bleep | bisos.examples.pattern_csu | bisos.examples.pyRunAs_csu | bisos.examples.io_csu | bisos.examples.parsArgsStdinCmndResult_csu | bisos.examples.subProcOps_csu | bisos.examples.platformConfigs_csu |
+| blee.icmPlayer.bleep | bisos.examples.pattern_csu | bisos.examples.pyRunAs_csu | bisos.examples.io_csu | bisos.examples.parsArgsStdinCmndResult_csu | bisos.examples.subProcOps_csu | bisos.examples.platformConfigs_csu | bisos.b.fpCls | bisos.b.clsMethod_csu | bisos.examples.fp_csu |
 #+end_org """
 
 ####+BEGIN: b:py3:cs:framework/csuListProc :pyImports t :csuImports t :csuParams t
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Process CSU List~ with 7 in csuList pyImports=t csuImports=t csuParams=t
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Process CSU List~ with 10 in csuList pyImports=t csuImports=t csuParams=t
 #+end_org """
 
 from blee.icmPlayer import bleep
@@ -114,9 +117,12 @@ from bisos.examples import io_csu
 from bisos.examples import parsArgsStdinCmndResult_csu
 from bisos.examples import subProcOps_csu
 from bisos.examples import platformConfigs_csu
+from bisos.b import fpCls
+from bisos.b import clsMethod_csu
+from bisos.examples import fp_csu
 
 
-csuList = [ 'blee.icmPlayer.bleep', 'bisos.examples.pattern_csu', 'bisos.examples.pyRunAs_csu', 'bisos.examples.io_csu', 'bisos.examples.parsArgsStdinCmndResult_csu', 'bisos.examples.subProcOps_csu', 'bisos.examples.platformConfigs_csu', ]
+csuList = [ 'blee.icmPlayer.bleep', 'bisos.examples.pattern_csu', 'bisos.examples.pyRunAs_csu', 'bisos.examples.io_csu', 'bisos.examples.parsArgsStdinCmndResult_csu', 'bisos.examples.subProcOps_csu', 'bisos.examples.platformConfigs_csu', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', 'bisos.examples.fp_csu', ]
 
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
 
@@ -126,6 +132,10 @@ def g_extraParams():
     cs.argsparseBasedOnCsParams(csParams)
 
 ####+END:
+
+
+ExampleFilePars = fp_csu.ExampleFilePars  # exec/eval-ed as __main__.ClassName
+
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "CmndSvcs" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
@@ -192,6 +202,8 @@ class examples(cs.Cmnd):
         subProcOps_csu.examples_csu(sectionTitle="default")
 
         platformConfigs_csu.examples_csu(sectionTitle="default")
+
+        fp_csu.examples_csu(sectionTitle="default")
 
         cs.examples.menuChapter('=Tests=  *All Examples As Tests*')
         cmndName = "allExamplesAsTests" ; menuItem(verbosity='none')
@@ -348,20 +360,13 @@ if __name__ == '__main__':
 
 ####+END:
 
-####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title " ~End Of Editable Text~ "
+####+BEGIN: b:py3:cs:framework/endOfFile :basedOn "classification"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _ ~End Of Editable Text~ _: |]]    [[elisp:(org-shifttab)][<)]] E|
+* *[[elisp:(org-cycle)][| ~End-Of-Editable-Text~ |]]* :: emacs and org variables and control parameters
 #+end_org """
-####+END:
 
-####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/bisos/apps/defaults/software/plusOrg/dblock/inserts/endOfFileControls.org"
 #+STARTUP: showall
-####+END:
 
-####+BEGIN: b:prog:file/endOfFile :extraParams nil
-""" #+begin_org
-* *[[elisp:(org-cycle)][| END-OF-FILE |]]* :: emacs and org variables and control parameters
-#+end_org """
 ### local variables:
 ### no-byte-compile: t
 ### end:

@@ -145,16 +145,16 @@ class examples(cs.Cmnd):
     ) -> b.op.Outcome:
         """FrameWrk: ICM Examples"""
 ####+END:
-        def cpsInit(): return collections.OrderedDict()
-        def menuItem(verbosity): b.cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
+        #def cpsInit(): return collections.OrderedDict()
+        #def menuItem(verbosity): cs.examples.cmndInsert(cmndName, cps, cmndArgs, verbosity=verbosity) # 'little' or 'none'
         #def execLineEx(cmndStr): cs.examples.execInsert(execLine=cmndStr)
 
         #logControler = io.log.Control()
         #logControler.loggerSetLevel(20)
 
-        b.cs.examples.myName(b.cs.G.icmMyName(), b.cs.G.icmMyFullName())
+        cs.examples.myName(cs.G.icmMyName(), cs.G.icmMyFullName())
 
-        b.cs.examples.commonBrief()
+        cs.examples.commonBrief()
 
         bleep.examples_icmBasic()
 
@@ -184,20 +184,13 @@ if __name__ == '__main__':
 
 ####+END:
 
-####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title " ~End Of Editable Text~ "
+####+BEGIN: b:py3:cs:framework/endOfFile :basedOn "classification"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _ ~End Of Editable Text~ _: |]]    [[elisp:(org-shifttab)][<)]] E|
+* *[[elisp:(org-cycle)][| ~End-Of-Editable-Text~ |]]* :: emacs and org variables and control parameters
 #+end_org """
-####+END:
 
-####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/bisos/apps/defaults/software/plusOrg/dblock/inserts/endOfFileControls.org"
 #+STARTUP: showall
-####+END:
 
-####+BEGIN: b:prog:file/endOfFile :extraParams nil
-""" #+begin_org
-* *[[elisp:(org-cycle)][| END-OF-FILE |]]* :: emacs and org variables and control parameters
-#+end_org """
 ### local variables:
 ### no-byte-compile: t
 ### end:
