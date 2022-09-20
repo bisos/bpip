@@ -89,24 +89,28 @@ import collections
 #+BEGIN_SRC emacs-lisp
 (setq  b:py:cs:csuList
   (list
-   "blee.icmPlayer.bleep"
    "bisos.b.cs.ro"
+   "blee.icmPlayer.bleep"
+   "bisos.b.fpCls"
+   "bisos.b.clsMethod_csu"
  ))
 #+END_SRC
 #+RESULTS:
-| blee.icmPlayer.bleep | bisos.b.cs.ro |
+| bisos.b.cs.ro | blee.icmPlayer.bleep | bisos.b.fpCls | bisos.b.clsMethod_csu |
 #+end_org """
 
 ####+BEGIN: b:py3:cs:framework/csuListProc :pyImports t :csuImports t :csuParams t
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Process CSU List~ with 2 in csuList pyImports=t csuImports=t csuParams=t
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Process CSU List~ with 4 in csuList pyImports=t csuImports=t csuParams=t
 #+end_org """
 
-from blee.icmPlayer import bleep
 from bisos.b.cs import ro
+from blee.icmPlayer import bleep
+from bisos.b import fpCls
+from bisos.b import clsMethod_csu
 
 
-csuList = [ 'blee.icmPlayer.bleep', 'bisos.b.cs.ro', ]
+csuList = [ 'bisos.b.cs.ro', 'blee.icmPlayer.bleep', 'bisos.b.fpCls', 'bisos.b.clsMethod_csu', ]
 
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
 
@@ -116,6 +120,9 @@ def g_extraParams():
     cs.argsparseBasedOnCsParams(csParams)
 
 ####+END:
+
+SapBase_FPs = b.ro.SapBase_FPs  # exec/eval-ed as __main__.ClassName
+
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "CmndSvcs" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
