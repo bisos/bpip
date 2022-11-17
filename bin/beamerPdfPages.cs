@@ -173,10 +173,6 @@ class examples(cs.Cmnd):
         cmndName = 'updatePages' ; cmndArgs = '/lcnt/lgpc/bystar/permanent/facilities/marmee/marmeeEmacsConf22/presentationEnFa.pdf' ;
         cps=cpsInit() ; menuItem(verbosity='little')
 
-        cs.examples.menuChapter('=ExecLine Example=  *Example Of GPG Commands*')
-
-        execLineEx(f"""echo sudo apt -y install gnupg""")
-
         b.ignore(ro.__doc__,)  # We are not using these modules, but they are auto imported.
 
         return(cmndOutcome)
@@ -238,6 +234,10 @@ class updatePages(cs.Cmnd):
             #
             if b.subProc.WOpW(invedBy=self, log=1).bash(
                     f"""pdftk {inFile} cat {nu}-{nu} output {slideFrameNamePdf}""",
+            ).isProblematic():  return(b_io.eh.badOutcome(cmndOutcome))
+
+            if b.subProc.WOpW(invedBy=self, log=1).bash(
+                    f"""pdftoppm -r 600 -png {slideFrameNamePdf} {slideFrameNamePath.joinpath('slide')}""",
             ).isProblematic():  return(b_io.eh.badOutcome(cmndOutcome))
 
         return(cmndOutcome)

@@ -5,15 +5,18 @@
 * ~[Summary]~ :: A =CmndSvc= for experimentation with RPyC invokers and performers.
 #+end_org """
 
+
+####+BEGIN: b:py3:cs:file/dblockControls :classification "cs-mu"
 """ #+begin_org
-* [[elisp:(org-cycle)][| /Control Parameters Of This File/ |]] :: dblock controls and classifications
+* [[elisp:(org-cycle)][| /Control Parameters Of This File/ |]] :: dblk ctrls classifications=cs-mu
 #+BEGIN_SRC emacs-lisp
 (setq-local b:dblockControls t) ; (setq-local b:dblockControls nil)
-(put 'b:dblockControls 'py3:cs:Classification "cs-mu") ; Main Multi-Unit CommandSvc
+(put 'b:dblockControls 'py3:cs:Classification "cs-mu") ; one of cs-mu, cs-u, cs-lib, b-lib, pyLibPure
 #+END_SRC
 #+RESULTS:
 : cs-mu
 #+end_org """
+####+END:
 
 ####+BEGIN: b:prog:file/proclamations :outLevel 1
 """ #+begin_org
@@ -73,6 +76,9 @@ Module description comes here.
 #+end_org """
 ####+END:
 
+# import rich.traceback
+# rich.traceback.install()
+
 ####+BEGIN: b:py3:cs:framework/imports :basedOn "classification"
 """ #+begin_org
 ** Imports Based On Classification
@@ -121,8 +127,14 @@ def g_extraParams():
 
 ####+END:
 
-SapBase_FPs = b.ro.SapBase_FPs  # exec/eval-ed as __main__.ClassName
+####+BEGIN: b:py3:cs:main/exposedSymbols :classes ("b.ro.SapBase_FPs")
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Exposed Symbols List Specification~ with /1/ in Classes List
+#+end_org """
 
+SapBase_FPs = b.ro.SapBase_FPs # exec/eval-ed as __main__.ClassName
+
+####+END:
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "CmndSvcs" :anchor ""  :extraInfo "Command Services Section"
 """ #+begin_org
