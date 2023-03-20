@@ -29,7 +29,7 @@
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: /bisos/git/auth/bxRepos/bisos-pip/lcnt/py3/bin/seedLcntProc.cs
+** This File: /bisos/git/auth/bxRepos/bisos/bpip1/bin/bookSpineCalc.cs
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 #+end_org """
 ####+END:
@@ -39,10 +39,10 @@
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['seedLcntProc'], }
-csInfo['version'] = '202212182628'
+csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['bookSpineCalc'], }
+csInfo['version'] = '202303180147'
 csInfo['status']  = 'inUse'
-csInfo['panel'] = 'seedLcntProc-Panel.org'
+csInfo['panel'] = 'bookSpineCalc-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
 csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 ####+END:
@@ -50,7 +50,7 @@ csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 """ #+begin_org
 * [[elisp:(org-cycle)][| ~Description~ |]] :: [[file:/bisos/git/auth/bxRepos/blee-binders/bisos-core/COMEEGA/_nodeBase_/fullUsagePanel-en.org][BISOS COMEEGA Panel]]
 Module description comes here.
-** Relevant Panels:
+** Relevant Panels: /bisos/git/auth/bxRepos/blee-binders/bisos-apps/lcnt/lcntArtTypes/books/bookCovers/_nodeBase_/fullUsagePanel-en.org
 ** Status: In use with BISOS
 ** /[[elisp:(org-cycle)][| Planned Improvements |]]/ :
 *** TODO complete fileName in particulars.
@@ -58,8 +58,9 @@ Module description comes here.
 
 ####+BEGIN: b:prog:file/orgTopControls :outLevel 1
 """ #+begin_org
-* [[elisp:(org-cycle)][| Controls |]] :: [[elisp:(delete-other-windows)][(1)]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
+* [[elisp:(org-cycle)][| Controls |]] :: [[elisp:(delete-other-windows)][(1)]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
 ** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]
+
 #+end_org """
 ####+END:
 
@@ -248,43 +249,33 @@ class spineWidthSoft(cs.Cmnd):
         gsm = csParam.mappedValue('gsm', gsm)
 ####+END:
         self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Calculate =bookSpineWidthSoft= based on ~nuOfPages~ and ~gsm~
 
-startMsg1 = "The conventional design suggests that spine width is calculated as follows: \n\n"
-startMsg2 = "10 divided by 176, multiplied by the number of pages of text within the book, divided by 90, "
-startMsg3 = "multiplied by the weight of the paper in gsm, add 1mm for the crease in the cover and this will give you a soft cover book thickness in millimetres.\n\n"
-startMsg4 = "Add 3mm to this figure and you have the spine thickness of a hard covered book"
+        Algorithm taken from Book Spine Calculator https://wiki.scribus.net/canvas/Book_Spine_Calculator
 
+        The conventional design suggests that spine width is calculated as follows:
+        10 divided by 176, multiplied by the number of pages of text within the book, divided by 90,
+        multiplied by the weight of the paper in gsm (grams per square meter),
+        add 1mm for the crease in the cover and this will give you a soft cover book thickness in millimetres.
         #+end_org """)
-
 
         nuOfPages = float(nuOfPages)
         weightInGsm = float(gsm)
 
-        A = float(10)
-        B = float(176)
+        bookSpineWidthSoft = (float(10)/float(176)) * (nuOfPages/90) * weightInGsm + 1
+        bookSpineWidthSoftStr = "{:.2f}".format(bookSpineWidthSoft)
 
-        bsw = (A/B) * (nuOfPages/90) * weightInGsm + 1 + 3
-        bsw = float("%2.2f" % (bsw))
-        bsws = bsw - 3
-
-        P = int(nuOfPages)
-        G = int(weightInGsm)
-
-        widthMsg1 = "The spine thickness for a soft cover book of " + str(P) + " pages of " + str(G) + " gsm paper is " + str(bsws) + " mm.\n\n"
-        widthMsg2 = "The spine thickness for a hard cover book of " + str(P) + " pages of " + str(G) + " gsm paper is " + str(bsw) + " mm."
-        widthMsg = widthMsg1 + widthMsg2
-
-        print(widthMsg)
+        if rtInv.outs: print(bookSpineWidthSoftStr)
+        cmndOutcome.results = bookSpineWidthSoftStr
 
         return(cmndOutcome)
 
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "spineWidthHard" :comment "" :extent "verify" :ro "cli" :parsMand "nuOfPages gsm" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<spineWidthSoft>>  =verify= parsMand=nuOfPages gsm ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<spineWidthHard>>  =verify= parsMand=nuOfPages gsm ro=cli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class spineWidthSoft(cs.Cmnd):
+class spineWidthHard(cs.Cmnd):
     cmndParamsMandatory = [ 'nuOfPages', 'gsm', ]
     cmndParamsOptional = [ ]
     cmndArgsLen = {'Min': 0, 'Max': 0,}
@@ -304,34 +295,24 @@ class spineWidthSoft(cs.Cmnd):
         gsm = csParam.mappedValue('gsm', gsm)
 ####+END:
         self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Calculate =bookSpineWidthHard= based on ~nuOfPages~ and ~gsm~
 
-startMsg1 = "The conventional design suggests that spine width is calculated as follows: \n\n"
-startMsg2 = "10 divided by 176, multiplied by the number of pages of text within the book, divided by 90, "
-startMsg3 = "multiplied by the weight of the paper in gsm, add 1mm for the crease in the cover and this will give you a soft cover book thickness in millimetres.\n\n"
-startMsg4 = "Add 3mm to this figure and you have the spine thickness of a hard covered book"
-
+        First obtain [[spineWidthSoft]], then
+        Add 3mm to this figure and you have the spine thickness of a hard covered book
         #+end_org """)
 
+        if not (spineWidthSoftStr := spineWidthSoft(cmndOutcome=cmndOutcome).cmnd(
+                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
+                gsm=gsm,
+                nuOfPages=nuOfPages,
+        ).results): return(b_io.eh.badOutcome(cmndOutcome))
 
-        nuOfPages = float(nuOfPages)
-        weightInGsm = float(gsm)
+        bookSpineWidthHard = float(spineWidthSoftStr) + 3
 
-        A = float(10)
-        B = float(176)
+        bookSpineWidthHardStr = "{:.2f}".format(bookSpineWidthHard)
 
-        bsw = (A/B) * (nuOfPages/90) * weightInGsm + 1 + 3
-        bsw = float("%2.2f" % (bsw))
-        bsws = bsw - 3
-
-        P = int(nuOfPages)
-        G = int(weightInGsm)
-
-        widthMsg1 = "The spine thickness for a soft cover book of " + str(P) + " pages of " + str(G) + " gsm paper is " + str(bsws) + " mm.\n\n"
-        widthMsg2 = "The spine thickness for a hard cover book of " + str(P) + " pages of " + str(G) + " gsm paper is " + str(bsw) + " mm."
-        widthMsg = widthMsg1 + widthMsg2
-
-        print(widthMsg)
+        if rtInv.outs: print (bookSpineWidthHardStr)
+        cmndOutcome.results = bookSpineWidthHardStr
 
         return(cmndOutcome)
 
@@ -360,12 +341,26 @@ class pdfSpineWidthSoft(cs.Cmnd):
         gsm = csParam.mappedValue('gsm', gsm)
 ####+END:
         self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  arg0 is ~inFile~. Count nu of pages of ~inFile~ and calculate =spineWidth= based on ~gsm~
 
-echo $(pdfinfo c-120033-natureOfPolyExistentials-6x9.pdf  | grep ^Pages | cut -d ':' -f 2)
-
+        [[spineWidthSoft]] does the actual caluculations.
         #+end_org """)
 
+        inFile = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
+        if not inFile: return(b_io.eh.badOutcome(cmndOutcome))
+
+        if not (nuOfPages := b.subProc.Op(outcome=cmndOutcome, log=0).bash(
+                f"""echo $(pdfinfo {inFile}  | grep ^Pages | cut -d ':' -f 2)""",
+        ).stdout):  return(icm.EH_badOutcome(cmndOutcome))
+
+        if not (spineWidth := spineWidthSoft(cmndOutcome=cmndOutcome).cmnd(
+                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
+                gsm=gsm,
+                nuOfPages=nuOfPages,
+        ).results): return(b_io.eh.badOutcome(cmndOutcome))
+
+        if rtInv.outs: print(spineWidth)
+        cmndOutcome.results = spineWidth
 
         return(cmndOutcome)
 
@@ -378,7 +373,7 @@ echo $(pdfinfo c-120033-natureOfPolyExistentials-6x9.pdf  | grep ^Pages | cut -d
     def cmndArgsSpec(self, ):
 ####+END:
         """  #+begin_org
-*** [[elisp:(org-cycle)][| *cmndArgsSpec:* | ]] First arg defines rest
+*** [[elisp:(org-cycle)][| *cmndArgsSpec:* | ]] arg0 is ~inFile~
         #+end_org """
 
         cmndArgsSpecDict = cs.arg.CmndArgsSpecDict()
@@ -415,16 +410,30 @@ class pdfSpineWidthHard(cs.Cmnd):
         cmndArgsSpecDict = self.cmndArgsSpec()
         gsm = csParam.mappedValue('gsm', gsm)
 ####+END:
+
         self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A starting point command.
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  arg0 is ~inFile~. Count nu of pages of ~inFile~ and calculate =spineWidth= based on ~gsm~
 
-echo $(pdfinfo c-120033-natureOfPolyExistentials-6x9.pdf  | grep ^Pages | cut -d ':' -f 2)
-
+        [[spineWidthHard]] does the actual caluculations.
         #+end_org """)
 
+        inFile = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
+        if not inFile: return(b_io.eh.badOutcome(cmndOutcome))
+
+        if not (nuOfPages := b.subProc.Op(outcome=cmndOutcome, log=0).bash(
+                f"""echo $(pdfinfo {inFile}  | grep ^Pages | cut -d ':' -f 2)""",
+        ).stdout):  return(icm.EH_badOutcome(cmndOutcome))
+
+        if not (spineWidth := spineWidthHard(cmndOutcome=cmndOutcome).cmnd(
+                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
+                gsm=gsm,
+                nuOfPages=nuOfPages,
+        ).results): return(b_io.eh.badOutcome(cmndOutcome))
+
+        if rtInv.outs: print(spineWidth)
+        cmndOutcome.results = spineWidth
 
         return(cmndOutcome)
-
 
 ####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
     """ #+begin_org
@@ -434,7 +443,7 @@ echo $(pdfinfo c-120033-natureOfPolyExistentials-6x9.pdf  | grep ^Pages | cut -d
     def cmndArgsSpec(self, ):
 ####+END:
         """  #+begin_org
-*** [[elisp:(org-cycle)][| *cmndArgsSpec:* | ]] First arg defines rest
+*** [[elisp:(org-cycle)][| *cmndArgsSpec:* | ]] arg0 is ~inFile~
         #+end_org """
 
         cmndArgsSpecDict = cs.arg.CmndArgsSpecDict()
@@ -446,8 +455,6 @@ echo $(pdfinfo c-120033-natureOfPolyExistentials-6x9.pdf  | grep ^Pages | cut -d
         )
 
         return cmndArgsSpecDict
-
-
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Main" :anchor ""  :extraInfo "Framework Dblock"
 """ #+begin_org
