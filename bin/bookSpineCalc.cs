@@ -199,6 +199,10 @@ class examples(cs.Cmnd):
 
         cs.examples.menuChapter('=Misc=  *Facilities*')
 
+        cmndName = 'pdfNuOfPages' ; cmndArgs = '/lcnt/lgpc/bystar/permanent/facilities/marmee/marmeeEmacsConf22/presentationEnFa.pdf' ;
+        cps=cpsInit() ;  menuItem(verbosity='little')
+
+
         cmndName = 'spineWidthSoft' ; cmndArgs = '' ;
         cps=cpsInit() ; cps['nuOfPages'] = 250 ; cps['gsm'] = 80 ;  menuItem(verbosity='little')
 
@@ -317,6 +321,66 @@ class spineWidthHard(cs.Cmnd):
         return(cmndOutcome)
 
 
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "pdfNuOfPages" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 1 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<pdfNuOfPages>>  =verify= argsMin=1 argsMax=1 ro=cli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class pdfNuOfPages(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 1, 'Max': 1,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             argsList: typing.Optional[list[str]]=None,  # CsArgs
+    ) -> b.op.Outcome:
+
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        cmndArgsSpecDict = self.cmndArgsSpec()
+####+END:
+        self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  arg0 is ~inFile~. Count nu of pages of ~inFile~ and calculate =spineWidth= based on ~gsm~
+
+        [[spineWidthSoft]] does the actual caluculations.
+        #+end_org """)
+
+        inFile = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
+        if not inFile: return(b_io.eh.badOutcome(cmndOutcome))
+
+        if not (nuOfPages := b.subProc.Op(outcome=cmndOutcome, log=0).bash(
+                f"""echo $(pdfinfo {inFile}  | grep ^Pages | cut -d ':' -f 2)""",
+        ).stdout):  return(icm.EH_badOutcome(cmndOutcome))
+
+        if rtInv.outs: print(nuOfPages)
+        cmndOutcome.results = nuOfPages
+
+        return(cmndOutcome)
+
+
+####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self, ):
+####+END:
+        """  #+begin_org
+*** [[elisp:(org-cycle)][| *cmndArgsSpec:* | ]] arg0 is ~inFile~
+        #+end_org """
+
+        cmndArgsSpecDict = cs.arg.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0",
+            argName="inFile",
+            argChoices=[],
+            argDescription="Input File"
+        )
+        return cmndArgsSpecDict
+
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "pdfSpineWidthSoft" :comment "" :extent "verify" :ro "cli" :parsMand "gsm" :parsOpt "" :argsMin 1 :argsMax 1 :pyInv ""
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<pdfSpineWidthSoft>>  =verify= parsMand=gsm argsMin=1 argsMax=1 ro=cli   [[elisp:(org-cycle)][| ]]
@@ -349,9 +413,10 @@ class pdfSpineWidthSoft(cs.Cmnd):
         inFile = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
         if not inFile: return(b_io.eh.badOutcome(cmndOutcome))
 
-        if not (nuOfPages := b.subProc.Op(outcome=cmndOutcome, log=0).bash(
-                f"""echo $(pdfinfo {inFile}  | grep ^Pages | cut -d ':' -f 2)""",
-        ).stdout):  return(icm.EH_badOutcome(cmndOutcome))
+        if not (nuOfPages := pdfNuOfPages(cmndOutcome=cmndOutcome).cmnd(
+                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
+                argsList=[inFile]
+        ).results): return(b_io.eh.badOutcome(cmndOutcome))
 
         if not (spineWidth := spineWidthSoft(cmndOutcome=cmndOutcome).cmnd(
                 rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
@@ -363,7 +428,6 @@ class pdfSpineWidthSoft(cs.Cmnd):
         cmndOutcome.results = spineWidth
 
         return(cmndOutcome)
-
 
 ####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
     """ #+begin_org
@@ -383,9 +447,7 @@ class pdfSpineWidthSoft(cs.Cmnd):
             argChoices=[],
             argDescription="Input File"
         )
-
         return cmndArgsSpecDict
-
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "pdfSpineWidthHard" :comment "" :extent "verify" :ro "cli" :parsMand "gsm" :parsOpt "" :argsMin 1 :argsMax 1 :pyInv ""
 """ #+begin_org
@@ -420,9 +482,10 @@ class pdfSpineWidthHard(cs.Cmnd):
         inFile = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
         if not inFile: return(b_io.eh.badOutcome(cmndOutcome))
 
-        if not (nuOfPages := b.subProc.Op(outcome=cmndOutcome, log=0).bash(
-                f"""echo $(pdfinfo {inFile}  | grep ^Pages | cut -d ':' -f 2)""",
-        ).stdout):  return(icm.EH_badOutcome(cmndOutcome))
+        if not (nuOfPages := pdfNuOfPages(cmndOutcome=cmndOutcome).cmnd(
+                rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
+                argsList=[inFile]
+        ).results): return(b_io.eh.badOutcome(cmndOutcome))
 
         if not (spineWidth := spineWidthHard(cmndOutcome=cmndOutcome).cmnd(
                 rtInv=cs.RtInvoker.new_py(), cmndOutcome=cmndOutcome,
@@ -453,7 +516,6 @@ class pdfSpineWidthHard(cs.Cmnd):
             argChoices=[],
             argDescription="Input File"
         )
-
         return cmndArgsSpecDict
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Main" :anchor ""  :extraInfo "Framework Dblock"
