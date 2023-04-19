@@ -82,6 +82,7 @@ from bisos.common import csParam
 import collections
 ####+END:
 
+from checkdigit import isbn
 
 ####+BEGIN: bx:dblock:python:func :funcName "commonParamsSpecify" :funcType "ParSpec" :retType "" :deco "" :argsList "csParams"
 """ #+begin_org
@@ -197,11 +198,20 @@ class examples(cs.Cmnd):
 
         bleep.examples_icmBasic()
 
-        cs.examples.menuChapter('=Misc=  *Facilities*')
+        cs.examples.menuChapter('=ISBN=  *Facilities*')
+
+        cmndName = 'isbnCalculate13' ; cmndArgs = '978-1-960957-00' ;
+        cps=cpsInit() ;  menuItem(verbosity='little')
+
+        cmndName = 'isbnValidate13' ; cmndArgs = '978-1-960957-00-9' ;
+        cps=cpsInit() ;  menuItem(verbosity='little')
+
+        cs.examples.menuChapter('=PDF=  *Facilities*')
 
         cmndName = 'pdfNuOfPages' ; cmndArgs = '/lcnt/lgpc/bystar/permanent/facilities/marmee/marmeeEmacsConf22/presentationEnFa.pdf' ;
         cps=cpsInit() ;  menuItem(verbosity='little')
 
+        cs.examples.menuChapter('=Spine=  *Facilities*')
 
         cmndName = 'spineWidthSoft' ; cmndArgs = '' ;
         cps=cpsInit() ; cps['nuOfPages'] = 250 ; cps['gsm'] = 80 ;  menuItem(verbosity='little')
@@ -215,15 +225,200 @@ class examples(cs.Cmnd):
         cmndName = 'pdfSpineWidthHard' ; cmndArgs = '/lcnt/lgpc/bystar/permanent/facilities/marmee/marmeeEmacsConf22/presentationEnFa.pdf' ;
         cps=cpsInit() ; cps['gsm'] = 80 ; menuItem(verbosity='little')
 
-        cs.examples.menuChapter('=ExecLine Example=  *Example Of GPG Commands*')
-
         # execLineEx(f"""echo sudo apt -y install gnupg""")
 
         b.ignore(ro.__doc__,)  # We are not using these modules, but they are auto imported.
 
         return(cmndOutcome)
 
-####+BEGIN: bx:icm:py3:section :title "CS-Commands"
+####+BEGIN: bx:icm:py3:section :title "CS-Commands -- ISBN"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    [[elisp:(outline-show-subtree+toggle)][||]] *CS-Commands*  [[elisp:(org-cycle)][| ]]
+#+end_org """
+####+END:
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "isbnCalculate13" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 1 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<isbnCalculate13>>  =verify= argsMin=1 argsMax=1 ro=cli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class isbnCalculate13(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 1, 'Max': 1,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             argsList: typing.Optional[list[str]]=None,  # CsArgs
+    ) -> b.op.Outcome:
+
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        cmndArgsSpecDict = self.cmndArgsSpec()
+####+END:
+        self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  arg0 is ~inFile~. Count nu of pages of ~inFile~ and calculate =spineWidth= based on ~gsm~
+
+        [[spineWidthSoft]] does the actual caluculations.
+        #+end_org """)
+
+        inIsbn = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
+        if not inIsbn: return(b_io.eh.badOutcome(cmndOutcome))
+
+        isbnCheckSum = isbn.calculate(inIsbn)
+
+        if rtInv.outs: print(isbnCheckSum)
+        cmndOutcome.results = isbnCheckSum
+
+        return(cmndOutcome)
+
+####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self, ):
+####+END:
+        """  #+begin_org
+*** [[elisp:(org-cycle)][| *cmndArgsSpec:* | ]] arg0 is ~inFile~
+        #+end_org """
+
+        cmndArgsSpecDict = cs.arg.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0",
+            argName="inIsbn",
+            argChoices=[],
+            argDescription="Input ISBN Number"
+        )
+        return cmndArgsSpecDict
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "isbnValidate13" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 1 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<isbnValidate13>>  =verify= argsMin=1 argsMax=1 ro=cli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class isbnValidate13(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 1, 'Max': 1,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             argsList: typing.Optional[list[str]]=None,  # CsArgs
+    ) -> b.op.Outcome:
+
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        cmndArgsSpecDict = self.cmndArgsSpec()
+####+END:
+        self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  arg0 is ~inFile~. Count nu of pages of ~inFile~ and calculate =spineWidth= based on ~gsm~
+
+        [[spineWidthSoft]] does the actual caluculations.
+        #+end_org """)
+
+        inIsbn = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
+        if not inIsbn: return(b_io.eh.badOutcome(cmndOutcome))
+
+        isValid = isbn.validate(inIsbn)
+
+        if rtInv.outs: print(isValid)
+        cmndOutcome.results = isValid
+
+        return(cmndOutcome)
+
+####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self, ):
+####+END:
+        """  #+begin_org
+*** [[elisp:(org-cycle)][| *cmndArgsSpec:* | ]] arg0 is ~inFile~
+        #+end_org """
+
+        cmndArgsSpecDict = cs.arg.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0",
+            argName="inIsbn",
+            argChoices=[],
+            argDescription="Input ISBN Number"
+        )
+        return cmndArgsSpecDict
+
+####+BEGIN: bx:icm:py3:section :title "CS-Commands -- PDF"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    [[elisp:(outline-show-subtree+toggle)][||]] *CS-Commands -- PDF*  [[elisp:(org-cycle)][| ]]
+#+end_org """
+####+END:
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "pdfNuOfPages" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 1 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<pdfNuOfPages>>  =verify= argsMin=1 argsMax=1 ro=cli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class pdfNuOfPages(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 1, 'Max': 1,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             argsList: typing.Optional[list[str]]=None,  # CsArgs
+    ) -> b.op.Outcome:
+
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
+            return b_io.eh.badOutcome(cmndOutcome)
+        cmndArgsSpecDict = self.cmndArgsSpec()
+####+END:
+        self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  arg0 is ~inFile~. Count nu of pages of ~inFile~ and calculate =spineWidth= based on ~gsm~
+
+        [[spineWidthSoft]] does the actual caluculations.
+        #+end_org """)
+
+        inFile = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
+        if not inFile: return(b_io.eh.badOutcome(cmndOutcome))
+
+        if not (nuOfPages := b.subProc.Op(outcome=cmndOutcome, log=0).bash(
+                f"""echo $(pdfinfo {inFile}  | grep ^Pages | cut -d ':' -f 2)""",
+        ).stdout):  return(icm.EH_badOutcome(cmndOutcome))
+
+        if rtInv.outs: print(nuOfPages)
+        cmndOutcome.results = nuOfPages
+
+        return(cmndOutcome)
+
+
+####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self, ):
+####+END:
+        """  #+begin_org
+*** [[elisp:(org-cycle)][| *cmndArgsSpec:* | ]] arg0 is ~inFile~
+        #+end_org """
+
+        cmndArgsSpecDict = cs.arg.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0",
+            argName="inFile",
+            argChoices=[],
+            argDescription="Input File"
+        )
+        return cmndArgsSpecDict
+
+####+BEGIN: bx:icm:py3:section :title "CS-Commands --- Spine Width"
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    [[elisp:(outline-show-subtree+toggle)][||]] *CS-Commands*  [[elisp:(org-cycle)][| ]]
 #+end_org """
@@ -320,66 +515,6 @@ class spineWidthHard(cs.Cmnd):
 
         return(cmndOutcome)
 
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "pdfNuOfPages" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 1 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<pdfNuOfPages>>  =verify= argsMin=1 argsMax=1 ro=cli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class pdfNuOfPages(cs.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 1, 'Max': 1,}
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-             argsList: typing.Optional[list[str]]=None,  # CsArgs
-    ) -> b.op.Outcome:
-
-        callParamsDict = {}
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)
-        cmndArgsSpecDict = self.cmndArgsSpec()
-####+END:
-        self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  arg0 is ~inFile~. Count nu of pages of ~inFile~ and calculate =spineWidth= based on ~gsm~
-
-        [[spineWidthSoft]] does the actual caluculations.
-        #+end_org """)
-
-        inFile = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
-        if not inFile: return(b_io.eh.badOutcome(cmndOutcome))
-
-        if not (nuOfPages := b.subProc.Op(outcome=cmndOutcome, log=0).bash(
-                f"""echo $(pdfinfo {inFile}  | grep ^Pages | cut -d ':' -f 2)""",
-        ).stdout):  return(icm.EH_badOutcome(cmndOutcome))
-
-        if rtInv.outs: print(nuOfPages)
-        cmndOutcome.results = nuOfPages
-
-        return(cmndOutcome)
-
-
-####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
-    """ #+begin_org
-**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default  [[elisp:(org-cycle)][| ]]
-    #+end_org """
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmndArgsSpec(self, ):
-####+END:
-        """  #+begin_org
-*** [[elisp:(org-cycle)][| *cmndArgsSpec:* | ]] arg0 is ~inFile~
-        #+end_org """
-
-        cmndArgsSpecDict = cs.arg.CmndArgsSpecDict()
-        cmndArgsSpecDict.argsDictAdd(
-            argPosition="0",
-            argName="inFile",
-            argChoices=[],
-            argDescription="Input File"
-        )
-        return cmndArgsSpecDict
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "pdfSpineWidthSoft" :comment "" :extent "verify" :ro "cli" :parsMand "gsm" :parsOpt "" :argsMin 1 :argsMax 1 :pyInv ""
 """ #+begin_org
