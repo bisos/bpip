@@ -172,8 +172,12 @@ class examples(cs.Cmnd):
         cs.examples.menuChapter('*Convert Python Literal Syntax To Equivalent In Bash*')
         cmnd('stdinToBash')
 
+        print("""echo "{'key1': 'value 1.2AA', 'key2': 'value2' }" | pyLiteralToBash.cs -i stdinToBash""")
+        print("""echo "[{'key1': 'value 1.2AA', 'key2': 'value2' }]" | pyLiteralToBash.cs -i stdinToBash""")
+
         cs.examples.menuChapter('*Bash Examples of Py Input*')
         cmnd('bashDictExample')
+        cmnd('bashListDictExample')
 
         return(cmndOutcome)
 
@@ -196,9 +200,15 @@ def bashProcList(
 ** [[elisp:(org-cycle)][| *DocStr | ] Convert a python list to a bash list.
     #+end_org """
 
-    result = ""
+    result = "( "
     for each in pyList:
-        result += f"{each} "
+        if isCompoundDataType(each) == True:
+            # print(f"AA{each}BB")
+            eachProced = pyProcStr(f"{each}\n")
+            result += f'''"{eachProced}" '''
+        else:
+            result += f"{each} "
+    result += " )"
     return result
 
 ####+BEGIN: b:py3:cs:func/typing :funcName "bashProcDict" :funcType "extTyp" :deco "track"
@@ -216,7 +226,12 @@ def bashProcDict(
 
     result = "( "
     for eachKey, eachValue  in pyDict.items():
-        result += f"[{eachKey}]='{eachValue}' "
+       if isCompoundDataType(eachValue) == True:
+            # print(f"AA{eachValue}BB")
+            eachProced = pyProcStr(f"{eachValue}\n")
+            result += f"[{eachKey}]='{eachProced}' "
+       else:
+           result += f"[{eachKey}]='{eachValue}' "
     result += " )"
     return result
 
@@ -300,6 +315,94 @@ def bashProcStr(
     #+end_org """
 
     return f"{pyStr}"
+
+####+BEGIN: b:py3:cs:func/typing :funcName "pyProcStr" :funcType "extTyp" :deco "track"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  F-T-extTyp [[elisp:(outline-show-subtree+toggle)][||]] /pyProcStr/  deco=track  [[elisp:(org-cycle)][| ]]
+#+end_org """
+@cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+def pyProcStr(
+####+END:
+        pyStr: str,
+) -> str:
+    """ #+begin_org
+** [[elisp:(org-cycle)][| *DocStr | ]
+    #+end_org """
+
+    #print(f"CC{pyStr}DD")
+    pyInput = ast.literal_eval(pyStr)
+
+    if isinstance(pyInput, list):
+        result = bashProcList(pyInput)
+    elif isinstance(pyInput, dict):
+        result = bashProcDict(pyInput)
+    elif isinstance(pyInput, tuple):
+        result = bashProcTuple(pyInput)
+    elif isinstance(pyInput, set):
+        result = bashProcSet(pyInput)
+
+    elif isinstance(pyInput, bool):
+        result = bashProcBool(pyInput)
+    elif isinstance(pyInput, int):
+        result = bashProcInt(pyInput)
+    elif isinstance(pyInput, str):
+        result = bashProcStr(pyInput)
+    else:
+        result = f"Unsupported type {type(pyInput)}"
+
+    return result
+
+
+####+BEGIN: b:py3:cs:func/typing :funcName "isCompoundDataType" :funcType "extTyp" :deco "track"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  F-T-extTyp [[elisp:(outline-show-subtree+toggle)][||]] /isCompoundDataType/  deco=track  [[elisp:(org-cycle)][| ]]
+#+end_org """
+@cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+def isCompoundDataType(
+####+END:
+        pyInput,
+) -> str:
+    """ #+begin_org
+** [[elisp:(org-cycle)][| *DocStr | ]
+    #+end_org """
+
+    if isinstance(pyInput, list):
+        result = True
+    elif isinstance(pyInput, dict):
+        result = True
+    elif isinstance(pyInput, tuple):
+        result = True
+    elif isinstance(pyInput, set):
+        result = True
+    else:
+        result = False
+
+    return result
+
+####+BEGIN: b:py3:cs:func/typing :funcName "isSimpleDataType" :funcType "extTyp" :deco "track"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  F-T-extTyp [[elisp:(outline-show-subtree+toggle)][||]] /isSimpleDataType/  deco=track  [[elisp:(org-cycle)][| ]]
+#+end_org """
+@cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+def isSimpleDataType(
+####+END:
+        pyStr: str,
+) -> str:
+    """ #+begin_org
+** [[elisp:(org-cycle)][| *DocStr | ]
+    #+end_org """
+
+    if isinstance(pyInput, bool):
+        result = True
+    elif isinstance(pyInput, int):
+        result = True
+    elif isinstance(pyInput, str):
+        result = True
+    else:
+        result = False
+
+    return result
+
 
 
 
@@ -394,25 +497,8 @@ This implementation is incomplete, as it does not deal with nested collections.
         if not methodInvokeArg:
             methodInvokeArg = b_io.stdin.read()
 
-        pyInput = ast.literal_eval(methodInvokeArg)
-
-        if isinstance(pyInput, list):
-           result = bashProcList(pyInput)
-        elif isinstance(pyInput, dict):
-           result = bashProcDict(pyInput)
-        elif isinstance(pyInput, tuple):
-           result = bashProcTuple(pyInput)
-        elif isinstance(pyInput, set):
-           result = bashProcSet(pyInput)
-
-        elif isinstance(pyInput, bool):
-           result = bashProcBool(pyInput)
-        elif isinstance(pyInput, int):
-           result = bashProcInt(pyInput)
-        elif isinstance(pyInput, str):
-           result = bashProcStr(pyInput)
-        else:
-           result = f"Unsupported type {type(pyInput)}"
+        # print(f"ZZ{methodInvokeArg}YY")
+        result = pyProcStr(methodInvokeArg)
 
         return cmndOutcome.set(opResults=result)
 
@@ -453,6 +539,47 @@ done
         ).stdout):  return(io.eh.badOutcome(cmndOutcome))
 
         return cmndOutcome.set(opResults=resStr)
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "bashListDictExample" :extent "verify" :comment "stdin as input" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<bashListDictExample>>  *stdin as input*  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class bashListDictExample(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+    ) -> b.op.Outcome:
+        """stdin as input"""
+        failed = b_io.eh.badOutcome
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return failed(cmndOutcome)
+####+END:
+        self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Bash example of using -i stdinToBash to bring in pyDict as bash dict.
+        #+end_org """)
+
+        if not (resStr := b.subProc.WOpW(invedBy=self, log=0).bash("""
+eval declare -a listOfDicts="$( echo "[{'key1': 'value 1.2AA', 'key2': 'value2' }, {'key5': 'VALUE 5BB'}]" | pyLiteralToBash.cs -i stdinToBash )"
+for each in "${listOfDicts[@]}" ; do
+        declare -A gotPyDict="${each}"
+
+        echo ${gotPyDict[@]} -- ${!gotPyDict[@]} --- ${gotPyDict['key1']}
+
+        for each in "${!gotPyDict[@]}"; do
+            echo "$each - ${gotPyDict[$each]}"
+        done
+done
+""",
+        ).stdout):  return(b_io.eh.badOutcome(cmndOutcome))
+
+        return cmndOutcome.set(opResults=resStr)
+
 
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Main" :anchor ""  :extraInfo "Framework DBlock"
