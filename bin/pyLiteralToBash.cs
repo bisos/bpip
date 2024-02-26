@@ -565,15 +565,33 @@ class bashListDictExample(cs.Cmnd):
         #+end_org """)
 
         if not (resStr := b.subProc.WOpW(invedBy=self, log=0).bash("""
-eval declare -a listOfDicts="$( echo "[{'key1': 'value 1.2AA', 'key2': 'value2' }, {'key5': 'VALUE 5BB'}]" | pyLiteralToBash.cs -i stdinToBash )"
-for each in "${listOfDicts[@]}" ; do
-        declare -A gotPyDict="${each}"
+pythonInput="[{'key1': 'value 1.2AA', 'key2': 'value2' }, {'key5': 'VALUE 5BB'}]"
+echo "pythonInput=${pythonInput}"
+        
+eval declare -a listOfDicts="$( echo ${pythonInput} | pyLiteralToBash.cs -i stdinToBash )"        
 
-        echo ${gotPyDict[@]} -- ${!gotPyDict[@]} --- ${gotPyDict['key1']}
+echo "bashInput=( ${listOfDicts[@]} )"
 
-        for each in "${!gotPyDict[@]}"; do
-            echo "$each - ${gotPyDict[$each]}"
+echo "------"
+if [ "${#listOfDicts[@]}" == "0" ] ; then
+        echo "Empty List"
+fi
+for eachDictStr in "${listOfDicts[@]}" ; do
+        echo "########"
+
+        echo "eachDictStr=${eachDictStr}"
+
+        declare -A eachDict="${eachDictStr}"
+        
+        echo ${eachDict[@]} -- ${!eachDict[@]} --- ${eachDict['key1']}
+
+        echo "+++++++"
+        
+        for eachKey in "${!eachDict[@]}"; do
+            echo "$eachKey - ${eachDict[$eachKey]}"
         done
+        
+        echo "~~~~~~~"
 done
 """,
         ).stdout):  return(b_io.eh.badOutcome(cmndOutcome))
