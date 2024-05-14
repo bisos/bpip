@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """ #+begin_org
-* ~[Summary]~ :: A =CmndSvc= for running CS examples individually or collectively.
+* ~[Summary]~ :: A =CmndSvc= processing pyLiteral. It should be renamed to pyLiteralTo.cs. It should become a bisos-pip package.
 #+end_org """
 
 ####+BEGIN: b:py3:cs:file/dblockControls :classification "cs-mu"
@@ -93,6 +93,7 @@ import collections
 ####+END:
 
 import ast
+import black
 
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~csuList emacs-list Specifications~  [[elisp:(blee:org:code-block/above-run)][ /Eval Below/ ]] [[elisp:(org-cycle)][| ]]
@@ -411,6 +412,56 @@ def isSimpleDataType(
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  /Section/    [[elisp:(outline-show-subtree+toggle)][||]] *CS-Commands*   [[elisp:(org-cycle)][| ]]
 #+end_org """
 ####+END:
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "stdinToBlack" :extent "verify" :comment "stdin as input" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv "methodInvokeArg"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<stdinToBlack>>  *stdin as input*  =verify= ro=cli pyInv=methodInvokeArg   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class stdinToBlack(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             methodInvokeArg: typing.Any=None,   # pyInv Argument
+    ) -> b.op.Outcome:
+        """stdin as input"""
+        failed = b_io.eh.badOutcome
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return failed(cmndOutcome)
+####+END:
+        self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]] Given a string of literals on stdin, converts it to bash syntax.
+
+This implementation is incomplete, as it does not deal with nested collections.
+        #+end_org """)
+
+        self.captureRunStr(""" #+begin_org
+#+begin_src sh :results output :session shared
+  echo "[ 'some List', 'second entry' ]" | pyLiteralTo.cs -i stdinToBlack
+#+end_src
+#+RESULTS:
+:
+: some List second entry
+
+#+end_org """)
+
+        if self.justCaptureP(): return cmndOutcome
+
+        if not methodInvokeArg:
+            methodInvokeArg = b_io.stdin.read()
+
+        # print(black.format_str(repr(factValue), mode=black.Mode()))
+        result = black.format_str(methodInvokeArg, mode=black.Mode())
+
+        return cmndOutcome.set(opResults=result)
+
+
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "stdinToBash" :extent "verify" :comment "stdin as input" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv "methodInvokeArg"
 """ #+begin_org
