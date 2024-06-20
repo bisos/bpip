@@ -287,7 +287,7 @@ class pypiLatestVersionPlus(cs.Cmnd):
 
         latestVersion = obtainer(inPypiPkg)
 
-        nextVersion = float(latestVersion) + float(increment)
+        nextVersion = round(float(latestVersion) + float(increment), 2)
 
         return cmndOutcome.set(opResults=nextVersion,)
 
