@@ -92,9 +92,11 @@ from bisos.common import csParam
 import collections
 ####+END:
 
-from get_pypi_latest_version import GetPyPiLatestVersion
+import decimal
 
-import ast
+# from get_pypi_latest_version import GetPyPiLatestVersion
+
+# import ast
 
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~csuList emacs-list Specifications~  [[elisp:(blee:org:code-block/above-run)][ /Eval Below/ ]] [[elisp:(org-cycle)][| ]]
@@ -177,6 +179,7 @@ class examples(cs.Cmnd):
         cs.examples.menuChapter('=get_pypi_latest_version=')
 
         literal("get_pypi_latest_version bisos.facter")
+        literal("pip index versions {inPypiPkg} 2> /dev/null  | grep LATEST | cut -d ':' -f 2  | xargs echo")
 
         return(cmndOutcome)
 
@@ -223,9 +226,15 @@ class pypiLatestVersion(cs.Cmnd):
         inPypiPkg = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
         if not inPypiPkg: return(b_io.eh.badOutcome(cmndOutcome))
 
-        obtainer = GetPyPiLatestVersion()
+        # obtainer = GetPyPiLatestVersion()
+        # latestVersion = obtainer(inPypiPkg)
 
-        latestVersion = obtainer(inPypiPkg)
+        if not (resStr := b.subProc.WOpW(invedBy=self, log=0).bash(f"""
+pip index versions {inPypiPkg} 2> /dev/null  | grep LATEST | cut -d ':' -f 2  | xargs echo
+""",
+        ).stdout):  return(b_io.eh.badOutcome(cmndOutcome))
+
+        latestVersion = resStr.strip()
 
         return cmndOutcome.set(opResults=latestVersion,)
 
@@ -248,7 +257,6 @@ class pypiLatestVersion(cs.Cmnd):
             argDescription="Pypi Packages"
         )
         return cmndArgsSpecDict
-
 
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "pypiLatestVersionPlus" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 2 :argsMax 2 :pyInv ""
@@ -275,6 +283,7 @@ class pypiLatestVersionPlus(cs.Cmnd):
 ####+END:
         self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  arg0 is ~inPypiPkg~.
+*** NOTYET, Problem. If there is only one version available, there is no LATEST
         #+end_org """)
 
         inPypiPkg = self.cmndArgsGet("0", cmndArgsSpecDict, argsList)
@@ -283,11 +292,18 @@ class pypiLatestVersionPlus(cs.Cmnd):
         increment = self.cmndArgsGet("1", cmndArgsSpecDict, argsList)
         if not increment: return(b_io.eh.badOutcome(cmndOutcome))
 
-        obtainer = GetPyPiLatestVersion()
+        # obtainer = GetPyPiLatestVersion()
+        # latestVersion = obtainer(inPypiPkg)
 
-        latestVersion = obtainer(inPypiPkg)
+        if not (resStr := b.subProc.WOpW(invedBy=self, log=0).bash(f"""
+pip index versions {inPypiPkg} 2> /dev/null  | grep LATEST | cut -d ':' -f 2  | xargs echo
+""",
+        ).stdout):  return(b_io.eh.badOutcome(cmndOutcome))
 
-        nextVersion = round(float(latestVersion) + float(increment), 2)
+        latestVersion = resStr
+
+        # nextVersion = round(float(latestVersion) + float(increment), 2)
+        nextVersion = decimal.Decimal(round(float(latestVersion) + float(increment), 2)).quantize(decimal.Decimal('1.00'))
 
         return cmndOutcome.set(opResults=nextVersion,)
 
