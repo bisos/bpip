@@ -230,7 +230,8 @@ class pypiLatestVersion(cs.Cmnd):
         # latestVersion = obtainer(inPypiPkg)
 
         if not (resStr := b.subProc.WOpW(invedBy=self, log=0).bash(f"""
-pip index versions {inPypiPkg} 2> /dev/null  | grep LATEST | cut -d ':' -f 2  | xargs echo
+# pip index versions {inPypiPkg} 2> /dev/null  | grep LATEST | cut -d ':' -f 2  | xargs echo
+pip index versions {inPypiPkg}  2> /dev/null | grep 'Available versions' | cut -d ':' -f 2  | cut -d ',' -f 1 | xargs echo
 """,
         ).stdout):  return(b_io.eh.badOutcome(cmndOutcome))
 
@@ -296,14 +297,23 @@ class pypiLatestVersionPlus(cs.Cmnd):
         # latestVersion = obtainer(inPypiPkg)
 
         if not (resStr := b.subProc.WOpW(invedBy=self, log=0).bash(f"""
-pip index versions {inPypiPkg} 2> /dev/null  | grep LATEST | cut -d ':' -f 2  | xargs echo
+# pip index versions {inPypiPkg} 2> /dev/null  | grep LATEST | cut -d ':' -f 2  | xargs echo
+pip index versions {inPypiPkg}  2> /dev/null | grep 'Available versions' | cut -d ':' -f 2  | cut -d ',' -f 1 | xargs echo
 """,
         ).stdout):  return(b_io.eh.badOutcome(cmndOutcome))
 
-        latestVersion = resStr
+        nextVersion = 0
 
-        # nextVersion = round(float(latestVersion) + float(increment), 2)
-        nextVersion = decimal.Decimal(round(float(latestVersion) + float(increment), 2)).quantize(decimal.Decimal('1.00'))
+        # if the package does not existwe could get resStr=\n
+        try:
+            latestVersion = float(resStr)
+        except ValueError:
+            latestVersion = float("0.1")
+            nextVersion = 0.1
+
+        if nextVersion != 0.1:
+            # nextVersion = round(float(latestVersion) + float(increment), 2)
+            nextVersion = decimal.Decimal(round(float(latestVersion) + float(increment), 2)).quantize(decimal.Decimal('1.00'))
 
         return cmndOutcome.set(opResults=nextVersion,)
 
