@@ -1,1 +1,3 @@
-/bisos/git/bxRepos/bisos-pip/marmee/py3/bin/aasMarmeeManage.cs
+#!/bin/bash
+
+/bisos/venv/py3/dev-bisos3/bin/aasMarmeeManage.cs $@ 2> /dev/null
